@@ -1,6 +1,8 @@
 package com.snapchat.team2.snapchat.fragement;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
@@ -33,10 +35,11 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     Camera camera;
     Camera.Parameters parameters;
     int facing=Camera.CameraInfo.CAMERA_FACING_BACK;
-
+    Bitmap photo;
     //use imageView as button
 
     ImageView switchCamera;
+    ImageView takePhoto;
 
 
     @Override
@@ -61,6 +64,29 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     public void initializeButtons(){
         switchCamera=(ImageView) rootView.findViewById(R.id.switch_back_front);
         switchCamera.setOnClickListener(new SwitchButtonListener());
+
+        //initialise button and set listener for taking photo
+        takePhoto=(ImageView) rootView.findViewById(R.id.camera_take_photo);
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                camera.takePicture(new Camera.ShutterCallback() {
+                    @Override
+                    public void onShutter() {
+
+                    }
+                },null,null, new Camera.PictureCallback() {
+                    @Override
+                    public void onPictureTaken(byte[] bytes, Camera camera) {
+                        photo= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                        camera.stopPreview();
+
+                    }
+                });
+            }
+        });
+
+
 
     }
 
@@ -127,11 +153,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         @Override
         public void onClick(View view) {
 
-
             if(camera!=null){
                 releaseCamera();
             }
-
             if(facing==Camera.CameraInfo.CAMERA_FACING_BACK){
                 facing= Camera.CameraInfo.CAMERA_FACING_FRONT;
             }else{
