@@ -4,7 +4,6 @@ package com.snapchat.team2.snapchat.fragement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-import android.hardware.camera2.CameraDevice;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -40,6 +39,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
     ImageView switchCamera;
     ImageView takePhoto;
+    ImageView flashBtn;
+
+    ImageView cancelBtn;
 
 
     @Override
@@ -48,7 +50,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
         surfaceView=(SurfaceView) rootView.findViewById(R.id.cameraSurface);
 
-        initializeButtons();
+
 
         //Install a SurfaceHolder.Callback so we get notified when the
         // underlying surface is created and destroyed.
@@ -56,7 +58,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         surfaceHolder=surfaceView.getHolder();
         surfaceHolder.addCallback(this);
       //  surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-
+        initializeButtons();
         return rootView;
 
     }
@@ -70,26 +72,86 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                camera.takePicture(new Camera.ShutterCallback() {
-                    @Override
-                    public void onShutter() {
-
-                    }
-                },null,null, new Camera.PictureCallback() {
-                    @Override
-                    public void onPictureTaken(byte[] bytes, Camera camera) {
-                        photo= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-                        camera.stopPreview();
-
-                    }
-                });
+                initialTakePhoto();
             }
         });
 
+        //flash button
+        flashBtn=(ImageView) rootView.findViewById(R.id.camera_flash);
 
+        // initialise flash option for camera
+        flashBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initialFlashOption();
+            }
+        });
+
+        //cancel button
+        cancelBtn=(ImageView) rootView.findViewById(R.id.photo_cancel);
+
+        //listener
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initialCancelPhoto();
+            }
+        });
 
     }
 
+    private void initialTakePhoto(){
+        camera.takePicture(new Camera.ShutterCallback() {
+            @Override
+            public void onShutter() {
+
+            }
+        },null,null, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] bytes, Camera camera) {
+                photo= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                camera.stopPreview();
+
+                //disable buttons
+                takePhoto.setVisibility(View.INVISIBLE);
+                flashBtn.setVisibility(View.INVISIBLE);
+
+                //enable cancel button
+                cancelBtn.setVisibility(View.VISIBLE);
+
+                //refresh the view(to force a view to draw)
+                surfaceView.invalidate();
+
+            }
+        });
+    }
+
+    private void initialFlashOption(){
+        String currentFlashMode=parameters.getFlashMode();
+        if(currentFlashMode.equals(Camera.Parameters.FLASH_MODE_OFF)){
+            //flash can be turned on
+            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+            camera.setParameters(parameters);
+            //change icon
+            flashBtn.setImageResource(R.drawable.ic_image_flash_off);
+        }else if (currentFlashMode.equals(Camera.Parameters.FLASH_MODE_ON)){
+            //flash can be turned off
+            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+            camera.setParameters(parameters);
+            //change icon
+            flashBtn.setImageResource(R.drawable.ic_image_flash_on);
+        }
+    }
+
+    private void initialCancelPhoto(){
+        //restart preview
+        camera.startPreview();
+        //disable button
+        cancelBtn.setVisibility(View.INVISIBLE);
+        //emable button
+        flashBtn.setVisibility(View.VISIBLE);
+        takePhoto.setVisibility(View.VISIBLE);
+    }
     @Override
     public void onPause(){
         super.onPause();

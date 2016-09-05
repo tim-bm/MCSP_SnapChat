@@ -19,8 +19,17 @@
            android:id="@+id/camera_flash"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:src="@drawable/ic_action_image_camera_alt"
+           android:src="@drawable/ic_image_flash_on"
            android:layout_alignParentLeft="true"/>
+
+       <!-- cancel button is invisible by default -->
+       <ImageView
+           android:id="@+id/photo_cancel"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="@drawable/ic_photo_cancel"
+           android:layout_alignParentLeft="true"
+           android:visibility="invisible"/>
 
 
        <ImageView
