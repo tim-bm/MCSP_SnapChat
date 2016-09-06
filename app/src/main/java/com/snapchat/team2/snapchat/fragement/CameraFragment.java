@@ -19,6 +19,7 @@ import java.io.IOException;
 
 /**
  * Created by bm on 2/09/2016.
+ * Hello........+
  */
 
 public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
