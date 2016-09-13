@@ -1,13 +1,61 @@
-<!-- fragment_screen_slide_page.xml -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_panel"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
-    <TextView style="?android:textAppearanceMedium"
-        android:padding="16dp"
-        android:lineSpacingMultiplier="1.2"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/chat_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Chat" />
-</ScrollView>
+        android:layout_height="52dp"
+        android:background="@color/colorChatTitle"
+        >
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:text="@string/chat"
+            android:textColor="@color/colorChatTitleText"
+            android:background="@color/colorChatTitle"
+            android:alpha="1"
+            />
+
+        <ImageButton
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/new_message"
+            android:id="@+id/addFriend"
+            android:background="@color/colorChatTitle"
+            android:alpha="1"
+            />
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/addFriend"
+            android:background="@color/colorChatTitle"
+            android:src="@drawable/search"
+            android:alpha="1"/>
+        <SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            android:inputType="textFilter"
+            android:queryHint="@string/test"
+            android:visibility="gone">
+        </SearchView>
+    </RelativeLayout>
+
+    <com.snapchat.team2.snapchat.RefreshListView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#FFFFFF"
+        />
+
+
+</LinearLayout>
+
+
+
+
