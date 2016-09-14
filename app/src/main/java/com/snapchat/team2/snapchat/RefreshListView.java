@@ -39,6 +39,7 @@ public class RefreshListView extends ListView{
         header=inflater.inflate(R.layout.header_layout,null);
         System.out.println("add top to listview");
         this.addHeaderView(header);
+
     }
 
 }
