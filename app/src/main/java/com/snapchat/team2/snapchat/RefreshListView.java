@@ -135,14 +135,14 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
      * Created by xu
      */
     private void onMove(MotionEvent event){
-        System.out.println("当前的状态是"+state);
+        System.out.println("current status is "+state);
         if(!isRemark){
-            System.out.println("是否在最顶端"+isRemark);
+            System.out.println("is it on the top? "+isRemark);
             return;
         }
         int tempY=(int)event.getY();
         int move_distance =tempY - this.startY;
-        System.out.println("移动距离:"+ move_distance);
+        System.out.println("moving distance:"+ move_distance);
         int topPadding = move_distance - headerHeight;
         switch (state){
             case NORMAL:
