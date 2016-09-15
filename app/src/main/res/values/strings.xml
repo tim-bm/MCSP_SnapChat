@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">SnapChat</string>
     <string name="test">test</string>
+    <string name="chat">Chat</string>
+    <string name="refresh1">Pull to refresh</string>
+    <string name="refresh2">Release to refresh</string>
+    <string name="refresh3">Refreshing</string>
+
 </resources>
