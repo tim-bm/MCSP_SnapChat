@@ -21,6 +21,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tip"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
                 android:text="@string/refresh1"/>
 
         </LinearLayout>
@@ -28,11 +30,10 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/snapchat_96"
+            android:src="@drawable/snapchat_48"
             android:layout_marginTop="10dip"
             android:layout_toLeftOf="@id/header_text"
             android:layout_marginRight="20dip"
-
             />
 
 
