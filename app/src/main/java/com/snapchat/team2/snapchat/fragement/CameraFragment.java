@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.snapchat.team2.snapchat.R;
+import com.snapchat.team2.snapchat.customView.DrawFreehandView;
 
 import java.io.IOException;
 
@@ -44,6 +45,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
     ImageView cancelBtn;
 
+    //drawing view
+    DrawFreehandView freehandView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -51,6 +55,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
         surfaceView=(SurfaceView) rootView.findViewById(R.id.cameraSurface);
 
+        freehandView=(DrawFreehandView) rootView.findViewById(R.id.freehandDraw);
 
 
         //Install a SurfaceHolder.Callback so we get notified when the

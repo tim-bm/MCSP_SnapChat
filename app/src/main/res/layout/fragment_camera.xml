@@ -9,6 +9,11 @@
         android:layout_height="match_parent"
         android:id="@+id/cameraSurface"
         />
+    <com.snapchat.team2.snapchat.customView.DrawFreehandView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/freehandDraw"
+        class="com.snapchat.team2.snapchat.customView.DrawFreehandView"/>
 
    <RelativeLayout
        android:layout_width="match_parent"
