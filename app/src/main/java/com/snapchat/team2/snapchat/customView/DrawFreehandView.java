@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +37,9 @@ public class DrawFreehandView extends View {
 
     private float mX, mY;
     private static final float TOUCH_TOLERANCE = 4;
+
+    //control whether it is drawable or not
+    private boolean drawable=false;
 
     public DrawFreehandView(Context context) {
         super(context);
@@ -125,24 +129,39 @@ public class DrawFreehandView extends View {
 
     @Override
     public boolean onTouchEvent (MotionEvent event){
-        float x = event.getX();
-        float y = event.getY();
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                touch_start(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                touch_move(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-                touch_up();
-                invalidate();
-                break;
+        if(drawable){
+            float x = event.getX();
+            float y = event.getY();
+
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    touch_start(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    touch_move(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    touch_up();
+                    invalidate();
+                    break;
+            }
+            return true;
+        }else {
+            return false;
         }
-        return true;
+
+
+    }
+
+    public void setDrawable(boolean drawable){
+            this.drawable=drawable;
+    }
+
+    public void clearCanvas(){
+        mCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
     }
 
 

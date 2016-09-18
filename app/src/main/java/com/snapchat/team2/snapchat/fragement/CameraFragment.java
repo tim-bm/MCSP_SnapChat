@@ -44,6 +44,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     ImageView flashBtn;
 
     ImageView cancelBtn;
+    ImageView drawBtn;
 
     //drawing view
     DrawFreehandView freehandView;
@@ -104,6 +105,17 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
             }
         });
 
+        //freehand draw button
+        drawBtn=(ImageView) rootView.findViewById(R.id.photo_draw);
+
+        drawBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              //  freehandView=(DrawFreehandView) rootView.findViewById(R.id.freehandDraw);
+                freehandView.setDrawable(true);
+            }
+        });
+
     }
 
     private void initialTakePhoto(){
@@ -121,9 +133,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 //disable buttons
                 takePhoto.setVisibility(View.INVISIBLE);
                 flashBtn.setVisibility(View.INVISIBLE);
+                switchCamera.setVisibility(View.INVISIBLE);
 
                 //enable cancel button
                 cancelBtn.setVisibility(View.VISIBLE);
+                //enable draw button
+                drawBtn.setVisibility(View.VISIBLE);
 
                 //refresh the view(to force a view to draw)
                 surfaceView.invalidate();
@@ -154,9 +169,16 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         camera.startPreview();
         //disable button
         cancelBtn.setVisibility(View.INVISIBLE);
-        //emable button
+        drawBtn.setVisibility(View.INVISIBLE);
+
+        //enable button
         flashBtn.setVisibility(View.VISIBLE);
         takePhoto.setVisibility(View.VISIBLE);
+        switchCamera.setVisibility(View.VISIBLE);
+
+        //disable drawing and clean canvas
+        freehandView.setDrawable(false);
+        freehandView.clearCanvas();
     }
     @Override
     public void onPause(){
