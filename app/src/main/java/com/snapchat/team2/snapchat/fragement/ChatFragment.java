@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.snapchat.team2.snapchat.R;
-import com.snapchat.team2.snapchat.RefreshListView;
+import com.snapchat.team2.snapchat.customView.RefreshListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

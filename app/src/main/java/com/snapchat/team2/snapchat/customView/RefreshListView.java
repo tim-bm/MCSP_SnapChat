@@ -1,4 +1,4 @@
-package com.snapchat.team2.snapchat;
+package com.snapchat.team2.snapchat.customView;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,6 +11,8 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.snapchat.team2.snapchat.R;
 
 /**
  * Created by xu on 2016/9/14.

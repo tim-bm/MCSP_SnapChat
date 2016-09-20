@@ -47,7 +47,7 @@
         </SearchView>
     </RelativeLayout>
 
-    <com.snapchat.team2.snapchat.RefreshListView
+    <com.snapchat.team2.snapchat.customView.RefreshListView
         android:layout_width="match_parent"
         android:layout_height="442dp"
         android:id="@+id/refresh_list"
