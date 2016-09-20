@@ -8,15 +8,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * Created by xu on 2016/9/14.
  */
 public class RefreshListView extends ListView implements AbsListView.OnScrollListener{
 
-    View header; //header layout
+    private View header; //header layout
+    private TextView headerTip;  //show the status of the list
     private int headerHeight;// height of the top layout
+    private ImageView s_icon;
     private int topItemIndex;
     private boolean isRemark; //Tell whether I touch the list when the list shows its top
     private int startY; //the Y number when pulling down
@@ -54,7 +58,11 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
     private void initView(Context context){
         LayoutInflater inflater = LayoutInflater.from(context);
         header=inflater.inflate(R.layout.header_layout,null);
-        System.out.println("add top to listview");
+        headerTip = (TextView) header.findViewById(R.id.tip);
+        s_icon=(ImageView)header.findViewById(R.id.header_icon);
+
+
+
         measureView(header);
         headerHeight = header.getMeasuredHeight();
         Log.i("tag","topHeight is "+ headerHeight);
@@ -101,7 +109,6 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         this.topItemIndex = firstVisibleItem;
-
     }
 
     public boolean onTouchEvent(MotionEvent event){
@@ -123,6 +130,19 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
 
             case MotionEvent.ACTION_UP:
                 System.out.println("now I leave");
+
+                //recover to the previos status
+                if(state==PULL){
+                    System.out.println("the status is "+ state+ "while move out !");
+                    setTopPadding(-headerHeight);
+                    state = NORMAL;
+                }
+                else if(state==RELEASE){
+                    System.out.println("the status is "+ state+ "while move out !");
+                    setTopPadding(-headerHeight);
+                    state = NORMAL;
+                }
+                System.out.println("is it on the top when move out? "+ isRemark);
                 break;
 
         }
@@ -146,14 +166,15 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
         int topPadding = move_distance - headerHeight;
         switch (state){
             case NORMAL:
+                setTopPadding(topPadding);
                 if(move_distance>0){
-                    state=PULL;
+                    changStatus(PULL);
                 }
                 break;
             case PULL:
                 setTopPadding(topPadding);
-                if(move_distance>headerHeight+30 && this.scrollState==SCROLL_STATE_TOUCH_SCROLL){
-                    state = RELEASE;
+                if(move_distance>=headerHeight-10 ){
+                    changStatus(RELEASE);
                 }
                 else if(move_distance<=0){
                     state=NORMAL;
@@ -161,9 +182,9 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
                 }
                 break;
             case RELEASE:
-                setTopPadding(topPadding);
-                if(move_distance<headerHeight+30){
-                    state = PULL;
+
+                if(move_distance<headerHeight-10){
+                    changStatus(PULL);
                 }else if(move_distance<=0){
                     state=NORMAL;
                     isRemark=false;
@@ -172,5 +193,23 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
         }
 
 
+    }
+
+    private void changStatus(int status){
+        state = status;
+        switch (status){
+            case PULL:
+                //change head style to pull
+                headerTip.setText("Pull to refresh");
+                s_icon.setImageResource(R.drawable.ic_snapchat_48);
+
+                break;
+            case RELEASE:
+                //change head style to release
+                headerTip.setText("Release to refresh");
+                s_icon.setImageResource(R.drawable.ic_snapchat_48_red);
+                header.setBackgroundColor(getResources().getColor(R.color.colorChatlistHeaderRelease));
+                break;
+        }
     }
 }

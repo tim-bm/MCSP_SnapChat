@@ -5,4 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorChatTitle">#457dd7</color>
     <color name="colorChatTitleText">#FFFFFF</color>
+    <color name="colorChatlistHeaderInitial">#9d9d9d</color>
+    <color name="colorChatlistHeaderRelease">#00fd43</color>
 </resources>

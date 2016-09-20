@@ -6,8 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:background="#9d9d9d"
+        android:background="@color/colorChatlistHeaderRelease"
     >
         <LinearLayout
             android:layout_width="wrap_content"
@@ -21,6 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tip"
+                android:layout_marginTop="10dp"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
                 android:text="@string/refresh1"/>
@@ -30,10 +30,11 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/snapchat_48"
+            android:src="@drawable/ic_snapchat_48"
             android:layout_marginTop="10dip"
             android:layout_toLeftOf="@id/header_text"
             android:layout_marginRight="20dip"
+            android:id="@+id/header_icon"
             />
 
 
