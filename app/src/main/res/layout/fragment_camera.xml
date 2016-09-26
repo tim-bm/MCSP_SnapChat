@@ -4,6 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/holdingView">
+
     <SurfaceView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,6 +21,8 @@
         android:layout_height="match_parent"
         android:id="@+id/freehandDraw"
         class="com.snapchat.team2.snapchat.customView.DrawFreehandView"/>
+
+    </RelativeLayout>
 
    <RelativeLayout
        android:layout_width="match_parent"
@@ -71,6 +79,16 @@
             android:src="@drawable/ic_device_data_usage"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/image_save"
+            android:src="@drawable/ic_image_save"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:visibility="invisible"/>
 
 
     </RelativeLayout>
