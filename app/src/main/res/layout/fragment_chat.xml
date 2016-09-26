@@ -18,6 +18,7 @@
             android:textColor="@color/colorChatTitleText"
             android:background="@color/colorChatTitle"
             android:alpha="1"
+            android:id="@+id/button_chat"
             />
 
         <ImageButton
@@ -35,6 +36,7 @@
             android:layout_toLeftOf="@+id/addFriend"
             android:background="@color/colorChatTitle"
             android:src="@drawable/search"
+            android:id="@+id/search_button"
             android:alpha="1"/>
         <SearchView
             android:id="@+id/search_view"
@@ -43,7 +45,8 @@
             android:iconifiedByDefault="false"
             android:inputType="textFilter"
             android:queryHint="@string/test"
-            android:visibility="gone">
+            android:visibility="gone"
+            >
         </SearchView>
     </RelativeLayout>
 
@@ -51,7 +54,6 @@
         android:layout_width="match_parent"
         android:layout_height="442dp"
         android:id="@+id/refresh_list"
-
         />
 
 
