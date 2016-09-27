@@ -208,6 +208,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         //disable drawing and clean canvas
         freehandView.setDrawable(false);
         freehandView.clearCanvas();
+
+        //remove the cache from previous drawing
+        if(drawing!=null){
+            drawing.recycle();
+            drawing=null;
+        }
     }
     @Override
     public void onPause(){
@@ -273,21 +279,22 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
       //  File dir=new File(Environment.getExternalStorageDirectory().toString()+"/snapchat111");
         String ImageDate = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(new Date());
-        File mediaFile = new File(dir.getPath()+File.separator+"IMG_"+ImageDate+".jpg");
+        String filename="IMG_"+ImageDate+".jpg";
+        File mediaFile = new File(dir.getPath()+File.separator+filename);
         FileOutputStream outputStream =null;
         if (!dir.exists()){
             dir.mkdir();
-            Toast.makeText(this.getActivity().getApplicationContext(),"mkdir successfully",Toast.LENGTH_LONG).show();
         }
 
         try {
             outputStream = new FileOutputStream(mediaFile);
 //            rootView.setDrawingCacheEnabled(true);
 //            photo=rootView.getDrawingCache();
+
             freehandView.setDrawingCacheEnabled(true);
+
             drawing=Bitmap.createBitmap(freehandView.getDrawingCache());
             Bitmap combinedImage=combineImageLayers(photo,drawing);
-            //photo.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
             combinedImage.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -296,7 +303,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 try {
                     outputStream.flush();
                     outputStream.close();
-                    rootView.setDrawingCacheEnabled(false);
+                    freehandView.setDrawingCacheEnabled(false);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -305,7 +312,10 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         }
 
       // Toast.makeText(this.getActivity().getApplicationContext(),"download successfully",Toast.LENGTH_LONG).show();
-        Toast.makeText(this.getActivity().getApplicationContext(),dir.getAbsolutePath(),Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getActivity().getApplicationContext(),"Save "+filename+" successfully",Toast.LENGTH_LONG).show();
+        //back to the camera
+        initialCancelPhoto();
+
     }
 
     private Bitmap combineImageLayers(Bitmap background,Bitmap foreground){
@@ -314,8 +324,10 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         Bitmap combined;
 
         Activity parentActivity=(MainActivity)this.getActivity();
-        width=parentActivity.getWindowManager().getDefaultDisplay().getWidth();
-        height=parentActivity.getWindowManager().getDefaultDisplay().getHeight();
+//        width=parentActivity.getWindowManager().getDefaultDisplay().getWidth();
+//        height=parentActivity.getWindowManager().getDefaultDisplay().getHeight();
+        width=background.getWidth();
+        height=background.getHeight();
 
         combined=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
         Canvas combo=new Canvas(combined);
@@ -325,6 +337,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
         return  combined;
     }
+
+
+
 
     class SwitchButtonListener implements View.OnClickListener{
 
