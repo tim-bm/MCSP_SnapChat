@@ -1,10 +1,14 @@
 package com.snapchat.team2.snapchat.fragement;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -12,11 +16,19 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customView.DrawFreehandView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by bm on 2/09/2016.
@@ -37,6 +49,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     Camera.Parameters parameters;
     int facing=Camera.CameraInfo.CAMERA_FACING_BACK;
     Bitmap photo;
+    Bitmap drawing;
     //use imageView as button
 
     ImageView switchCamera;
@@ -45,9 +58,13 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
     ImageView cancelBtn;
     ImageView drawBtn;
+    ImageView savebtn;
 
     //drawing view
     DrawFreehandView freehandView;
+
+    //holding canmer and drawing view
+    RelativeLayout holding;
 
 
     @Override
@@ -58,6 +75,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
         freehandView=(DrawFreehandView) rootView.findViewById(R.id.freehandDraw);
 
+        holding=(RelativeLayout) rootView.findViewById(R.id.holdingView);
 
         //Install a SurfaceHolder.Callback so we get notified when the
         // underlying surface is created and destroyed.
@@ -116,6 +134,14 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
             }
         });
 
+        //save button
+        savebtn=(ImageView) rootView.findViewById(R.id.image_save);
+        savebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveImage();
+            }
+        });
     }
 
     private void initialTakePhoto(){
@@ -139,6 +165,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 cancelBtn.setVisibility(View.VISIBLE);
                 //enable draw button
                 drawBtn.setVisibility(View.VISIBLE);
+                //save button
+                savebtn.setVisibility(View.VISIBLE);
 
                 //refresh the view(to force a view to draw)
                 surfaceView.invalidate();
@@ -170,6 +198,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         //disable button
         cancelBtn.setVisibility(View.INVISIBLE);
         drawBtn.setVisibility(View.INVISIBLE);
+        savebtn.setVisibility(View.INVISIBLE);
 
         //enable button
         flashBtn.setVisibility(View.VISIBLE);
@@ -179,6 +208,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         //disable drawing and clean canvas
         freehandView.setDrawable(false);
         freehandView.clearCanvas();
+
+        //remove the cache from previous drawing
+        if(drawing!=null){
+            drawing.recycle();
+            drawing=null;
+        }
     }
     @Override
     public void onPause(){
@@ -237,6 +272,74 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         camera.release();
         camera = null;
     }
+
+    public void saveImage(){
+        File dir = new File(Environment.getExternalStoragePublicDirectory
+                (Environment.DIRECTORY_PICTURES),"SnapChat222");
+
+      //  File dir=new File(Environment.getExternalStorageDirectory().toString()+"/snapchat111");
+        String ImageDate = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(new Date());
+        String filename="IMG_"+ImageDate+".jpg";
+        File mediaFile = new File(dir.getPath()+File.separator+filename);
+        FileOutputStream outputStream =null;
+        if (!dir.exists()){
+            dir.mkdir();
+        }
+
+        try {
+            outputStream = new FileOutputStream(mediaFile);
+//            rootView.setDrawingCacheEnabled(true);
+//            photo=rootView.getDrawingCache();
+
+            freehandView.setDrawingCacheEnabled(true);
+
+            drawing=Bitmap.createBitmap(freehandView.getDrawingCache());
+            Bitmap combinedImage=combineImageLayers(photo,drawing);
+            combinedImage.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }finally {
+            if (outputStream!=null){
+                try {
+                    outputStream.flush();
+                    outputStream.close();
+                    freehandView.setDrawingCacheEnabled(false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+      // Toast.makeText(this.getActivity().getApplicationContext(),"download successfully",Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getActivity().getApplicationContext(),"Save "+filename+" successfully",Toast.LENGTH_LONG).show();
+        //back to the camera
+        initialCancelPhoto();
+
+    }
+
+    private Bitmap combineImageLayers(Bitmap background,Bitmap foreground){
+        int width=0;
+        int height=0;
+        Bitmap combined;
+
+        Activity parentActivity=(MainActivity)this.getActivity();
+//        width=parentActivity.getWindowManager().getDefaultDisplay().getWidth();
+//        height=parentActivity.getWindowManager().getDefaultDisplay().getHeight();
+        width=background.getWidth();
+        height=background.getHeight();
+
+        combined=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+        Canvas combo=new Canvas(combined);
+        background=Bitmap.createScaledBitmap(background,width,height,true);
+        combo.drawBitmap(background,0,0,null);
+        combo.drawBitmap(foreground,0,0,null);
+
+        return  combined;
+    }
+
+
+
 
     class SwitchButtonListener implements View.OnClickListener{
 
