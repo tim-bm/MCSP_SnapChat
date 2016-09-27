@@ -8,7 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 
+import com.snapchat.team2.snapchat.dbHelper.DBManager;
+import com.snapchat.team2.snapchat.dbModel.User;
+import com.snapchat.team2.snapchat.dbService.UserDBService;
 import com.snapchat.team2.snapchat.fragement.CameraFragment;
 import com.snapchat.team2.snapchat.fragement.ChatFragment;
 import com.snapchat.team2.snapchat.fragement.DiscoverFragment;
@@ -28,6 +32,11 @@ public class MainActivity extends FragmentActivity {
         mainPage=(ViewPager) findViewById(R.id.pager);
         pagerAdapter=new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mainPage.setAdapter(pagerAdapter);
+
+        //test and usage example for DB
+        UserDBService userDBService=new UserDBService(DBManager.getInstance(MainActivity.this));
+        User user=userDBService.getUserByUserEmail("admin@snapchat.com");
+        Toast.makeText(getApplication(),"Database open: "+user.getName(),Toast.LENGTH_LONG).show();
 
     }
 
