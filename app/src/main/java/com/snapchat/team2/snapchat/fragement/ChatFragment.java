@@ -1,15 +1,22 @@
 package com.snapchat.team2.snapchat.fragement;
 
+import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customView.RefreshListView;
@@ -93,21 +100,47 @@ public class ChatFragment extends Fragment {
                 search_view.setQueryHint("search the snap");
                 int search_plate_id=search_view.getContext().getResources().getIdentifier("android:id/search_plate",null,null);
                 System.out.println("searchPlateId is"+ search_plate_id);
+                search_view.setSubmitButtonEnabled(false);
 
+                int id=search_view.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+                TextView t=(TextView) search_view.findViewById(id);
 
+                int magId = getResources().getIdentifier("android:id/search_mag_icon", null, null);
+                ImageView magImage = (ImageView) search_view.findViewById(magId);
+                magImage.setLayoutParams(new LinearLayout.LayoutParams(0, 0));
 
-                if (search_view != null) {
-                    try {
-                        //--拿到字节码
-                        Class<?> argClass = search_view.getClass();
-                        //--指定某个私有属性,mSearchPlate是搜索框父布局的名字
-                        Field ownField = argClass.getDeclaredField("mSearchPlate");
-                        //--暴力反射,只有暴力反射才能拿到私有属性
-                        ownField.setAccessible(true);
-                        View mView = (View) ownField.get(search_view);
-                        //--设置背景
+                System.out.println("text is "+t.getText());
+                t.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if(hasFocus==false){
+                            System.out.println("lost focus");
+                            button_chat.setVisibility(View.VISIBLE);
+                            add_friend.setVisibility(View.VISIBLE);
+                            button_search.setVisibility(View.VISIBLE);
+                            search_view.setVisibility(View.GONE);
+                        }
+                    }
+                });
+                t.setTextColor(getResources().getColor(R.color.colorChatlistHeaderRelease));
+                t.setHintTextColor(getResources().getColor(R.color.colorChatlistHeaderRelease));
+                t.requestFocus();
 
-                        mView.setBackgroundColor(getResources().getColor(R.color.colorChatlistHeaderRelease));    } catch (Exception e) {        e.printStackTrace();    }}
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(t,0);
+            }
+        });
+
+        button_search.setOnKeyListener(new View.OnKeyListener(){
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode==KeyEvent.KEYCODE_BACK && event.getAction()==KeyEvent.ACTION_UP){
+                    //关闭软键盘
+                    System.out.println("clost the input");
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(button_search.getWindowToken(), 0);
+                }
+                return false;
             }
         });
     }
@@ -118,4 +151,6 @@ public class ChatFragment extends Fragment {
 
         refreshListView.setAdapter(adapter);
     }
+
+
 }
