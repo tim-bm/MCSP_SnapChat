@@ -5,5 +5,6 @@
     <string name="refresh1">Pull to refresh</string>
     <string name="refresh2">Release to refresh</string>
     <string name="refresh3">Refreshing</string>
+    <string name="title_activity_create_new_chat">CreateNewChatActivity</string>
 
 </resources>

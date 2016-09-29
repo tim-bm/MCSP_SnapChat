@@ -26,14 +26,14 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:src="@drawable/new_message"
-            android:id="@+id/addFriend"
+            android:id="@+id/newChat"
             android:background="@color/colorChatTitle"
             android:alpha="1"
             />
         <ImageButton
             android:layout_width="35dp"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/addFriend"
+            android:layout_toLeftOf="@+id/newChat"
             android:background="@color/colorChatTitle"
             android:src="@drawable/search"
             android:id="@+id/search_button"
@@ -46,7 +46,6 @@
             android:inputType="textFilter"
             android:queryHint="@string/test"
             android:visibility="gone"
-
             >
         </SearchView>
     </RelativeLayout>

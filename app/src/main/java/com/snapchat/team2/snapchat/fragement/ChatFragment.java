@@ -1,6 +1,7 @@
 package com.snapchat.team2.snapchat.fragement;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,8 @@ import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.snapchat.team2.snapchat.CreateNewChatActivity;
+import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customView.RefreshListView;
 
@@ -37,13 +40,16 @@ public class ChatFragment extends Fragment {
     private RefreshListView refreshListView;
     private ImageButton button_search;
     private Button button_chat;
-    private ImageButton add_friend;
+
     private SearchView search_view;
+    private ImageButton newChat;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         initialView(inflater,container,savedInstanceState);
+        initialSetAdapter();
+        initialSetListeners();
         return rootView;
     }
 
@@ -78,11 +84,9 @@ public class ChatFragment extends Fragment {
         refreshListView= (RefreshListView) rootView.findViewById(R.id.refresh_list);
         button_search=(ImageButton) rootView.findViewById(R.id.search_button);
         button_chat=(Button)rootView.findViewById(R.id.button_chat);
-        add_friend=(ImageButton)rootView.findViewById(R.id.addFriend);
-        search_view=(SearchView)rootView.findViewById(R.id.search_view);
 
-        initialSetAdapter();
-        initialSetListeners();
+        search_view=(SearchView)rootView.findViewById(R.id.search_view);
+        newChat=(ImageButton) rootView.findViewById(R.id.newChat);
     }
 
 
@@ -93,7 +97,7 @@ public class ChatFragment extends Fragment {
             public void onClick(View v) {
                 //show the serch textview and hide other
                 button_chat.setVisibility(View.GONE);
-                add_friend.setVisibility(View.GONE);
+                newChat.setVisibility(View.GONE);
                 button_search.setVisibility(View.GONE);
                 search_view.setVisibility(View.VISIBLE);
 
@@ -116,7 +120,7 @@ public class ChatFragment extends Fragment {
                         if(hasFocus==false){
                             System.out.println("lost focus");
                             button_chat.setVisibility(View.VISIBLE);
-                            add_friend.setVisibility(View.VISIBLE);
+                            newChat.setVisibility(View.VISIBLE);
                             button_search.setVisibility(View.VISIBLE);
                             search_view.setVisibility(View.GONE);
                         }
@@ -141,6 +145,14 @@ public class ChatFragment extends Fragment {
                     imm.hideSoftInputFromWindow(button_search.getWindowToken(), 0);
                 }
                 return false;
+            }
+        });
+
+
+        newChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),CreateNewChatActivity.class));
             }
         });
     }

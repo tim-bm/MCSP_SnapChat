@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/chat_friends_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/chat_friend_layout_style"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/color_chat_friends_title"
+            android:text="Select chat friends ..."
+            android:textSize="16dp"
+            android:layout_centerInParent="true"/>
+
+
+
+        <ImageButton
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="6dp"
+            android:layout_width="50px"
+            android:layout_height="50px"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_right_48"
+            android:background="@color/color_transparent"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:orientation="horizontal"
+        android:background="@drawable/chat_friend_layout_style"
+        >
+        <ImageView
+            android:layout_width="45px"
+            android:layout_height="45px"
+            android:src="@drawable/ic_searching"
+            android:layout_marginLeft="10px"
+            android:layout_marginTop="10px"
+            android:layout_marginBottom="10px"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="search friend"
+            android:textColorHint="@color/color_chat_friends_searching_hint"
+            android:textSize="14dp"
+            android:background="@null"
+            />
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/chat_friend_list"
+        android:paddingLeft="25px"
+        ></ListView>
+
+
+
+</LinearLayout>

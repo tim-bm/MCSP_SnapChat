@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/chat_friend_letter"
+        android:text="A"
+        android:textSize="25dp"
+        android:paddingTop="10px"
+        android:paddingBottom="10px"
+        android:paddingLeft="10px"
+        android:textColor="@color/color_chat_friends_title"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Zhe Xu"
+        android:textSize="20dp"
+        android:paddingTop="6px"
+        android:paddingBottom="4px"
+        android:paddingLeft="4px"
+        android:id="@+id/chat_friend_name"/>
+
+    </LinearLayout>
+

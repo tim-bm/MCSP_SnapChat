@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FFFFFF</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
@@ -7,4 +8,7 @@
     <color name="colorChatTitleText">#FFFFFF</color>
     <color name="colorChatlistHeaderInitial">#9d9d9d</color>
     <color name="colorChatlistHeaderRelease">#00fd43</color>
+    <color name="color_chat_friends_title">#457dd7</color>
+    <color name="color_chat_friends_searching_hint">#d4d4d4</color>
+    <color name="color_transparent">#00FFFFFF</color>
 </resources>

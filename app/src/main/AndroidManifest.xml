@@ -2,16 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.snapchat.team2.snapchat">
 
-    <!--Permission of using camera -->
+    <!-- Permission of using camera -->
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
 
-    <!--Permission of storage -->
+    <!-- Permission of storage -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <!-- permission of internet-->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- permission of internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -23,15 +24,15 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
+        <activity
+            android:name=".CreateNewChatActivity"
+            android:label="@string/title_activity_create_new_chat"></activity>
     </application>
 
 </manifest>
