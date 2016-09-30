@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.snapchat.team2.snapchat.dbHelper.DBManager;
@@ -23,6 +25,11 @@ public class MainActivity extends FragmentActivity {
     private static final int NUM_FRAMES=4;
     private ViewPager mainPage;
     private PagerAdapter pagerAdapter;
+
+    private ImageView chatSwitch;
+    private ImageView cameraSwitch;
+    private ImageView storySwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +40,13 @@ public class MainActivity extends FragmentActivity {
         pagerAdapter=new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mainPage.setAdapter(pagerAdapter);
 
+        //register button
+        chatSwitch=(ImageView)this.findViewById(R.id.chat_switch_fragment);
+        cameraSwitch=(ImageView)this.findViewById(R.id.camera_switch_fragment);
+        storySwitch=(ImageView)this.findViewById(R.id.story_switch_fragment);
+
+        setListenerOnButton();
+
         //test and usage example for DB
         UserDBService userDBService=new UserDBService(DBManager.getInstance(MainActivity.this));
         User user=userDBService.getUserByUserEmail("admin@snapchat.com");
@@ -40,6 +54,28 @@ public class MainActivity extends FragmentActivity {
 
     }
 
+
+    private void setListenerOnButton(){
+        chatSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainPage.setCurrentItem(0);
+            }
+        });
+        cameraSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainPage.setCurrentItem(1);
+            }
+        });
+
+        storySwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainPage.setCurrentItem(2);
+            }
+        });
+    }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
