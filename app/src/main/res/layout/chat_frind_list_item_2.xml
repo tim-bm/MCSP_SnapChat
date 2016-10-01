@@ -6,24 +6,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/chat_friend_letter"
-        android:text="A"
-        android:textSize="20dp"
-        android:paddingTop="5px"
-        android:paddingBottom="5px"
-        android:paddingLeft="10px"
-        android:textColor="@color/color_chat_friends_title"
-
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="Zhe Xu"
         android:textSize="20dp"
         android:paddingTop="6px"
         android:paddingBottom="4px"
         android:paddingLeft="4px"
-        android:id="@+id/chat_friend_name"/>
+        android:id="@+id/chat_friend_name_2"/>
 
-    </LinearLayout>
+</LinearLayout>
 

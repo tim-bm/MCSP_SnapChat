@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/newChat_main">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/chat_friends_title"
@@ -17,7 +18,8 @@
             android:textColor="@color/color_chat_friends_title"
             android:text="Select chat friends ..."
             android:textSize="16dp"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            />
 
 
 
@@ -54,6 +56,8 @@
             android:textColorHint="@color/color_chat_friends_searching_hint"
             android:textSize="14dp"
             android:background="@null"
+            android:id="@+id/search_friend"
+            android:focusable="false"
             />
     </LinearLayout>
 
