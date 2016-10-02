@@ -25,6 +25,7 @@ public class ChatFriendListAdapter extends BaseAdapter{
     private LayoutInflater inflater;
     private final int ITEM_TYPE_1=1;
     private final int ITEM_TYPE_2=2;
+
     @Override
     public int getCount() {
         return ls.size();
@@ -42,6 +43,7 @@ public class ChatFriendListAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         Friend item = ls.get(position);
         int type = getItemViewType(position);
 
