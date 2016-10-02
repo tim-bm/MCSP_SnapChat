@@ -5,9 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
+
 import android.widget.TextView;
 
+import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
 import com.snapchat.team2.snapchat.R;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.Map;
  */
 public class ChatFriendListAdapter extends BaseAdapter{
 
-    private List<Map<String, Object>> ls;
+    private List<Friend> ls;
     private LayoutInflater inflater;
     private final int ITEM_TYPE_1=1;
     private final int ITEM_TYPE_2=2;
@@ -36,51 +37,77 @@ public class ChatFriendListAdapter extends BaseAdapter{
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        int type=getItemViewType(position);
+        Friend item = ls.get(position);
+        int type = getItemViewType(position);
+
+        ViewHolder1 holder1 = null;
+        ViewHolder2 holder2 = null;
+
+        if(convertView ==null){
             switch (type){
                 case ITEM_TYPE_1:
-                    View view_1=inflater.inflate(R.layout.chat_friend_list_item,parent,false);
-
-                    TextView tv_initial = (TextView)view_1.findViewById(R.id.chat_friend_letter);
-                    TextView tv_name = (TextView)view_1.findViewById(R.id.chat_friend_name);
-
-                    tv_initial.setText(ls.get(position).get("Initial").toString());
-                    tv_name.setText(ls.get(position).get("name").toString());
-                    return view_1;
-
+                    holder1 = new ViewHolder1();
+                    convertView = inflater .inflate(R.layout.chat_friend_list_item,null);
+                    holder1.t_initial_1=(TextView)convertView.findViewById(R.id.chat_friend_letter);
+                    holder1.t_name_1 = (TextView)convertView.findViewById(R.id.chat_friend_name);
+                    holder1.t_initial_1.setText(item.getInitial_letter());
+                    holder1.t_name_1.setText(item.getName());
+                    convertView.setTag(holder1);
+                    break;
                 case ITEM_TYPE_2:
-                    View view_2=inflater.inflate(R.layout.chat_frind_list_item_2,parent,false);
-
-                    TextView tv_name_2 = (TextView)view_2.findViewById(R.id.chat_friend_name_2);
-
-                    tv_name_2.setText(ls.get(position).get("name").toString());
-                    return view_2;
+                    holder2 = new ViewHolder2();
+                    convertView = inflater.inflate((R.layout.chat_frind_list_item_2),null);
+                    holder2.t_name_2 = (TextView)convertView.findViewById(R.id.chat_friend_name_2);
+                    holder2.t_name_2.setText(item.getName());
+                    convertView.setTag(holder2);
+                    break;
                 default:
-                    return null;
+                    break;
             }
+        }
+        else{
+            switch (type){
+                case ITEM_TYPE_1:
+                    holder1 = (ViewHolder1)convertView.getTag();
+                    holder1.t_initial_1.setText(item.getInitial_letter());
+                    holder1.t_name_1.setText(item.getName());
+                    break;
+                case ITEM_TYPE_2:
+                    holder2 = (ViewHolder2)convertView.getTag();
+                    holder2.t_name_2.setText(item.getName());
+                    break;
+                default:
+                    break;
+            }
+        }
+        return  convertView;
+
 
     }
 
     public int getItemViewType(int position){
-        if(position==0){
-            return ITEM_TYPE_1;
-        }
-
-        if(ls.get(position).get("Initial").toString().equals(ls.get(position-1).get("Initial").toString())){
-            return ITEM_TYPE_2;
-        }
-        return ITEM_TYPE_1;
+        return ls.get(position).getItem_type();
     }
 
     //constructor
-    public ChatFriendListAdapter(LayoutInflater inflater,List<Map<String, Object>> list){
+    public ChatFriendListAdapter(Context context,List<Friend> list){
         this.ls=list;
-        this.inflater=inflater;
+        //this.inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.inflater =LayoutInflater.from(context);
+    }
+
+
+    class ViewHolder1{
+        TextView t_initial_1;
+        TextView t_name_1;
+    }
+    class ViewHolder2{
+        TextView t_name_2;
     }
 
 }

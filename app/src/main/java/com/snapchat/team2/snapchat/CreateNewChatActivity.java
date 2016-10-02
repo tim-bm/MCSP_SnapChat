@@ -14,6 +14,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
 import com.snapchat.team2.snapchat.customAdapter.ChatFriendListAdapter;
 
 import java.util.ArrayList;
@@ -60,95 +61,35 @@ public class CreateNewChatActivity extends Activity {
     }
 
     private void initAdapter(){
-        ChatFriendListAdapter adapter = new ChatFriendListAdapter(getLayoutInflater(),getData());
+        ChatFriendListAdapter adapter = new ChatFriendListAdapter(getApplicationContext(),getData());
         listView.setAdapter(adapter);
     }
 
 
-    private List<Map<String, Object>> getData(){
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("initial", "A");
-        map.put("name", "A_user_1");
-
-        list.add(map);
-
-        map.put("Initial", "A");
-        map.put("name", "A_user_2");
-
-        list.add(map);
-
-        map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);
-        map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "A");
-        map.put("name", "A_user_3");
-
-        list.add(map);map.put("Initial", "B");
-        map.put("name", "B_user_3");
-
-        list.add(map);map.put("Initial", "B");
-        map.put("name", "B_user_3");
-
-        list.add(map);map.put("Initial", "B");
-        map.put("name", "B_user_3");
-        list.add(map);map.put("Initial", "C");
-        map.put("name", "C_user_1");
-        list.add(map);map.put("Initial", "C");
-        map.put("name", "C_user_2");
-
-        list.add(map);
+    private List<Friend> getData(){
+        List<Friend> list = new ArrayList<Friend>();
+        list.add(new Friend("A","Afsdfs",1));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("A","asrgsddg",2));
+        list.add(new Friend("B","bsrgsddg",1));
+        list.add(new Friend("B","bsrgsddg",1));
+        list.add(new Friend("B","bsrgsddg",2));
+        list.add(new Friend("B","bsrgsddg",2));
+        list.add(new Friend("B","bsrgsddg",2));
         return list;
 
     }
