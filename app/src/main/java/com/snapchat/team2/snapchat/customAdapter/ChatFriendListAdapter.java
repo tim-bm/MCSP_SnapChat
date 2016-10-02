@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by xu on 2016/10/1.
  */
 public class ChatFriendListAdapter extends BaseAdapter{
-    //push1
+    //push12
 
     private List<Friend> ls;
     private LayoutInflater inflater;
