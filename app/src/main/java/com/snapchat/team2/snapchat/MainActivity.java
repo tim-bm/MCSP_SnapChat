@@ -84,6 +84,16 @@ public class MainActivity extends FragmentActivity {
         });
     }
 
+    public void disableTabButtons(){
+        chatSwitch.setVisibility(View.INVISIBLE);
+        cameraSwitch.setVisibility(View.INVISIBLE);
+        storySwitch.setVisibility(View.INVISIBLE);
+    }
+    public void enableTabButtons(){
+        chatSwitch.setVisibility(View.VISIBLE);
+        cameraSwitch.setVisibility(View.VISIBLE);
+        storySwitch.setVisibility(View.VISIBLE);
+    }
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
