@@ -86,7 +86,7 @@ public class CreateNewChatActivity extends Activity {
         list.add(new Friend("A","asrgsddg",2));
         list.add(new Friend("A","asrgsddg",2));
         list.add(new Friend("B","bsrgsddg",1));
-        list.add(new Friend("B","bsrgsddg",1));
+        list.add(new Friend("B","bsrgsddg",2));
         list.add(new Friend("B","bsrgsddg",2));
         list.add(new Friend("B","bsrgsddg",2));
         list.add(new Friend("B","bsrgsddg",2));
