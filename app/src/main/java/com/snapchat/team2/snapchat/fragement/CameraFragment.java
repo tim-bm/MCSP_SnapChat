@@ -2,6 +2,7 @@ package com.snapchat.team2.snapchat.fragement;
 
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,18 +11,24 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customView.DrawFreehandView;
+import com.snapchat.team2.snapchat.customWidget.CamerEditText;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -59,6 +66,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     ImageView cancelBtn;
     ImageView drawBtn;
     ImageView savebtn;
+    ImageView addTextBtn;
+
+    CamerEditText addText;
 
     //drawing view
     DrawFreehandView freehandView;
@@ -142,6 +152,26 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 saveImage();
             }
         });
+
+        addText=(CamerEditText) rootView.findViewById(R.id.edit_text_add);
+
+        //add text button
+        addTextBtn=(ImageView) rootView.findViewById(R.id.add_TextView);
+        addTextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addText.setVisibility(View.VISIBLE);
+                addText.requestFocus();
+                MainActivity parent=(MainActivity)CameraFragment.this.getActivity();
+                InputMethodManager imm = (InputMethodManager) parent.getSystemService(parent.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(addText, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
+
+        rootView.setOnDragListener(new EditDragListner());
+       // addText.setOnDragListener(new EditDragListner());
+        addText.setOnTouchListener(new EditTextListener());
     }
 
     private void initialTakePhoto(){
@@ -161,12 +191,20 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 flashBtn.setVisibility(View.INVISIBLE);
                 switchCamera.setVisibility(View.INVISIBLE);
 
+                //disable tab from activity
+                MainActivity parent=(MainActivity)CameraFragment.this.getActivity();
+                parent.disableTabButtons();
+
                 //enable cancel button
                 cancelBtn.setVisibility(View.VISIBLE);
                 //enable draw button
                 drawBtn.setVisibility(View.VISIBLE);
                 //save button
                 savebtn.setVisibility(View.VISIBLE);
+                //add text button
+                addTextBtn.setVisibility(View.VISIBLE);
+
+
 
                 //refresh the view(to force a view to draw)
                 surfaceView.invalidate();
@@ -199,11 +237,21 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         cancelBtn.setVisibility(View.INVISIBLE);
         drawBtn.setVisibility(View.INVISIBLE);
         savebtn.setVisibility(View.INVISIBLE);
+        addTextBtn.setVisibility(View.INVISIBLE);
+
+        //disable editText
+        addText.setVisibility(View.INVISIBLE);
+        //clear editText content
+        addText.setText(null);
 
         //enable button
         flashBtn.setVisibility(View.VISIBLE);
         takePhoto.setVisibility(View.VISIBLE);
         switchCamera.setVisibility(View.VISIBLE);
+
+        //enable tab from activity
+        MainActivity parent=(MainActivity)CameraFragment.this.getActivity();
+        parent.enableTabButtons();
 
         //disable drawing and clean canvas
         freehandView.setDrawable(false);
@@ -339,7 +387,59 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     }
 
 
+    public final class EditTextListener implements View.OnTouchListener{
 
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(
+                        view);
+                view.startDrag(data, shadowBuilder, view, 0);
+               view.setVisibility(View.INVISIBLE);
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+
+    class EditDragListner implements View.OnDragListener{
+
+       private RelativeLayout.LayoutParams paramsBlock;
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            switch (event.getAction()) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    break;
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    break;
+                case DragEvent.ACTION_DROP:
+                    View view=(View) event.getLocalState();
+                    paramsBlock = new RelativeLayout.LayoutParams(view.getWidth(), view.getHeight());
+//                    paramsBlock=(RelativeLayout.LayoutParams)view.getLayoutParams();
+                    paramsBlock.leftMargin = (int) event.getX() - (view.getWidth()/2);//- ((imageView.getWidth()/9)/2);
+                    paramsBlock.topMargin = (int) event.getY() -(view.getHeight()/2);//-((imageView.getWidth()/9)/2);
+//                    paramsBlock.leftMargin = (int) event.getX();
+//                    paramsBlock.topMargin = (int) event.getY();
+                    view.setLayoutParams(paramsBlock);
+                    //addText.setVisibility(View.VISIBLE);
+                    //v.setVisibility(View.VISIBLE);
+                    view.setVisibility(View.VISIBLE);
+                    break;
+
+                case DragEvent.ACTION_DRAG_ENDED:
+                  // v.setVisibility(View.VISIBLE);
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
+    }
 
     class SwitchButtonListener implements View.OnClickListener{
 
