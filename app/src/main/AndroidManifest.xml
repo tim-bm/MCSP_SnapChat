@@ -32,7 +32,8 @@
         </activity>
         <activity
             android:name=".CreateNewChatActivity"
-            android:label="@string/title_activity_create_new_chat"></activity>
+            android:label="@string/title_activity_create_new_chat" />
+        <activity android:name=".SendMessageActivity"></activity>
     </application>
 
 </manifest>

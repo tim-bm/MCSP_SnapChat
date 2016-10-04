@@ -7,11 +7,13 @@ public class Friend {
     private String initial_letter;
     private String name;
     private int item_type;
+    private String user_id;
 
-    public Friend(String initial_letter, String name, int item_type) {
+    public Friend(String initial_letter, String name, int item_type,String user_id) {
         this.initial_letter = initial_letter;
         this.name = name;
         this.item_type = item_type;
+        this.user_id=user_id;
     }
 
     public String getInitial_letter() {
@@ -36,5 +38,13 @@ public class Friend {
 
     public void setItem_type(int item_type) {
         this.item_type = item_type;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }

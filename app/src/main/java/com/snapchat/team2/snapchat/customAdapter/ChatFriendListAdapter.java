@@ -21,8 +21,6 @@ import java.util.Map;
  * Created by xu on 2016/10/1.
  */
 public class ChatFriendListAdapter extends BaseAdapter{
-    public static int invoke=0;
-    //push12
 
     private List<Friend> ls;
     private LayoutInflater inflater;
@@ -47,9 +45,6 @@ public class ChatFriendListAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        invoke++;
-        System.out.println("调用 "+invoke);
-
         Friend item = ls.get(position);
         int type = getItemViewType(position);
 
@@ -80,9 +75,7 @@ public class ChatFriendListAdapter extends BaseAdapter{
             }
         }
         else{
-            System.out.println("调用else");
             switch (type){
-
                 case ITEM_TYPE_1:
                     System.out.println("item_type_1");
                     holder1 = (ViewHolder1)convertView.getTag();
