@@ -4,6 +4,9 @@ package com.snapchat.team2.snapchat.networkService;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -47,7 +50,7 @@ public class UserDataService {
     }
 
     //set the display view as parameters
-    public void getFriends(final Activity activity, final ListView listView) {
+    public void getFriends(final Activity activity, final ListView listView, final EditText search_view) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, requestURL,
                 new Response.Listener<String>() {
@@ -55,16 +58,77 @@ public class UserDataService {
                     public void onResponse(String response) {
                         //deal with data
                         List<Friend> friendList = makeFriendsAdapterModel(response);
-                        listView.setAdapter(new ChatFriendListAdapter(activity,friendList));
+                        final ChatFriendListAdapter adapter = new ChatFriendListAdapter(activity,friendList);
+                        listView.setAdapter(adapter);
+                        search_view.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                adapter.getFilter().filter(s);
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable s) {
+
+                            }
+                        });
+                        //makeSearchable(friendList,search_view,listView,activity,adapter);
+
                         Toast.makeText(activity.getApplication(), "Connect Server successfully: " + response, Toast.LENGTH_LONG).show();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activity.getApplication(), "Failed in connecting server: ", Toast.LENGTH_LONG).show();
+
+                List<Friend> list = new ArrayList<Friend>();
+                list.add(new Friend("A","Afsdfs",1,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("B","bsrgsddg",1,"4etef3r43t3"));
+                list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
+                list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
+                final ChatFriendListAdapter adapter = new ChatFriendListAdapter(activity,list);
+                listView.setAdapter(adapter);
+                //makeSearchable(list,search_view,listView,activity,adapter);
+                search_view.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        adapter.getFilter().filter(s);
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+                Toast.makeText(activity.getApplication(), "Failed in connecting server: show fake data ", Toast.LENGTH_LONG).show();
             }
         });
-
         requestQueue.add(stringRequest);
 
     }
@@ -111,4 +175,6 @@ public class UserDataService {
 
         }
     }
+
+
 }

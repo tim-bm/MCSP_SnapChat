@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
@@ -20,12 +22,15 @@ import java.util.Map;
 /**
  * Created by xu on 2016/10/1.
  */
-public class ChatFriendListAdapter extends BaseAdapter{
+public class ChatFriendListAdapter extends BaseAdapter implements Filterable{
 
     private List<Friend> ls;
+    private List<Friend> mStringFilterList;
     private LayoutInflater inflater;
     private final int ITEM_TYPE_1=1;
     private final int ITEM_TYPE_2=2;
+    private ValueFilter valueFilter;
+
 
     @Override
     public int getCount() {
@@ -105,6 +110,15 @@ public class ChatFriendListAdapter extends BaseAdapter{
         this.ls=list;
         //this.inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.inflater =LayoutInflater.from(context);
+        this.mStringFilterList = list;
+        getFilter();
+    }
+
+    public Filter getFilter(){
+        if(valueFilter==null){
+            valueFilter = new ValueFilter();
+        }
+        return valueFilter;
     }
 
 
@@ -150,5 +164,59 @@ public class ChatFriendListAdapter extends BaseAdapter{
             this.t_name_2.setText(text);
         }
     }
+
+    private class ValueFilter extends Filter{
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results =new FilterResults();
+            if(constraint!= null && constraint.length()>0){
+                List<Friend> filterList =new ArrayList<Friend>();
+                for(int i=0;i<mStringFilterList.size();i++){
+                    Friend f = mStringFilterList.get(i);
+                    String[] parts = f.getName().split(" ");
+                    for(String part:parts){
+                        if(part.toLowerCase().startsWith(constraint.toString().toLowerCase())){
+                            Friend friend =new Friend();
+                            friend.setUser_id(f.getUser_id());
+                            friend.setInitial_letter(f.getInitial_letter());
+                            friend.setName(f.getName());
+                            filterList.add(friend);
+                            break;
+                        }
+                    }
+                }
+                for(int i=0;i<filterList.size();i++){
+                    Friend f = filterList.get(i);
+                    if(i==0){
+                        f.setItem_type(1);
+                        continue;
+                    }
+                    if(f.getInitial_letter().equals(filterList.get(i-1).getInitial_letter())) {
+                        f.setItem_type(2);
+                    }else{
+                        f.setItem_type(1);
+                    }
+                }
+                results.count = filterList.size();
+                results.values = filterList;
+            }
+            else{
+                results.count = mStringFilterList.size();
+                results.values = mStringFilterList;
+            }
+            return results;
+        }
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            ls =(List<Friend>) results.values;
+            notifyDataSetChanged();
+        }
+    }
+
+
+
+
 
 }

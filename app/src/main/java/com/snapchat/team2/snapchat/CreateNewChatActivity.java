@@ -3,8 +3,11 @@ package com.snapchat.team2.snapchat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,17 +15,14 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
-import com.snapchat.team2.snapchat.customAdapter.ChatFriendListAdapter;
 import com.snapchat.team2.snapchat.networkService.UserDataService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CreateNewChatActivity extends Activity {
 
     private TextView chatFriendSearch;
     private ListView listView;
     private ImageButton back;
+    private EditText searchChatFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,9 @@ public class CreateNewChatActivity extends Activity {
 
     private void initialViews(){
         listView=(ListView) findViewById(R.id.chat_friend_list);
-        chatFriendSearch=(TextView)findViewById(R.id.search_friend);
+        listView.setTextFilterEnabled(true);
         back = (ImageButton)findViewById(R.id.chat_friend_back);
+        searchChatFriend =(EditText)findViewById(R.id.search_friend);
 
     }
 
@@ -50,6 +51,7 @@ public class CreateNewChatActivity extends Activity {
         });
 
 
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -60,45 +62,20 @@ public class CreateNewChatActivity extends Activity {
 
 
                 //to send activity
-                Intent intent = new Intent(CreateNewChatActivity.this,ChatRoom.class);
+                Intent intent = new Intent(CreateNewChatActivity.this,ChatRoomActivity.class);
                 intent.putExtra("receiver_id",user_id);
                 startActivity(intent);
             }
         });
+
+
     }
-//    private void initAdapter(){
-//        ChatFriendListAdapter adapter = new ChatFriendListAdapter(getApplicationContext(),getData());
-//        listView.setAdapter(adapter);
-//    }
 
     private void setData(){
         //获得数据,向server 发送get 请求 user id is 1
         RequestQueue rq = Volley.newRequestQueue(this);
         UserDataService userDataService = new UserDataService(rq,"1");
-        userDataService.getFriends(this,listView);
-        /*List<Friend> list = new ArrayList<Friend>();
-        list.add(new Friend("A","Afsdfs",1,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("B","bsrgsddg",1,"4etef3r43t3"));
-        list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
-        list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
-        return list;*/
+        userDataService.getFriends(this,listView,searchChatFriend);
+
     }
 }

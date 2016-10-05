@@ -16,6 +16,10 @@ public class Friend {
         this.user_id=user_id;
     }
 
+    public Friend(){
+
+    }
+
     public String getInitial_letter() {
         return initial_letter;
     }

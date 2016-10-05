@@ -34,7 +34,7 @@
             android:name=".CreateNewChatActivity"
             android:label="@string/title_activity_create_new_chat"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ChatRoom" />
+        <activity android:name=".ChatRoomActivity" />
         <activity android:name=".UserInfoActivity"></activity>
     </application>
 
