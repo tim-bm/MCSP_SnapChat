@@ -3,26 +3,20 @@ package com.snapchat.team2.snapchat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.text.Layout;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
 import com.snapchat.team2.snapchat.customAdapter.ChatFriendListAdapter;
+import com.snapchat.team2.snapchat.networkService.UserDataService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CreateNewChatActivity extends Activity {
 
@@ -35,7 +29,7 @@ public class CreateNewChatActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_friends);
         initialViews();
-        initAdapter();
+        setData();
         initListeners();
 
     }
@@ -66,20 +60,23 @@ public class CreateNewChatActivity extends Activity {
 
 
                 //to send activity
-                Intent intent = new Intent(CreateNewChatActivity.this,SendMessageActivity.class);
+                Intent intent = new Intent(CreateNewChatActivity.this,ChatRoom.class);
                 intent.putExtra("receiver_id",user_id);
                 startActivity(intent);
             }
         });
     }
-    private void initAdapter(){
-        ChatFriendListAdapter adapter = new ChatFriendListAdapter(getApplicationContext(),getData());
-        listView.setAdapter(adapter);
-    }
+//    private void initAdapter(){
+//        ChatFriendListAdapter adapter = new ChatFriendListAdapter(getApplicationContext(),getData());
+//        listView.setAdapter(adapter);
+//    }
 
-    private List<Friend> getData(){
-
-        List<Friend> list = new ArrayList<Friend>();
+    private void setData(){
+        //获得数据,向server 发送get 请求 user id is 1
+        RequestQueue rq = Volley.newRequestQueue(this);
+        UserDataService userDataService = new UserDataService(rq,"1");
+        userDataService.getFriends(this,listView);
+        /*List<Friend> list = new ArrayList<Friend>();
         list.add(new Friend("A","Afsdfs",1,"4etef3r43t3"));
         list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
         list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
@@ -102,6 +99,6 @@ public class CreateNewChatActivity extends Activity {
         list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
         list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
         list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
-        return list;
+        return list;*/
     }
 }

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context=".ChatRoom"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="fdfdfdfdfd"
+            android:layout_centerInParent="true"
+            android:textSize="20dp"
+            android:textColor="@color/color_chat_friends_title"
+            android:id="@+id/textView" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_show_info"
+            android:background="@color/color_transparent"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_right_48"
+            android:layout_marginRight="5dp"
+            android:background="@color/color_transparent"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_transparent"
+            android:id="@+id/chatroom_bottom">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/chat_room_send_photo"
+                android:src="@drawable/ic_chat_room_add_photo"
+                android:background="@color/color_transparent"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_take_photo"
+                android:id="@+id/chat_room_take_photo"
+                android:background="@color/color_transparent"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_take_vedio"
+               android:layout_alignParentRight="true"
+                android:id="@+id/chat_room_take_vedio"
+                android:background="@color/color_transparent"/>
+
+        </RelativeLayout>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/chatroom_bottom"
+            android:background="@color/color_transparent"
+            android:id="@+id/message_editor"
+            android:hint="Send text message here !"
+           />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/message_editor"
+            android:background="@color/color_transparent">
+        </ListView>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

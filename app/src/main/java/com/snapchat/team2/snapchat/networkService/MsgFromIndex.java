@@ -32,14 +32,14 @@ public class MsgFromIndex {
     //set the display view as parameters
     public void getMsg(final Activity activity){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, requestURL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, requestURL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
 
-                        Toast.makeText(activity.getApplication(),"Connect Server successfully: "+response,Toast.LENGTH_LONG).show();
-                    }
-                }, new Response.ErrorListener() {
+                            Toast.makeText(activity.getApplication(),"Connect Server successfully: "+response,Toast.LENGTH_LONG).show();
+                        }
+                    }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(activity.getApplication(),"Failed in connecting server: ",Toast.LENGTH_LONG).show();

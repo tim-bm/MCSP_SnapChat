@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.R;
+import com.snapchat.team2.snapchat.UserInfoActivity;
 import com.snapchat.team2.snapchat.customView.DrawFreehandView;
 import com.snapchat.team2.snapchat.customWidget.CamerEditText;
 
@@ -67,6 +68,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     ImageView drawBtn;
     ImageView savebtn;
     ImageView addTextBtn;
+    ImageView userInfoBtn;
 
     CamerEditText addText;
 
@@ -89,6 +91,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
         //Install a SurfaceHolder.Callback so we get notified when the
         // underlying surface is created and destroyed.
+
 
         surfaceHolder=surfaceView.getHolder();
         surfaceHolder.addCallback(this);
@@ -165,6 +168,14 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 MainActivity parent=(MainActivity)CameraFragment.this.getActivity();
                 InputMethodManager imm = (InputMethodManager) parent.getSystemService(parent.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(addText, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
+        userInfoBtn = (ImageView)rootView.findViewById(R.id.main_user_activity) ;
+        userInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(),UserInfoActivity.class));
             }
         });
 
