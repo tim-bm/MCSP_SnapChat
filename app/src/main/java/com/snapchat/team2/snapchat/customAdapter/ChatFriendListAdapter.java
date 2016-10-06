@@ -82,13 +82,13 @@ public class ChatFriendListAdapter extends BaseAdapter implements Filterable{
         else{
             switch (type){
                 case ITEM_TYPE_1:
-                    System.out.println("item_type_1");
+
                     holder1 = (ViewHolder1)convertView.getTag();
                     holder1.setT_initial_1(item.getInitial_letter());
                     holder1.setT_name_1(item.getName());
                     break;
                 case ITEM_TYPE_2:
-                    System.out.println("current_position is"+position);
+
                     holder2 = (ViewHolder2) convertView.getTag();
                     holder2.setT_name_2(item.getName());
                     break;
@@ -108,7 +108,7 @@ public class ChatFriendListAdapter extends BaseAdapter implements Filterable{
     //constructor
     public ChatFriendListAdapter(Context context,List<Friend> list){
         this.ls=list;
-        //this.inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         this.inflater =LayoutInflater.from(context);
         this.mStringFilterList = list;
         getFilter();

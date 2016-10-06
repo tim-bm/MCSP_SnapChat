@@ -88,40 +88,11 @@ public class UserDataService {
             public void onErrorResponse(VolleyError error) {
                 UserDBService userDBService = new UserDBService(DBManager.getInstance(activity));
                 //current user is user_id, get all of his freinds from Local database
-                System.out.println("data service 查询数据库");
+
                 List<User> friends_from_db = userDBService.getFriendsByUserId(user_id);
 
-                System.out.println("返回数据");
-                for (User u:friends_from_db){
-                    System.out.println("name is"+u.getName());
-                }
                 List<Friend> friendList =makeFriendsAdapterModel(friends_from_db);
 
-
-
-                /*List<Friend> list = new ArrayList<Friend>();
-                list.add(new Friend("A","Afsdfs",1,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("A","asrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("B","bsrgsddg",1,"4etef3r43t3"));
-                list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));
-                list.add(new Friend("B","bsrgsddg",2,"4etef3r43t3"));*/
                 final ChatFriendListAdapter adapter = new ChatFriendListAdapter(activity,friendList);
                 listView.setAdapter(adapter);
                 //makeSearchable(list,search_view,listView,activity,adapter);
@@ -165,7 +136,7 @@ public class UserDataService {
         Collections.sort(users, new ComparatorUserFromJson());
         //construct firends list for adapters
         for(int i=0;i<users.size();i++){
-            System.out.println("name is " + users.get(i).getName());
+
             if(i==0){
                 Friend friend = new Friend(Character.toString(users.get(i).getName().charAt(0)),users.get(i).getName(),1,users.get(i).getId());
                 friends.add(friend);
@@ -187,7 +158,7 @@ public class UserDataService {
         Collections.sort(friends_from_db,new ComparatorUserFromDB());
 
         for(int i=0;i<friends_from_db.size();i++){
-            System.out.println("name is " + friends_from_db.get(i).getName());
+
             if(i==0){
                 Friend friend = new Friend(Character.toString(friends_from_db.get(i).getName().charAt(0)),friends_from_db.get(i).getName(),1,friends_from_db.get(i).getUserId()+"");
                 friends.add(friend);
