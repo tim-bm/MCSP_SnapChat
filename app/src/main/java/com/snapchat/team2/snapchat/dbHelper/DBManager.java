@@ -24,6 +24,7 @@ public class DBManager {
 
     public static synchronized  DBManager getInstance(Context context){
         if(instance==null){
+            System.out.println("dbmanager是空");
 
             instance=new DBManager(context);
         }
