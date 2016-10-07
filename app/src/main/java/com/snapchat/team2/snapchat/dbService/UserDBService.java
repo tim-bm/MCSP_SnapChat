@@ -61,4 +61,25 @@ public class UserDBService {
         return result;
     }
 
+    public String login(String email,String password){
+        int result = 0;
+
+        SQLiteDatabase database;
+        database=dbManager.openDB();
+        System.out.println("查询的email 是"+ email);
+        System.out.println("查询的password 是"+ password);
+        Cursor cursor = database.rawQuery("select user_id from user where user_email=? and password=?",new String[]{email,password});
+        while(cursor.moveToNext()){
+            result = cursor.getInt(0);
+            System.out.println("获得了一个user is "+ result);
+        }
+
+        if(result == 0){
+            return null;
+        }
+        else{
+            return result+"";
+        }
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.snapchat.team2.snapchat;
 
 import android.app.ActivityManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.KeyEvent;
@@ -18,8 +19,11 @@ public class StartActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,  WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_start);
 
+        ActManager.getAppManager().addActivity(this);
+        ActManager.getAppManager().finishActivity(MainActivity.class);
+
+        setContentView(R.layout.activity_start);
         initViews();
         //forbid the back button
         addListeners();
@@ -33,7 +37,7 @@ public class StartActivity extends Activity {
 
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK)
         {
-            ActManager.getAppManager().addActivity(this);
+
             ActManager.getAppManager().AppExit(this);
             return false;
         }
@@ -44,7 +48,7 @@ public class StartActivity extends Activity {
         login_button .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // gg
+                startActivity(new Intent(StartActivity.this,LoginActivity.class));
             }
         });
     }

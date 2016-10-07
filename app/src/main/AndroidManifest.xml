@@ -36,13 +36,19 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ChatRoomActivity" />
         <activity android:name=".UserInfoActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".StartActivity"
             android:label="@string/title_activity_start"
 
             >
-        </activity>
+        </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

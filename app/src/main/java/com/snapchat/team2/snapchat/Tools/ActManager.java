@@ -16,7 +16,7 @@ public class ActManager {
     private static ActManager instance;
 
     /**
-     * 单例模式 创建单一实例
+     * single instance
      * @return
      */
     public static ActManager getAppManager() {
@@ -27,7 +27,7 @@ public class ActManager {
     }
 
     private ActManager(){
-
+        initActivityStack();
     }
 
 
@@ -42,7 +42,6 @@ public class ActManager {
      * @param activity
      */
     public void addActivity(Activity activity) {
-        initActivityStack();
         activityStack.add(activity);
     }
 
@@ -66,13 +65,19 @@ public class ActManager {
         }
     }
 
+    public int getSize(){
+        return activityStack.size();
+    }
+
+
+
     /**
      * finish current activity
      */
     public void finishActivity() {
-        //获取到当前Activity
+
         Activity activity = activityStack.lastElement();
-        //结束指定Activity
+
         finishActivity(activity);
     }
 
@@ -97,11 +102,14 @@ public class ActManager {
     /**
      * finish all activities in the stack
      */
-    private void finishAllActivity() {
-        for (int i = 0, size = activityStack.size(); i < size; i++) {
+    public void finishAllActivity() {
+        int size = activityStack.size();
+        System.out.println("栈的大小是 "+size);
+        for (int i = 0; i < size; i++) {
             if (null != activityStack.get(i)) {
                 Activity activity = activityStack.get(i);
                 if (!activity.isFinishing()) {
+                    System.out.println("结束一个activity");
                     activity.finish();
                 }
             }
@@ -113,6 +121,14 @@ public class ActManager {
         try {
             finishAllActivity();
         } catch (Exception e) {
+        }
+    }
+
+    public void removeFromStack(Activity activity){
+        if (activity != null) {
+            activityStack.remove(activity);
+            //activity.finish();
+            //activity = null;
         }
     }
 }

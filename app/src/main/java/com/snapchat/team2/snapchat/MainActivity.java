@@ -3,6 +3,7 @@ package com.snapchat.team2.snapchat;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +17,9 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.snapchat.team2.snapchat.Tools.ActManager;
 import com.snapchat.team2.snapchat.dbHelper.DBManager;
 import com.snapchat.team2.snapchat.dbModel.User;
@@ -28,66 +32,81 @@ import com.snapchat.team2.snapchat.networkService.MsgFromIndex;
 
 public class MainActivity extends FragmentActivity {
 
-    private static final int NUM_FRAMES=4;
+    private static final int NUM_FRAMES = 4;
     private ViewPager mainPage;
     private PagerAdapter pagerAdapter;
-    private SharedPreferences sharedPreferences=null;
+    private SharedPreferences sharedPreferences = null;
     private String user_id = null;
     private ImageView chatSwitch;
     private ImageView cameraSwitch;
     private ImageView storySwitch;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPreferences = getApplicationContext().getSharedPreferences("snapchat_user",MODE_PRIVATE);
-
-        //let it login now
-        SharedPreferences.Editor editor =sharedPreferences.edit();
-        editor.putString("user_id","1");
-        editor.commit();
-
-        //let log off
-        /*sharedPreferences.edit().clear().commit();*/
-
-        if(isLogin()){
-            System.out.println("current user id is : "+ sharedPreferences.getString("user_id",null));
-            this.user_id = sharedPreferences.getString("user_id",null);
+        sharedPreferences = getApplicationContext().getSharedPreferences("snapchat_user", MODE_PRIVATE);
+        String user_id_from_login = null;
+        user_id_from_login = getIntent().getStringExtra("user_id");
+        //tell if the last activity is Login Activity
+        if (user_id_from_login != null) {
+            System.out.println("from log in activity");
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("user_id", user_id_from_login);
+            editor.commit();
+            makeActivityAtBottom();
+        } else {
+            System.out.println("not from login activity");
         }
-        else{
+        //let log off
+        //sharedPreferences.edit().clear().commit();
+
+        if (isLogin()) {
+            System.out.println("current user id is : " + sharedPreferences.getString("user_id", null));
+            this.user_id = sharedPreferences.getString("user_id", null);
+            makeActivityAtBottom();
+
+        } else {
             System.out.println("no user id find ,need to login first ");
             //add this activity to the activity stack , so that user can close app in login activity
-            ActManager.getAppManager().addActivity(this);
-            startActivity(new Intent(MainActivity.this,StartActivity.class));
+            makeActivityAtBottom();
+            startActivity(new Intent(MainActivity.this, StartActivity.class));
         }
 
         //use default pageAdapter
-        mainPage=(ViewPager) findViewById(R.id.pager);
-        pagerAdapter=new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mainPage = (ViewPager) findViewById(R.id.pager);
+        pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mainPage.setAdapter(pagerAdapter);
 
         //register button
-        chatSwitch=(ImageView)this.findViewById(R.id.chat_switch_fragment);
-        cameraSwitch=(ImageView)this.findViewById(R.id.camera_switch_fragment);
-        storySwitch=(ImageView)this.findViewById(R.id.story_switch_fragment);
+        chatSwitch = (ImageView) this.findViewById(R.id.chat_switch_fragment);
+        cameraSwitch = (ImageView) this.findViewById(R.id.camera_switch_fragment);
+        storySwitch = (ImageView) this.findViewById(R.id.story_switch_fragment);
 
         setListenerOnButton();
 
         //test and usage example for DB
-        UserDBService userDBService=new UserDBService(DBManager.getInstance(MainActivity.this));
-        User user=userDBService.getUserByUserEmail("admin@snapchat.com");
-       // Toast.makeText(getApplication(),"Database open: "+user.getName(),Toast.LENGTH_LONG).show();
+        UserDBService userDBService = new UserDBService(DBManager.getInstance(MainActivity.this));
+        User user = userDBService.getUserByUserEmail("admin@snapchat.com");
+        // Toast.makeText(getApplication(),"Database open: "+user.getName(),Toast.LENGTH_LONG).show();
         //test for connecting server
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        MsgFromIndex msgFromIndex= new MsgFromIndex(queue);
+        MsgFromIndex msgFromIndex = new MsgFromIndex(queue);
         msgFromIndex.getMsg(this);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
-    private void setListenerOnButton(){
+    private void setListenerOnButton() {
         chatSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,16 +128,58 @@ public class MainActivity extends FragmentActivity {
         });
     }
 
-    public void disableTabButtons(){
+    public void disableTabButtons() {
         chatSwitch.setVisibility(View.INVISIBLE);
         cameraSwitch.setVisibility(View.INVISIBLE);
         storySwitch.setVisibility(View.INVISIBLE);
     }
-    public void enableTabButtons(){
+
+    public void enableTabButtons() {
         chatSwitch.setVisibility(View.VISIBLE);
         cameraSwitch.setVisibility(View.VISIBLE);
         storySwitch.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.snapchat.team2.snapchat/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.snapchat.team2.snapchat/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
+
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -126,7 +187,7 @@ public class MainActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return new ChatFragment();
                 case 1:
@@ -147,12 +208,31 @@ public class MainActivity extends FragmentActivity {
             return NUM_FRAMES;
         }
     }
-    private boolean isLogin(){
-        String id = sharedPreferences.getString("user_id",null);
-        if(id!=null){
+
+    private boolean isLogin() {
+        String id = sharedPreferences.getString("user_id", null);
+        if (id != null) {
             return true;
         }
         return false;
     }
+
+    private void makeActivityAtBottom(){
+
+        ActManager.getAppManager().finishActivity(LoginActivity.class);
+        ActManager.getAppManager().finishActivity(StartActivity.class);
+        ActManager.getAppManager().addActivity(this);
+
+    }
+
+    @Override
+    protected void onDestroy(){
+
+        //ActManager.getAppManager().AppExit(this);
+        super.onDestroy();
+    }
+
     //github upload test
+
+
 }
