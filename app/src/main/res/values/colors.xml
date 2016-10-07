@@ -11,4 +11,7 @@
     <color name="color_chat_friends_title">#457dd7</color>
     <color name="color_chat_friends_searching_hint">#d4d4d4</color>
     <color name="color_transparent">#00FFFFFF</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="red">#FF0000</color>
+    <color name="lithgtblue">#457dd7</color>
 </resources>

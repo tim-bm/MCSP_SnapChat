@@ -1,6 +1,8 @@
 package com.snapchat.team2.snapchat;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.snapchat.team2.snapchat.Tools.ActManager;
 import com.snapchat.team2.snapchat.dbHelper.DBManager;
 import com.snapchat.team2.snapchat.dbModel.User;
 import com.snapchat.team2.snapchat.dbService.UserDBService;
@@ -28,7 +31,8 @@ public class MainActivity extends FragmentActivity {
     private static final int NUM_FRAMES=4;
     private ViewPager mainPage;
     private PagerAdapter pagerAdapter;
-
+    private SharedPreferences sharedPreferences=null;
+    private String user_id = null;
     private ImageView chatSwitch;
     private ImageView cameraSwitch;
     private ImageView storySwitch;
@@ -37,6 +41,27 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = getApplicationContext().getSharedPreferences("snapchat_user",MODE_PRIVATE);
+
+        //let it login now
+        SharedPreferences.Editor editor =sharedPreferences.edit();
+        editor.putString("user_id","1");
+        editor.commit();
+
+        //let log off
+        /*sharedPreferences.edit().clear().commit();*/
+
+        if(isLogin()){
+            System.out.println("current user id is : "+ sharedPreferences.getString("user_id",null));
+            this.user_id = sharedPreferences.getString("user_id",null);
+        }
+        else{
+            System.out.println("no user id find ,need to login first ");
+            //add this activity to the activity stack , so that user can close app in login activity
+            ActManager.getAppManager().addActivity(this);
+            startActivity(new Intent(MainActivity.this,StartActivity.class));
+        }
 
         //use default pageAdapter
         mainPage=(ViewPager) findViewById(R.id.pager);
@@ -122,6 +147,12 @@ public class MainActivity extends FragmentActivity {
             return NUM_FRAMES;
         }
     }
-
+    private boolean isLogin(){
+        String id = sharedPreferences.getString("user_id",null);
+        if(id!=null){
+            return true;
+        }
+        return false;
+    }
     //github upload test
 }

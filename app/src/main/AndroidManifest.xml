@@ -33,9 +33,16 @@
         <activity
             android:name=".CreateNewChatActivity"
             android:label="@string/title_activity_create_new_chat"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity android:name=".ChatRoomActivity" />
-        <activity android:name=".UserInfoActivity"></activity>
+        <activity android:name=".UserInfoActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".StartActivity"
+            android:label="@string/title_activity_start"
+
+            >
+        </activity>
     </application>
 
 </manifest>
