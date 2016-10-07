@@ -1,5 +1,4 @@
 <resources>
-    <string name="serverAddress">http://10.0.0.120:8001/snapchat_server/public/</string>
     <string name="app_name">SnapChat</string>
     <string name="test">test</string>
     <string name="chat">Chat</string>
@@ -7,6 +6,5 @@
     <string name="refresh2">Release to refresh</string>
     <string name="refresh3">Refreshing</string>
     <string name="title_activity_create_new_chat">CreateNewChatActivity</string>
-    <string name="title_activity_start">StartActivity</string>
 
 </resources>
