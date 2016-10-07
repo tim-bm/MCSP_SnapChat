@@ -156,6 +156,10 @@ public class DrawFreehandView extends View {
 
     }
 
+    public Bitmap getDrawing(){
+        return this.mBitmap;
+    }
+
     public void setDrawable(boolean drawable){
             this.drawable=drawable;
     }

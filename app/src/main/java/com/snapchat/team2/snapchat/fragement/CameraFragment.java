@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -352,9 +355,21 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
             freehandView.setDrawingCacheEnabled(true);
 
+            //test surface view
+//            surfaceView.setDrawingCacheEnabled(true);
+//            Bitmap cachePic=Bitmap.createBitmap(surfaceView.getDrawingCache());
+//            Activity parentActivity=(MainActivity)this.getActivity();
+//            DisplayMetrics displaymetrics = new DisplayMetrics();
+//            parentActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+//            int height = displaymetrics.heightPixels;
+//            int width = displaymetrics.widthPixels;
+
+
             drawing=Bitmap.createBitmap(freehandView.getDrawingCache());
             Bitmap combinedImage=combineImageLayers(photo,drawing);
             combinedImage.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
+
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }finally {
@@ -377,25 +392,70 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
     }
 
+    /**
+     * scale down the background(photo) to get a image with drawing
+     * @param background
+     * @param foreground
+     * @return
+     */
     private Bitmap combineImageLayers(Bitmap background,Bitmap foreground){
         int width=0;
         int height=0;
         Bitmap combined;
 
-        Activity parentActivity=(MainActivity)this.getActivity();
-//        width=parentActivity.getWindowManager().getDefaultDisplay().getWidth();
-//        height=parentActivity.getWindowManager().getDefaultDisplay().getHeight();
         width=background.getWidth();
         height=background.getHeight();
+        //matrix for rotation
+        Matrix matrix=new Matrix();
+        matrix.postRotate(90);
 
-        combined=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+ //       Activity parentActivity=(MainActivity)this.getActivity();
+//        width=parentActivity.getWindowManager().getDefaultDisplay().getWidth();
+//        height=parentActivity.getWindowManager().getDefaultDisplay().getHeight();
+
+        //combined=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+        combined=Bitmap.createBitmap(background,0,0,width,height,matrix,true);
+
+        //scale down
+        combined=this.getResizedBitmap(combined,foreground.getHeight(),foreground.getWidth());
+
+       // combined=background.copy(Bitmap.Config.ARGB_8888,true);
+//        Matrix scale=new Matrix();
+//        float scaleWidth = ((float) combined.getWidth()) / foreground.getWidth();
+//        float scaleHeight = ((float) combined.getHeight()) / foreground.getHeight();
+//        scale.postScale(scaleWidth,scaleHeight);
+       // foreground=this.getResizedBitmap(foreground,combined.getWidth(),combined.getHeight());
+
         Canvas combo=new Canvas(combined);
-        background=Bitmap.createScaledBitmap(background,width,height,true);
-        combo.drawBitmap(background,0,0,null);
+      //  background=Bitmap.createScaledBitmap(background,width,height,true);
+       // foreground=Bitmap.createScaledBitmap(background,width,height,true);
+      //  combo.drawBitmap(background,0,0,null);
+
+
+
         combo.drawBitmap(foreground,0,0,null);
+
 
         return  combined;
     }
+
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        Matrix matrix = new Matrix();
+
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+        return resizedBitmap;
+
+    }
+
 
 
     public final class EditTextListener implements View.OnTouchListener{
@@ -429,13 +489,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 case DragEvent.ACTION_DRAG_EXITED:
                     break;
                 case DragEvent.ACTION_DROP:
+                    //get the widget which is being dragged
                     View view=(View) event.getLocalState();
+                    //set params
                     paramsBlock = new RelativeLayout.LayoutParams(view.getWidth(), view.getHeight());
-//                    paramsBlock=(RelativeLayout.LayoutParams)view.getLayoutParams();
                     paramsBlock.leftMargin = (int) event.getX() - (view.getWidth()/2);//- ((imageView.getWidth()/9)/2);
                     paramsBlock.topMargin = (int) event.getY() -(view.getHeight()/2);//-((imageView.getWidth()/9)/2);
-//                    paramsBlock.leftMargin = (int) event.getX();
-//                    paramsBlock.topMargin = (int) event.getY();
                     view.setLayoutParams(paramsBlock);
                     //addText.setVisibility(View.VISIBLE);
                     //v.setVisibility(View.VISIBLE);
