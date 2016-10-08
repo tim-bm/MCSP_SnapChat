@@ -9,11 +9,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.snapchat.team2.snapchat.LoginActivity;
 import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.dbHelper.DBManager;
 import com.snapchat.team2.snapchat.dbService.UserDBService;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +43,26 @@ public class LoginService {
                     @Override
                     public void onResponse(String response) {
                         System.out.println("得到的回复是:  "+response);
-                        Toast.makeText(activity.getApplication(),"Connect Server successfully: "+response,Toast.LENGTH_LONG).show();
+
+                        //deal with response
+                        Gson gson = new Gson();
+                        Type stringStringMap = new TypeToken<Map<String, String>>(){}.getType();
+                        Map<String,String> result_map = gson.fromJson(response, stringStringMap);
+
+                        String status = result_map.get("status");
+                        String info = result_map.get("info");
+                        //String user_id = result_map.get("id");
+
+                        if(status.equals("1")){
+                            System.out.println(info);
+                            Intent intent = new Intent(activity, MainActivity.class);
+                            intent.putExtra("user_id", result_map.get("id"));
+                            activity.startActivity(intent);
+                        }
+                        else{
+                            Toast.makeText(activity.getApplication(),"wrong user or password!",Toast.LENGTH_LONG).show();
+                        }
+                        Toast.makeText(activity.getApplication(),"Connect Server successfully:",Toast.LENGTH_LONG).show();
                     }
                 }, new Response.ErrorListener() {
             @Override
