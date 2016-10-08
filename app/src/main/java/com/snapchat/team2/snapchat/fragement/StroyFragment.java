@@ -102,6 +102,11 @@ public class StroyFragment extends Fragment implements StoryDerpAdapter.ItemClic
     }
 
     @Override
+    public void onItemLongClicked(int p) {
+
+    }
+
+    @Override
     public void onSecondaryIconClick(int p) {
         StoryListItem item = (StoryListItem) listData.get(p);
         //update our data
