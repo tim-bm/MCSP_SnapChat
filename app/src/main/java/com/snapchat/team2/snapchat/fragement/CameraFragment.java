@@ -28,11 +28,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.UserInfoActivity;
 import com.snapchat.team2.snapchat.customView.DrawFreehandView;
 import com.snapchat.team2.snapchat.customWidget.CamerEditText;
+import com.snapchat.team2.snapchat.networkService.PhotoNetService;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,6 +75,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     ImageView savebtn;
     ImageView addTextBtn;
     ImageView userInfoBtn;
+    ImageView sendPhotoBtn;
 
     CamerEditText addText;
 
@@ -186,6 +190,22 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         rootView.setOnDragListener(new EditDragListner());
        // addText.setOnDragListener(new EditDragListner());
         addText.setOnTouchListener(new EditTextListener());
+
+
+        //send photo button
+        sendPhotoBtn=(ImageView) rootView.findViewById(R.id.image_send);
+        sendPhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //test for sending photo
+                Activity parentActivity=CameraFragment.this.getActivity();
+                RequestQueue rq= Volley.newRequestQueue(parentActivity);
+                PhotoNetService p=new PhotoNetService(rq);
+                p.postPhoto(parentActivity,rootView.getContext().getString(R.string.serverAddress)+"upload/photo",
+                        CameraFragment.this.mergeSequence(),"imageFromClient.JPEG","2","3","1");
+            }
+        });
     }
 
     private void initialTakePhoto(){
@@ -218,6 +238,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 //add text button
                 addTextBtn.setVisibility(View.VISIBLE);
 
+                //enable send button
+                sendPhotoBtn.setVisibility(View.VISIBLE);
 
 
                 //refresh the view(to force a view to draw)
@@ -252,6 +274,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         drawBtn.setVisibility(View.INVISIBLE);
         savebtn.setVisibility(View.INVISIBLE);
         addTextBtn.setVisibility(View.INVISIBLE);
+        savebtn.setVisibility(View.INVISIBLE);
 
         //disable editText
         addText.setVisibility(View.INVISIBLE);
@@ -329,6 +352,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     }
 
     private void releaseCamera(){
+        parameters = camera.getParameters();
         camera.setParameters(parameters);
         camera.stopPreview();
         camera.release();
@@ -352,9 +376,6 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
             outputStream = new FileOutputStream(mediaFile);
 //            rootView.setDrawingCacheEnabled(true);
 //            photo=rootView.getDrawingCache();
-
-            freehandView.setDrawingCacheEnabled(true);
-
             //test surface view
 //            surfaceView.setDrawingCacheEnabled(true);
 //            Bitmap cachePic=Bitmap.createBitmap(surfaceView.getDrawingCache());
@@ -364,12 +385,10 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 //            int height = displaymetrics.heightPixels;
 //            int width = displaymetrics.widthPixels;
 
-
+            freehandView.setDrawingCacheEnabled(true);
             drawing=Bitmap.createBitmap(freehandView.getDrawingCache());
             Bitmap combinedImage=combineImageLayers(photo,drawing);
             combinedImage.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
-
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }finally {
@@ -388,15 +407,22 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
       // Toast.makeText(this.getActivity().getApplicationContext(),"download successfully",Toast.LENGTH_LONG).show();
         Toast.makeText(this.getActivity().getApplicationContext(),"Save "+filename+" successfully",Toast.LENGTH_LONG).show();
         //back to the camera
-        initialCancelPhoto();
+       // initialCancelPhoto();
 
     }
 
+    public Bitmap mergeSequence(){
+        freehandView.setDrawingCacheEnabled(true);
+        drawing=Bitmap.createBitmap(freehandView.getDrawingCache());
+        Bitmap combinedImage=combineImageLayers(photo,drawing);
+        return combinedImage;
+    }
+    
+
+    
     /**
      * scale down the background(photo) to get a image with drawing
-     * @param background
-     * @param foreground
-     * @return
+     * 
      */
     private Bitmap combineImageLayers(Bitmap background,Bitmap foreground){
         int width=0;
@@ -434,7 +460,6 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
 
         combo.drawBitmap(foreground,0,0,null);
-
 
         return  combined;
     }

@@ -23,6 +23,8 @@ public class CreateNewChatActivity extends Activity {
     private ListView listView;
     private ImageButton back;
     private EditText searchChatFriend;
+    //default is 1. 2 comes from cameraFragment
+    private int fromWhichActivity=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
