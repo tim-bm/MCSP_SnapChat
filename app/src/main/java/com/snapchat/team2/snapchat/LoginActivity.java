@@ -112,11 +112,12 @@ public class LoginActivity extends Activity {
                     Toast.makeText(LoginActivity.this,"This is not a email",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                operateLogin(email,pwd);
+                submit.setText("processing request...");
+                submit.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.colorChatlistHeaderRelease));
+                operateLogin(email,pwd,submit);
             }
         });
     }
-
 
     private boolean ValidateEmail(String email){
         String email_regx_string = getResources().getString(R.string.email_regex_string);
@@ -125,20 +126,16 @@ public class LoginActivity extends Activity {
         return matcher.find();
     }
 
-    private void operateLogin(String email,String pwd){
+    private void operateLogin(String email,String pwd,Button b){
         RequestQueue rq = Volley.newRequestQueue(this);
         LoginService lgserve = new LoginService(rq,getResources().getString(R.string.serverAddress)+"user/login");
-        lgserve.Login(this,email,pwd);
+        lgserve.Login(this,email,pwd,b);
     }
 
     @Override
     protected void onDestroy(){
-
-
-
         ActManager.getAppManager().finishActivity(this);
         super.onDestroy();
-
     }
 
 

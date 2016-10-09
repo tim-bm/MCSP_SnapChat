@@ -113,11 +113,11 @@ public class MainActivity extends FragmentActivity {
         });
 
         storySwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainPage.setCurrentItem(2);
-            }
-        });
+        @Override
+        public void onClick(View view) {
+            mainPage.setCurrentItem(2);
+        }
+    });
     }
 
     public void disableTabButtons() {
@@ -176,6 +176,8 @@ public class MainActivity extends FragmentActivity {
 
         ActManager.getAppManager().finishActivity(LoginActivity.class);
         ActManager.getAppManager().finishActivity(StartActivity.class);
+        ActManager.getAppManager().finishActivity(RegisterActivity.class);
+        ActManager.getAppManager().finishActivity(RegisterActivity2.class);
         ActManager.getAppManager().addActivity(this);
 
     }

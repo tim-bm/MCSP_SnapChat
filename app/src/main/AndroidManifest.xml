@@ -36,15 +36,18 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ChatRoomActivity" />
         <activity android:name=".UserInfoActivity" />
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".StartActivity"
             android:label="@string/title_activity_start"
-
-            >
-        </activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".RegisterActivity2"
+            android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

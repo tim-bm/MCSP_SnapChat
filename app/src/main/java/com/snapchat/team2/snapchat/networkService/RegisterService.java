@@ -13,7 +13,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.snapchat.team2.snapchat.LoginActivity;
 import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.dbHelper.DBManager;
@@ -24,9 +23,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by xu on 2016/10/7.
+ * Created by xu on 2016/10/9.
  */
-public class LoginService {
+public class RegisterService {
+
 
 
     private String requestURL=null;
@@ -34,13 +34,13 @@ public class LoginService {
     private RequestQueue requestQueue;
     private String result;
 
-    public LoginService(RequestQueue requestQueue,String url){
+    public RegisterService(RequestQueue requestQueue,String url){
         this.requestURL = url;
         this.requestQueue=requestQueue;
     }
 
     //set the display view as parameters
-    public void Login(final Activity activity, final String email, final String password, final Button button){
+    public void Register(final Activity activity, final String email, final String password, final String name, final String birth, final String phone,final Button button){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, requestURL,
                 new Response.Listener<String>() {
                     @Override
@@ -53,41 +53,41 @@ public class LoginService {
                         Map<String,String> result_map = gson.fromJson(response, stringStringMap);
 
                         String status = result_map.get("status");
-                        String info = result_map.get("info");
+                        String id = result_map.get("id");
                         //String user_id = result_map.get("id");
 
                         if(status.equals("1")){
-                            System.out.println(info);
+                            //System.out.println(info);
+                            System.out.println("注册成功");
                             Intent intent = new Intent(activity, MainActivity.class);
+
                             intent.putExtra("user_id", result_map.get("id"));
                             activity.startActivity(intent);
                         }
                         else{
-                            Toast.makeText(activity.getApplication(),"wrong user or password!",Toast.LENGTH_LONG).show();
+                            System.out.println("success to connect the data but register fail");
+                            button.setText("Sign up");
+                            button.setTextColor(ContextCompat.getColor(activity, R.color.white));
                         }
-                        Toast.makeText(activity.getApplication(),"Connect Server successfully:",Toast.LENGTH_LONG).show();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                button.setText("submit login");
+                //read from database
+                Toast.makeText(activity.getApplication(),"Fail to connect to the server",Toast.LENGTH_LONG).show();
+                button.setText("Sign up");
                 button.setTextColor(ContextCompat.getColor(activity, R.color.white));
-                Toast.makeText(activity.getApplication(),"Fail to connect server: ",Toast.LENGTH_LONG).show();
-
-                if (email.equals("default@snapchat.com")&&password.equals("111")){
-                    Intent intent = new Intent(activity, MainActivity.class);
-                    intent.putExtra("user_id","1");
-                    activity.startActivity(intent);
-                }
-
             }
         }){
             @Override
             protected Map<String, String> getParams() {
                 // setting post
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("email", email);
+                params.put("name", name);
                 params.put("pass", password);
+                params.put("email", email);
+                params.put("birth", birth);
+                params.put("phone", phone);
                 return params;
             }
         };

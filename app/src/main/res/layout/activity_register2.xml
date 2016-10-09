@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.snapchat.team2.snapchat.LoginActivity">
+
+    <TextView
+        android:layout_marginTop="60dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="@color/text_grey"
+        android:text="your name"
+        android:layout_gravity="center"
+        android:id="@+id/register_name_hint"/>
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/register_name"
+        android:hint="annonymous"
+        />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="@color/text_grey"
+        android:text="your birthday"
+        android:layout_gravity="center"
+        android:id="@+id/register_birth_hint"/>
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:inputType="date"
+        android:hint="yyyy-mm-dd"
+        android:id="@+id/register_birth"
+        />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="@color/text_grey"
+        android:text="your phone number"
+        android:layout_gravity="center"
+        android:id="@+id/register_phone_hint"/>
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:inputType="phone"
+        android:id="@+id/register_phone"
+        />
+
+    <Button
+        android:layout_marginTop="30dp"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/login_button_style"
+        android:text="sign up"
+        android:id="@+id/submit_register"
+
+        />
+</LinearLayout>

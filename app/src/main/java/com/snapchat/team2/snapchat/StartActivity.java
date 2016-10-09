@@ -15,19 +15,19 @@ public class StartActivity extends Activity {
     private Button login_button;
     private Button register_button;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,  WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,  WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        ActManager.getAppManager().addActivity(this);
-        ActManager.getAppManager().finishActivity(MainActivity.class);
+            ActManager.getAppManager().addActivity(this);
+            ActManager.getAppManager().finishActivity(MainActivity.class);
 
-        setContentView(R.layout.activity_start);
-        initViews();
-        //forbid the back button
-        addListeners();
-    }
+            setContentView(R.layout.activity_start);
+            initViews();
+            //forbid the back button
+            addListeners();
+        }
 
     private void initViews(){
         login_button = (Button)findViewById(R.id.button_login);
@@ -49,6 +49,13 @@ public class StartActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(StartActivity.this,LoginActivity.class));
+            }
+        });
+
+        register_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StartActivity.this,RegisterActivity.class));
             }
         });
     }
