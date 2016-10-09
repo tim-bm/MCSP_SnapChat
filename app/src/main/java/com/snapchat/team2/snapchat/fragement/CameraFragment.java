@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.snapchat.team2.snapchat.CreateNewChatActivity;
 import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.UserInfoActivity;
@@ -199,11 +200,16 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
             public void onClick(View view) {
 
                 //test for sending photo
-                Activity parentActivity=CameraFragment.this.getActivity();
-                RequestQueue rq= Volley.newRequestQueue(parentActivity);
-                PhotoNetService p=new PhotoNetService(rq);
-                p.postPhoto(parentActivity,rootView.getContext().getString(R.string.serverAddress)+"upload/photo",
-                        CameraFragment.this.mergeSequence(),"imageFromClient.JPEG","2","3","1");
+//                Activity parentActivity=CameraFragment.this.getActivity();
+//                RequestQueue rq= Volley.newRequestQueue(parentActivity);
+//                PhotoNetService p=new PhotoNetService(rq);
+//                p.postPhoto(parentActivity,rootView.getContext().getString(R.string.serverAddress)+"upload/photo",
+//                        CameraFragment.this.mergeSequence(),"imageFromClient.JPEG","2","3","1");
+                //save the photo in the temporary directory first
+                CameraFragment.this.savePhotoTemporarily(CameraFragment.this.mergeSequence());
+                Intent intent =new Intent(CameraFragment.this.getActivity(), CreateNewChatActivity.class);
+                intent.putExtra("FromCamera",true);
+                startActivity(intent);
             }
         });
     }
@@ -500,6 +506,37 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         }
     }
 
+    private void savePhotoTemporarily(Bitmap tempPhoto){
+
+        File dir = new File(Environment.getExternalStoragePublicDirectory
+                (Environment.DIRECTORY_PICTURES),"TemporaryPhoto");
+
+        String filename="TempPhoto.JPEG";
+
+        File mediaFile = new File(dir.getPath()+File.separator+filename);
+        FileOutputStream outputStream =null;
+        if (!dir.exists()){
+            dir.mkdir();
+        }
+
+        try {
+            outputStream = new FileOutputStream(mediaFile);
+
+            tempPhoto.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }finally {
+            if (outputStream!=null){
+                try {
+                    outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
 
     class EditDragListner implements View.OnDragListener{
 
