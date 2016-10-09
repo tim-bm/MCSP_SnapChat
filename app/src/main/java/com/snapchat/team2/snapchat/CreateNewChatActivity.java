@@ -44,6 +44,7 @@ public class CreateNewChatActivity extends Activity {
         initListeners();
 
         Bundle extrasInfo=getIntent().getExtras();
+        System.out.println("");
         if(extrasInfo!=null){
             fromCamera=extrasInfo.getBoolean("FromCamera");
         }
@@ -72,7 +73,7 @@ public class CreateNewChatActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //determine this activity is used for photo or chat
 
-                if(fromCamera){
+                if(!fromCamera){
 
                     //Toast.makeText(CreateNewChatActivity.this,"你单击的是第"+(position+1)+"条数据",Toast.LENGTH_SHORT).show();
                     //获得receiver 的id
