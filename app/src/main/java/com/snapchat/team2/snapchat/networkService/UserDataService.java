@@ -38,7 +38,7 @@ import java.util.List;
 public class UserDataService {
 
 
-    private static final String requestURL_base = "http://10.0.0.120:8001/snapchat_server/public/user/friends/";
+    private String requestURL_base = null;
     private String requestURL = null;
 
     private RequestQueue requestQueue;
@@ -47,6 +47,7 @@ public class UserDataService {
 
     public UserDataService(RequestQueue requestQueue, String user_id) {
 
+
         this.requestQueue = requestQueue;
         this.user_id = user_id;
         this.requestURL = requestURL_base + user_id;
@@ -54,7 +55,8 @@ public class UserDataService {
 
     //set the display view as parameters
     public void getFriends(final Activity activity, final ListView listView, final EditText search_view) {
-
+        this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
+        requestURL=requestURL_base+"user/friends/"+user_id;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, requestURL,
                 new Response.Listener<String>() {
                     @Override
@@ -81,7 +83,7 @@ public class UserDataService {
                         });
                         //makeSearchable(friendList,search_view,listView,activity,adapter);
 
-                        Toast.makeText(activity.getApplication(), "Connect Server successfully: " + response, Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity.getApplication(), "Connect Server successfully: " + user_id, Toast.LENGTH_LONG).show();
                     }
                 }, new Response.ErrorListener() {
             @Override

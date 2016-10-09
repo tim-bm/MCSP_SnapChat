@@ -86,14 +86,13 @@ public class MainActivity extends FragmentActivity {
         setListenerOnButton();
 
         //test and usage example for DB
-//        UserDBService userDBService = new UserDBService(DBManager.getInstance(MainActivity.this));
-//        User user = userDBService.getUserByUserEmail("admin@snapchat.com");
+        //UserDBService userDBService = new UserDBService(DBManager.getInstance(MainActivity.this));
+        //User user = userDBService.getUserByUserEmail("admin@snapchat.com");
         // Toast.makeText(getApplication(),"Database open: "+user.getName(),Toast.LENGTH_LONG).show();
         //test for connecting server
-
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        MsgFromIndex msgFromIndex = new MsgFromIndex(queue);
-//        msgFromIndex.getMsg(this);
+        //RequestQueue queue = Volley.newRequestQueue(this);
+        //MsgFromIndex msgFromIndex = new MsgFromIndex(queue);
+        //msgFromIndex.getMsg(this);
 
     }
 

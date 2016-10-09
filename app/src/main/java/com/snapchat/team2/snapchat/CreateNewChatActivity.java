@@ -132,7 +132,8 @@ public class CreateNewChatActivity extends Activity {
     private void setData(){
         //获得数据,向server 发送get 请求 user id is 1
         RequestQueue rq = Volley.newRequestQueue(this);
-        UserDataService userDataService = new UserDataService(rq,"1");
+
+        UserDataService userDataService = new UserDataService(rq,);
         userDataService.getFriends(this,listView,searchChatFriend);
 
     }
