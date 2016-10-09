@@ -184,6 +184,7 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),UserInfoActivity.class));
+                //getActivity().overridePendingTransition(R.anim.activity_open,0);
             }
         });
 

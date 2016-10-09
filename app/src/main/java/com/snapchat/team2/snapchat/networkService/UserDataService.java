@@ -114,7 +114,7 @@ public class UserDataService {
 
                     }
                 });
-                Toast.makeText(activity.getApplication(), "Failed in connecting server: show fake data ", Toast.LENGTH_LONG).show();
+                Toast.makeText(activity.getApplication(), "Failed in connecting server: show local data", Toast.LENGTH_LONG).show();
             }
         });
         requestQueue.add(stringRequest);

@@ -58,20 +58,8 @@ public class MainActivity extends FragmentActivity {
         } else {
             System.out.println("not from login activity");
         }
-        //let log off
         //sharedPreferences.edit().clear().commit();
 
-        if (isLogin()) {
-            System.out.println("current user id is : " + sharedPreferences.getString("user_id", null));
-            this.user_id = sharedPreferences.getString("user_id", null);
-            makeActivityAtBottom();
-
-        } else {
-            System.out.println("no user id find ,need to login first ");
-            //add this activity to the activity stack , so that user can close app in login activity
-            makeActivityAtBottom();
-            startActivity(new Intent(MainActivity.this, StartActivity.class));
-        }
 
         //use default pageAdapter
         mainPage = (ViewPager) findViewById(R.id.pager);
@@ -85,15 +73,26 @@ public class MainActivity extends FragmentActivity {
 
         setListenerOnButton();
 
-        //test and usage example for DB
-        //UserDBService userDBService = new UserDBService(DBManager.getInstance(MainActivity.this));
-        //User user = userDBService.getUserByUserEmail("admin@snapchat.com");
-        // Toast.makeText(getApplication(),"Database open: "+user.getName(),Toast.LENGTH_LONG).show();
-        //test for connecting server
-        //RequestQueue queue = Volley.newRequestQueue(this);
-        //MsgFromIndex msgFromIndex = new MsgFromIndex(queue);
-        //msgFromIndex.getMsg(this);
 
+    }
+
+    protected void onResume(){
+        System.out.print("onresume");
+        //let log off
+        //sharedPreferences.edit().clear().commit();
+        if (isLogin()) {
+            System.out.println("current user id is : " + sharedPreferences.getString("user_id", null));
+            this.user_id = sharedPreferences.getString("user_id", null);
+            makeActivityAtBottom();
+
+        } else {
+            System.out.println("no user id find ,need to login first ");
+            //add this activity to the activity stack , so that user can close app in login activity
+            makeActivityAtBottom();
+            startActivity(new Intent(MainActivity.this, StartActivity.class));
+        }
+
+        super.onResume();
     }
 
 

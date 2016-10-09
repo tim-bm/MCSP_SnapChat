@@ -13,8 +13,26 @@
         android:background="@color/color_transparent">
 
         <ImageButton
-            android:layout_width="350px"
-            android:layout_height="350px"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/ic_signout"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/color_transparent"
+            android:id="@+id/sign_out"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sign out"
+            android:layout_below="@+id/sign_out"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"></TextView>
+
+        <ImageButton
+            android:layout_width="225px"
+            android:layout_height="225px"
             android:background="@color/yellow"
             android:src="@drawable/ic_snapchat_1000"
             android:layout_alignParentBottom="true"
@@ -26,6 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="name"
+
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:textAlignment="center"
@@ -39,27 +58,28 @@
         android:layout_height="0dp"
         android:layout_weight="48"
         android:weightSum="100"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="25"
-            >
+            android:id="@+id/added_me">
 
             <ImageView
-                android:layout_marginLeft="60dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/ic_smile"/>
             <TextView
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="13dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="people added me"
                 android:layout_marginLeft="30dp"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:textAlignment="center"/>
 
 
@@ -67,21 +87,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="25">
+            android:layout_weight="25"
+            android:id="@+id/add_friends">
 
             <ImageView
-                android:layout_marginLeft="60dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/ic_add_friend"/>
             <TextView
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="13dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="add friends"
                 android:layout_marginLeft="30dp"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:textAlignment="center"/>
 
 
@@ -89,28 +110,39 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="25">
+            android:layout_weight="25"
+            android:id="@+id/my_friends">
 
             <ImageView
-                android:layout_marginLeft="60dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_smile"/>
+                android:layout_marginLeft="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_man"/>
             <TextView
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="13dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="my friends"
                 android:layout_marginLeft="30dp"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:textAlignment="center"/>
 
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="25"></RelativeLayout>
+            android:layout_weight="25">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_circle"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:background="@color/color_transparent"/>
+
+        </RelativeLayout>
 
 
 
