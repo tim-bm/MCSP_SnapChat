@@ -132,7 +132,9 @@ public class CreateNewChatActivity extends Activity {
     private void setData(){
         //获得数据,向server 发送get 请求 user id is 1
         RequestQueue rq = Volley.newRequestQueue(this);
-        UserDataService userDataService = new UserDataService(rq,"1");
+        SharedPreferences shared = getSharedPreferences("snapchat_user", MODE_PRIVATE);
+        String sendId=shared.getString("user_id", null);
+        UserDataService userDataService = new UserDataService(rq,sendId);
         userDataService.getFriends(this,listView,searchChatFriend);
 
     }
