@@ -1,8 +1,12 @@
 package com.snapchat.team2.snapchat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -15,7 +19,12 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
+import com.snapchat.team2.snapchat.networkService.PhotoNetService;
 import com.snapchat.team2.snapchat.networkService.UserDataService;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CreateNewChatActivity extends Activity {
 
@@ -24,7 +33,7 @@ public class CreateNewChatActivity extends Activity {
     private ImageButton back;
     private EditText searchChatFriend;
     //default is 1. 2 comes from cameraFragment
-    private int fromWhichActivity=1;
+    private boolean fromCamera=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +42,11 @@ public class CreateNewChatActivity extends Activity {
         initialViews();
         setData();
         initListeners();
+
+        Bundle extrasInfo=getIntent().getExtras();
+        if(extrasInfo!=null){
+            fromCamera=extrasInfo.getBoolean("FromCamera");
+        }
 
     }
 
@@ -51,22 +65,64 @@ public class CreateNewChatActivity extends Activity {
                 finish();
             }
         });
-        //1
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(CreateNewChatActivity.this,"你单击的是第"+(position+1)+"条数据",Toast.LENGTH_SHORT).show();
-                //获得receiver 的id
-                Friend f = (Friend) listView.getItemAtPosition(position);
-                String user_id = f.getUser_id();
+                //determine this activity is used for photo or chat
+
+                if(fromCamera){
+
+                    //Toast.makeText(CreateNewChatActivity.this,"你单击的是第"+(position+1)+"条数据",Toast.LENGTH_SHORT).show();
+                    //获得receiver 的id
+                    Friend f = (Friend) listView.getItemAtPosition(position);
+                    String user_id = f.getUser_id();
 
 
-                //to send activity
-                Intent intent = new Intent(CreateNewChatActivity.this,ChatRoomActivity.class);
-                intent.putExtra("receiver_id",user_id);
-                startActivity(intent);
+                    //to send activity
+                    Intent intent = new Intent(CreateNewChatActivity.this,ChatRoomActivity.class);
+                    intent.putExtra("receiver_id",user_id);
+                    startActivity(intent);
+                }else{
+                    //send the photo to a friend
+
+
+
+                    Friend f = (Friend) listView.getItemAtPosition(position);
+                    String receiverId = f.getUser_id();
+
+                    //get send id from share preferences
+                    SharedPreferences shared = getSharedPreferences("snapchat_user", MODE_PRIVATE);
+                    String sendId=shared.getString("user_id", null);
+
+                    //read from temp directory
+                    File dir = new File(Environment.getExternalStoragePublicDirectory
+                            (Environment.DIRECTORY_PICTURES),"TemporaryPhoto");
+
+                    String filename="TempPhoto.JPEG";
+
+                    File mediaFile = new File(dir.getPath()+File.separator+filename);
+
+                    String ImageDate = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(new Date());
+                    String filenameOnServer="IMG_"+ImageDate+".jpg";
+
+                    //send photo
+                    RequestQueue rq= Volley.newRequestQueue(CreateNewChatActivity.this);
+                    PhotoNetService p=new PhotoNetService(rq);
+                    if(mediaFile.exists()){
+                        Bitmap photo= BitmapFactory.decodeFile(mediaFile.getAbsolutePath());
+                        p.postPhoto(CreateNewChatActivity.this,CreateNewChatActivity.this.getString(R.string.serverAddress)+"upload/photo",
+                                photo,filenameOnServer,sendId,receiverId,"1");
+                    }
+
+                    //reset
+                    fromCamera=false;
+
+                    //go back to chat fragment
+                    Intent intent=new Intent(CreateNewChatActivity.this,MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
