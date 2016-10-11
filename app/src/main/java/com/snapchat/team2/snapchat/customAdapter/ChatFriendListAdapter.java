@@ -48,6 +48,8 @@ public class ChatFriendListAdapter extends BaseAdapter implements Filterable{
         return position;
     }
 
+
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Friend item = ls.get(position);

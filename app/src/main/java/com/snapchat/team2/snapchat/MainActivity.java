@@ -59,8 +59,6 @@ public class MainActivity extends FragmentActivity {
             System.out.println("not from login activity");
         }
         //sharedPreferences.edit().clear().commit();
-
-
         //use default pageAdapter
         mainPage = (ViewPager) findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());

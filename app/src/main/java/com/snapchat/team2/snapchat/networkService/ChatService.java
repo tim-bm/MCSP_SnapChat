@@ -1,11 +1,6 @@
 package com.snapchat.team2.snapchat.networkService;
 
-
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.Context;
-import android.os.Bundle;
-import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -18,33 +13,25 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.snapchat.team2.snapchat.ListAdapterDataModel.ChatMessage;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customAdapter.ChatFriendListAdapter;
-import com.snapchat.team2.snapchat.customAdapter.ChatListAdapter;
-import com.snapchat.team2.snapchat.dataJsonModel.GetChatResonseModel;
 import com.snapchat.team2.snapchat.dataJsonModel.userModel;
 import com.snapchat.team2.snapchat.dbHelper.DBManager;
 import com.snapchat.team2.snapchat.dbModel.User;
 import com.snapchat.team2.snapchat.dbService.UserDBService;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * Created by xu on 2016/10/5.
+ * Created by xu on 2016/10/10.
  */
-public class UserDataService {
+public class ChatService {
 
 
     private String requestURL_base = null;
@@ -54,9 +41,7 @@ public class UserDataService {
     private String result;
     private String user_id;
 
-    public UserDataService(RequestQueue requestQueue, String user_id) {
-
-
+    public ChatService(RequestQueue requestQueue, String user_id) {
         this.requestQueue = requestQueue;
         this.user_id = user_id;
         this.requestURL = requestURL_base + user_id;
@@ -152,52 +137,6 @@ public class UserDataService {
 
     }
 
-    public void sendTextMessage(final Activity activity,final ListView listview,final ChatListAdapter cla, final String receiver_id, final String content){
-        this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
-        requestURL=requestURL_base+"chat/send";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, requestURL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //deal with response
-                Gson gson = new Gson();
-                Type stringStringMap = new TypeToken<Map<String, String>>(){}.getType();
-                Map<String,String> result_map = gson.fromJson(response, stringStringMap);
-                String status = result_map.get("status");
-                String info = result_map.get("info");
-
-                if(status.equals("1")){
-                    ChatMessage chatMessage = new ChatMessage(content,1);
-                    cla.addone(chatMessage);
-                    listview.setSelection(listview.getAdapter().getCount()-1);
-                }
-                else{
-                    Toast.makeText(activity.getApplication(),"send messgae fail",Toast.LENGTH_LONG).show();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                ChatMessage chatMessage = new ChatMessage("network connect fail!",1);
-                cla.addone(chatMessage);
-                listview.setSelection(listview.getAdapter().getCount()-1);
-
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                // setting post
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("from",user_id);
-                params.put("to", receiver_id);
-                params.put("message", content);
-                return params;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
-
     public String getResult() {
         return result;
     }
@@ -262,52 +201,6 @@ public class UserDataService {
         }.getType());
         userModel u =users.get(0);
         return u;
-    }
-
-    public void getChatToUser(Activity activity, final Message msg){
-
-        this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
-        requestURL=requestURL_base+"chatToUser/"+user_id;
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, requestURL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //deal with data
-                List<GetChatResonseModel> results = new Gson().fromJson(response , new TypeToken<List<GetChatResonseModel>>() {
-                }.getType());
-
-                if(results.get(0).getStatus().equals("2")){
-                    //System.out.println("没有新的聊天");
-                    Bundle b = new Bundle();
-                    b.putBoolean("network",true);
-                    b.putBoolean("new",false);
-
-                    msg.sendToTarget();
-                    return;
-                }
-                if(results.get(0).getStatus().equals("-1")){
-                    //System.out.println("检测到新的聊天");
-                    Bundle b = new Bundle();
-                    b.putBoolean("network",true);
-                    b.putBoolean("new",true);
-                    //put the whole response back, because cannot put an list of object in a bundle
-                    b.putString("data",response);
-                    msg.setData(b);
-                    msg.sendToTarget();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Bundle b = new Bundle();
-                b.putBoolean("network",false);
-                msg.setData(b);
-                msg.sendToTarget();
-            }
-        });
-        requestQueue.add(stringRequest);
-
     }
 
     private class ComparatorUserFromJson implements Comparator {
