@@ -36,7 +36,8 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_right_48"
             android:layout_marginRight="5dp"
-            android:background="@color/color_transparent"/>
+            android:background="@color/color_transparent"
+            android:id="@+id/chat_room_back"/>
     </RelativeLayout>
 
     <RelativeLayout

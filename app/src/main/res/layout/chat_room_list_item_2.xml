@@ -12,18 +12,20 @@
         android:paddingBottom="5px"
         android:paddingLeft="10px"
         android:textColor="@color/lithgtblue"
+        android:layout_gravity="end"
+        android:textAlignment="viewEnd"
 
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="right">
 
         <ImageButton
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="@color/lithgtblue"/>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +35,13 @@
             android:paddingBottom="4px"
             android:paddingLeft="4px"
             android:id="@+id/message_text2"
+            android:gravity="end"
+            android:textAlignment="viewEnd"
             />
+
+
+
+
 
     </LinearLayout>
 

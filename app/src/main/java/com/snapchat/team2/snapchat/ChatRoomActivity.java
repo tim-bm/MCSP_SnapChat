@@ -9,6 +9,7 @@ import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,8 @@ public class ChatRoomActivity extends Activity {
 
     private TextView showReceiver;
     private EditText editText;
+    private ImageButton back;
+    private boolean threadFlag = true;
 
     private final Handler handler = new Handler(){
         public void handleMessage(Message msg){
@@ -63,13 +66,14 @@ public class ChatRoomActivity extends Activity {
 
     };
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chatroom);
         //get data from database
         //get the receivers information from the user id of the receriver
-
 
         receiver_id = getIntent().getStringExtra("receiver_id");
         SharedPreferences shared = getSharedPreferences("snapchat_user", MODE_PRIVATE);
@@ -82,7 +86,20 @@ public class ChatRoomActivity extends Activity {
         initViews();
         updateChatList();
         addListeners();
+
+    }
+
+    @Override
+    protected void onStart(){
+        //in on start ,start the thread
+        this.threadFlag = true;
         startCheckNewChatThread();
+        super.onStart();
+    }
+    @Override
+    protected void onDestroy(){
+        this.threadFlag = false;
+        super.onDestroy();
     }
 
     private void initViews(){
@@ -91,6 +108,7 @@ public class ChatRoomActivity extends Activity {
         chatList = (ListView)findViewById(R.id.message_list);
         chatList.setDivider(null);
         editText = (EditText)findViewById(R.id.message_editor);
+        back = (ImageButton)findViewById(R.id.chat_room_back);
     }
 
     private void showReceiverData(String receiver_id){
@@ -111,7 +129,7 @@ public class ChatRoomActivity extends Activity {
             @Override
             public void run() {
                 System.out.println("开启线程");
-                while(true){
+                while(threadFlag){
                     try {
                         requestNewChat();
                         Thread.sleep(2000);
@@ -136,7 +154,7 @@ public class ChatRoomActivity extends Activity {
         //b.putString("xuzhe","hahahah");
         //msg.setData(b);
         //msg.sendToTarget();
-        uds.getChatToUser(this,msg);
+        uds.getChatToUser(this,msg,opponent_id);
     }
 
     private void sendTextMessage(String receiver_id,String content){
@@ -163,11 +181,21 @@ public class ChatRoomActivity extends Activity {
                 return false;
             }
         });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private List<ChatMessage> convertoChatMessage(String data_string){
-        List<GetChatResonseModel> newchats = new Gson().fromJson(data_string , new TypeToken<List<GetChatResonseModel>>() {
-        }.getType());
+        System.out.println("data string is: "+ data_string);
+        List<GetChatResonseModel> newchats = new Gson().fromJson(data_string , new TypeToken<List<GetChatResonseModel>>(){}.getType());
+        if(newchats == null){
+            System.out.println("new caht i sempty");
+        }
         List<ChatMessage> chatMessages = new ArrayList<ChatMessage>();
         for(GetChatResonseModel chatModel:newchats){
             chatMessages.add(new ChatMessage(chatModel.getContent(),2));

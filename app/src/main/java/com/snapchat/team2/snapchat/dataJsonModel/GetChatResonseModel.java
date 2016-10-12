@@ -5,26 +5,22 @@ package com.snapchat.team2.snapchat.dataJsonModel;
  */
 public class GetChatResonseModel {
     private String id = null;
-    private String status = null;
-    private String info = null;
+
+
     private String  from = null;
     private String to = null;
+    private String status = null;
     private String content = null;
 
 
-    public GetChatResonseModel(String id, String status, String info, String from, String to, String content) {
+    public GetChatResonseModel(String id,  String from, String to,String status, String content) {
         this.id = id;
-        this.status = status;
-        this.info = info;
         this.from = from;
         this.to = to;
+        this.status = status;
         this.content = content;
     }
 
-    public GetChatResonseModel(String status,String info){
-        this.status = status;
-        this.info = info;
-    }
 
     public String getId() {
         return id;
@@ -40,14 +36,6 @@ public class GetChatResonseModel {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
     }
 
     public String getFrom() {

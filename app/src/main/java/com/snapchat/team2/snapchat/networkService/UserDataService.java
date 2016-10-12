@@ -264,38 +264,38 @@ public class UserDataService {
         return u;
     }
 
-    public void getChatToUser(Activity activity, final Message msg){
+    public void getChatToUser(Activity activity, final Message msg,final String opponeng_id){
 
         this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
-        requestURL=requestURL_base+"chatToUser/"+user_id;
+        requestURL=requestURL_base+"chatToUser2/"+opponeng_id+"/"+user_id;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, requestURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //deal with data
-                List<GetChatResonseModel> results = new Gson().fromJson(response , new TypeToken<List<GetChatResonseModel>>() {
-                }.getType());
-
-                if(results.get(0).getStatus().equals("2")){
-                    //System.out.println("没有新的聊天");
+                System.out.println("返回的报文是: "+response);
+                if(response.startsWith("[")){
+                    Bundle b = new Bundle();
+                    b.putBoolean("network",true);
+                    b.putBoolean("new",true);
+                    b.putString("data",response);
+                    msg.setData(b);
+                    msg.sendToTarget();
+                    return;
+                }else if(response.startsWith("{")){
+                    /*List<GetChatResonseModel> results = new Gson().fromJson(response , new TypeToken<List<GetChatResonseModel>>() {
+                    }.getType());*/
                     Bundle b = new Bundle();
                     b.putBoolean("network",true);
                     b.putBoolean("new",false);
 
+                    msg.setData(b);
                     msg.sendToTarget();
                     return;
                 }
-                if(results.get(0).getStatus().equals("-1")){
-                    //System.out.println("检测到新的聊天");
-                    Bundle b = new Bundle();
-                    b.putBoolean("network",true);
-                    b.putBoolean("new",true);
-                    //put the whole response back, because cannot put an list of object in a bundle
-                    b.putString("data",response);
-                    msg.setData(b);
-                    msg.sendToTarget();
+                else{
+                    System.out.println("错误");
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
