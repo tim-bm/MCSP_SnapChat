@@ -1,5 +1,6 @@
 package com.snapchat.team2.snapchat.fragement;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -11,7 +12,7 @@ import com.snapchat.team2.snapchat.R;
  */
 
 
-public class StoryDetail extends AppCompatActivity {
+public class StoryDetail extends Activity {
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final String EXTRA_AUTHOR = "EXTRA_AUTHOR";
     private static final String EXTRA_STORY = "EXTRA_STORY";

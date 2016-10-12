@@ -1,23 +1,32 @@
 package com.snapchat.team2.snapchat.fragement;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.app.SearchManager;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.StoryDerpData;
-import com.snapchat.team2.snapchat.ListAdapterDataModel.StoryListItem;
+import com.snapchat.team2.snapchat.ListAdapterDataModel.DiscoverStoryListItem;
+import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.R;
-import com.snapchat.team2.snapchat.customAdapter.StoryDerpAdapter;
+import com.snapchat.team2.snapchat.customAdapter.DiscoverStoryDerpAdapter;
+import com.snapchat.team2.snapchat.customAdapter.LiveStoryDerpAdapter;
+import com.snapchat.team2.snapchat.customAdapter.SubStoryDerpAdapter;
+import com.snapchat.team2.snapchat.networkService.DiscoverDataService;
+
 import java.util.ArrayList;
 
 /**
@@ -26,7 +35,7 @@ import java.util.ArrayList;
 
 
 
-public class StroyFragment extends Fragment implements StoryDerpAdapter.ItemClickCallback {
+public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemClickCallback, LiveStoryDerpAdapter.ItemClickCallback {
 
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final String EXTRA_STORY = "EXTRA_STORY";
@@ -34,91 +43,95 @@ public class StroyFragment extends Fragment implements StoryDerpAdapter.ItemClic
 
     private RecyclerView recyclerView1;
     private RecyclerView recyclerView2;
-    private StoryDerpAdapter adapter;
-    private ArrayList listData;
+    private SubStoryDerpAdapter adapter1;
+    private LiveStoryDerpAdapter adapter2;
+    private ArrayList listData1;
+    private ArrayList listData2;
 
     private ViewGroup rootView;
+    private ImageButton button_search;
+    private ImageButton button_disc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         rootView=(ViewGroup)inflater.inflate(R.layout.fragment_story,container,false);
 
-//        discoverView=(RecyclerView) rootView.findViewById(R.id.discover_recycle_view);
-//
-//        // Create a grid layout with 6 columns
-//        // (least common multiple of 2 and 3)
-//        discoverLayoutManager=new GridLayoutManager(this.getActivity(),6);
-//        discoverLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-//            @Override
-//            public int getSpanSize(int position) {
-//                switch (position % 5) {
-//                    // first two items span 3 columns each
-//                    case 0:
-//                    case 1:
-//                        return 3;
-//                    // next 3 items span 2 columns each
-//                    case 2:
-//                    case 3:
-//                    case 4:
-//                        return 2;
-//                }
-//                throw new IllegalStateException("internal error");
-//            }
-//        });
-//        discoverView.setLayoutManager(discoverLayoutManager);
 
 
-        listData = (ArrayList) StoryDerpData.getListData();
+        button_disc = (ImageButton) rootView.findViewById(R.id.newDiscover);
+        button_disc.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View arg0) {
+//                Toast.makeText(StroyFragment.this.getActivity().getApplication(),"click!!!!!",Toast.LENGTH_LONG).show();
+//                DiscoverFragment fragment2 = new DiscoverFragment();
+//                FragmentManager fragmentManager = StroyFragment.this.getFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.story, fragment2);
+//                fragmentTransaction.commit();
+                MainActivity parent=(MainActivity) StroyFragment.this.getActivity();
+                parent.getMainPage().setCurrentItem(3);
+            }
+        });
+
+        listData1 = (ArrayList) StoryDerpData.getListData();
         recyclerView1 = (RecyclerView) rootView.findViewById(R.id.rec_list1);
         recyclerView2 = (RecyclerView) rootView.findViewById(R.id.rec_list2);
         recyclerView1.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL));
         recyclerView2.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
 
+        adapter1 = new SubStoryDerpAdapter(StoryDerpData.getListData(),this.getActivity());
+        adapter2 = new LiveStoryDerpAdapter(StoryDerpData.getListData(),this.getActivity());
 
+        RequestQueue mqueue = Volley.newRequestQueue(this.getActivity());
+        DiscoverDataService mservice = new DiscoverDataService(mqueue);
 
+        String requestURL1 = "discovery/recommend";
+        mservice.getDiscover(this,requestURL1,recyclerView1,1);
+        String requestURL2 = "discovery/recommend";
+        mservice.getDiscover(this,requestURL2,recyclerView2,2);
 
-        adapter = new StoryDerpAdapter(StoryDerpData.getListData(),this.getActivity());
-        recyclerView1.setAdapter(adapter);
-        recyclerView2.setAdapter(adapter);
-        adapter.setItemClickCallback(this);
         return rootView;
 
     }
 
 
+
     @Override
     public void onItemClick(int p) {
-        StoryListItem item = (StoryListItem) listData.get(p);
+        DiscoverStoryListItem item = (DiscoverStoryListItem) listData1.get(p);
 
         Intent i = new Intent(rootView.getContext(), StoryDetail.class);
 
         Bundle extras = new Bundle();
         extras.putString(EXTRA_AUTHOR, item.getTitle());
-        extras.putString(EXTRA_STORY, item.getSubTitle());
+        extras.putString(EXTRA_STORY, item.getText());
         i.putExtra(BUNDLE_EXTRAS, extras);
 
         startActivity(i);
     }
 
     @Override
-    public void onItemLongClicked(int p) {
+    public void onItemLongClick(int p) {
 
+        new AlertDialog.Builder(rootView.getContext())
+                .setTitle("Subscribe")
+                .setMessage("Are you sure you want to subscribe this entry?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
-    @Override
-    public void onSecondaryIconClick(int p) {
-        StoryListItem item = (StoryListItem) listData.get(p);
-        //update our data
-        if (item.isFavourite()){
-            item.setFavourite(false);
-        } else {
-            item.setFavourite(true);
-        }
-        //pass new data to adapter and update
-        adapter.setListData(listData);
-        adapter.notifyDataSetChanged();
-    }
+
 }
 
 

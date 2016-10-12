@@ -219,6 +219,4 @@ public class ChatFriendListAdapter extends BaseAdapter implements Filterable{
 
 
 
-
-
 }

@@ -40,6 +40,7 @@ public class MainActivity extends FragmentActivity {
     private ImageView storySwitch;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +73,10 @@ public class MainActivity extends FragmentActivity {
         setListenerOnButton();
 
 
+    }
+
+    public ViewPager getMainPage() {
+        return mainPage;
     }
 
     protected void onResume(){

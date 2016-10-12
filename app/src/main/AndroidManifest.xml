@@ -50,6 +50,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".RegisterActivity2"
             android:screenOrientation="portrait" ></activity>
+        <activity android:name=".fragement.StoryDetail" />
     </application>
 
 </manifest>
