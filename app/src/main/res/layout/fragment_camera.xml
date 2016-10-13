@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -70,6 +71,14 @@
            android:src="@drawable/ic_editor_text"
            android:layout_toLeftOf="@id/photo_draw"
            android:visibility="invisible"/>
+       <!-- add emotion button is invisible by default -->
+       <ImageView
+           android:id="@+id/add_Pic_btn"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="@drawable/ic_add_pic_camera"
+           android:layout_toLeftOf="@id/add_TextView"
+           android:visibility="invisible"/>
 
 
        <ImageView
@@ -130,6 +139,15 @@
             android:layout_centerHorizontal="true"
             android:singleLine="true"
             android:imeOptions="actionDone"/>
+
+        <!--emotion pics-->
+        <ImageView
+            android:id="@+id/add_emotion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:src="@android:color/transparent"
+            android:layout_toRightOf="@id/edit_text_add"/>
 
 
     </RelativeLayout>

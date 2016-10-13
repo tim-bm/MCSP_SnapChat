@@ -21,6 +21,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -75,10 +76,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     ImageView drawBtn;
     ImageView savebtn;
     ImageView addTextBtn;
+    ImageView addPicBtn;
     ImageView userInfoBtn;
     ImageView sendPhotoBtn;
 
     CamerEditText addText;
+    ImageView addEmotion;
 
     //drawing view
     DrawFreehandView freehandView;
@@ -105,6 +108,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         surfaceHolder.addCallback(this);
       //  surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         initializeButtons();
+        //
+
         return rootView;
 
     }
@@ -176,6 +181,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 MainActivity parent=(MainActivity)CameraFragment.this.getActivity();
                 InputMethodManager imm = (InputMethodManager) parent.getSystemService(parent.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(addText, InputMethodManager.SHOW_IMPLICIT);
+
+
+
             }
         });
 
@@ -213,6 +221,43 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 startActivity(intent);
             }
         });
+
+        //emotion image
+        addEmotion=(ImageView)rootView.findViewById(R.id.add_emotion);
+        addEmotion.setOnTouchListener(new EditTextListener());
+
+        //add emotion button
+        addPicBtn=(ImageView) rootView.findViewById(R.id.add_Pic_btn);
+        addPicBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addEmotion.setVisibility(View.VISIBLE);
+                if(addEmotion.getDrawable().getConstantState()==
+                        CameraFragment.this.getActivity().getResources().
+                                getDrawable(android.R.color.transparent).getConstantState()){
+                    addEmotion.setImageResource(R.drawable.ic_lol_emotion);
+                    addEmotion.setTag(1);
+                }else{
+                    switch ((int)addEmotion.getTag()){
+                        case 1:
+                            addEmotion.setImageResource(R.drawable.ic_cool_emotion);
+                            addEmotion.setTag(2);
+                            break;
+                        case 2:
+                            addEmotion.setImageResource(R.drawable.ic_wink_emotion);
+                            addEmotion.setTag(3);
+                            break;
+                        case 3:
+                            addEmotion.setImageResource(R.drawable.ic_lol_emotion);
+                            addEmotion.setTag(1);
+                            break;
+                    }
+
+
+                }
+            }
+        });
+
     }
 
     private void initialTakePhoto(){
@@ -248,6 +293,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 //enable send button
                 sendPhotoBtn.setVisibility(View.VISIBLE);
 
+                //enable emotion button
+                addPicBtn.setVisibility(View.VISIBLE);
 
                 //refresh the view(to force a view to draw)
                 surfaceView.invalidate();
@@ -282,11 +329,17 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         savebtn.setVisibility(View.INVISIBLE);
         addTextBtn.setVisibility(View.INVISIBLE);
         savebtn.setVisibility(View.INVISIBLE);
-
+        addPicBtn.setVisibility(View.INVISIBLE);
+        //disable emotion button
+        addPicBtn.setVisibility(View.INVISIBLE);
         //disable editText
         addText.setVisibility(View.INVISIBLE);
         //clear editText content
         addText.setText(null);
+
+        addEmotion.setVisibility(View.INVISIBLE);
+        //clear emotion
+        addEmotion.setImageResource(android.R.color.transparent);
 
         //enable button
         flashBtn.setVisibility(View.VISIBLE);
@@ -301,11 +354,16 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         freehandView.setDrawable(false);
         freehandView.clearCanvas();
 
+
+
         //remove the cache from previous drawing
         if(drawing!=null){
             drawing.recycle();
             drawing=null;
         }
+
+        //clear context of addtext
+        addText.getText().clear();
     }
     @Override
     public void onPause(){
@@ -381,20 +439,12 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
         try {
             outputStream = new FileOutputStream(mediaFile);
-//            rootView.setDrawingCacheEnabled(true);
-//            photo=rootView.getDrawingCache();
-            //test surface view
-//            surfaceView.setDrawingCacheEnabled(true);
-//            Bitmap cachePic=Bitmap.createBitmap(surfaceView.getDrawingCache());
-//            Activity parentActivity=(MainActivity)this.getActivity();
-//            DisplayMetrics displaymetrics = new DisplayMetrics();
-//            parentActivity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//            int height = displaymetrics.heightPixels;
-//            int width = displaymetrics.widthPixels;
 
-            freehandView.setDrawingCacheEnabled(true);
-            drawing=Bitmap.createBitmap(freehandView.getDrawingCache());
-            Bitmap combinedImage=combineImageLayers(photo,drawing);
+
+//            freehandView.setDrawingCacheEnabled(true);
+//            drawing=Bitmap.createBitmap(freehandView.getDrawingCache());
+//            Bitmap combinedImage=combineImageLayers(photo,drawing);
+            Bitmap combinedImage=this.mergeSequence();
             combinedImage.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -404,6 +454,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                     outputStream.flush();
                     outputStream.close();
                     freehandView.setDrawingCacheEnabled(false);
+                    addText.setDrawingCacheEnabled(false);
+                    addEmotion.setDrawingCacheEnabled(false);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -422,9 +474,43 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         freehandView.setDrawingCacheEnabled(true);
         drawing=Bitmap.createBitmap(freehandView.getDrawingCache());
         Bitmap combinedImage=combineImageLayers(photo,drawing);
-        return combinedImage;
+
+        Bitmap combo2;
+        //no text and it should the frame of edit text
+        if(addText.getText().toString().trim().length()>0){
+            //merge edittext
+            addText.setDrawingCacheEnabled(true);
+            Bitmap text=Bitmap.createBitmap(addText.getDrawingCache());
+            combo2=this.overlayBitmap(combinedImage,text,addText.getLeft(),addText.getTop());
+
+        }else{
+            combo2=combinedImage;
+        }
+
+        //merge emotion
+        addEmotion.setDrawingCacheEnabled(true);
+        Bitmap emotion=Bitmap.createBitmap(addEmotion.getDrawingCache());
+        Bitmap combo3=this.overlayBitmap(combo2,emotion,addEmotion.getLeft(),addEmotion.getTop());
+
+        //clean drawing cache to avoid bugs
+        freehandView.setDrawingCacheEnabled(false);
+        addText.setDrawingCacheEnabled(false);
+        addEmotion.setDrawingCacheEnabled(false);
+//        addEmotion.setImageResource(R.color.color_transparent);
+//
+//        rootView.setDrawingCacheEnabled(false);
+        return combo3;
     }
-    
+
+    //draw edit text and emotions on the background according to top/left position
+    private Bitmap overlayBitmap(Bitmap back, Bitmap front,float left,float top){
+        Bitmap bmOverlay = Bitmap.createBitmap(back.getWidth(), back.getHeight(), back.getConfig());
+        Canvas canvas = new Canvas(bmOverlay);
+        canvas.drawBitmap(back, 0,0, null);
+        canvas.drawBitmap(front, left,top, null);
+
+        return bmOverlay;
+    }
 
     
     /**

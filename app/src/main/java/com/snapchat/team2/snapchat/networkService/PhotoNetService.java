@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import java.io.ByteArrayOutputStream;
@@ -76,5 +77,26 @@ public class PhotoNetService {
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
+    }
+
+
+    public void getPhotoToUser(int userId, String URL){
+
+    }
+
+
+    private void getImageByCategory(String imageURL,String userId){
+        ImageRequest request=new ImageRequest(imageURL, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+
+            }
+        },0,0,null,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
     }
 }
