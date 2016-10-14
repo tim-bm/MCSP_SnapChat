@@ -41,7 +41,6 @@ public class MainActivity extends FragmentActivity {
     private ImageView storySwitch;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

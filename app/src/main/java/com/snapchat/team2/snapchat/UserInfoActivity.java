@@ -3,8 +3,10 @@ package com.snapchat.team2.snapchat;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -15,6 +17,8 @@ public class UserInfoActivity extends Activity {
     private AlertDialog.Builder builder;
     private ImageButton sign_out=null;
     private SharedPreferences sharedPreferences = null;
+    private View add_freind = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,7 @@ public class UserInfoActivity extends Activity {
     }
     private void initViews(){
         sign_out = (ImageButton)findViewById(R.id.sign_out);
+        add_freind =(View)findViewById(R.id.add_friends);
     }
     private void addListeners(){
         sign_out.setOnClickListener(new View.OnClickListener() {
@@ -36,6 +41,12 @@ public class UserInfoActivity extends Activity {
             public void onClick(View v) {
                 System.out.println("登出");
                 showSimpleDialog(v);
+            }
+        });
+        add_freind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UserInfoActivity.this,AddFriendActivity.class));
             }
         });
     }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:layout_marginLeft="5dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_snapchat_green_30"
+        android:id="@+id/match_keyword_users_list_item_snapchat"/>
+    <TextView
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="default user name"
+        android:layout_marginLeft="20dp"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:id="@+id/add_friends_showfriend_name"
+        android:layout_toRightOf="@id/match_keyword_users_list_item_snapchat"/>
+    <ImageView
+
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_plus_purple_30"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"/>
+</RelativeLayout>

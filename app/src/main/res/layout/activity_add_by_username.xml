@@ -8,8 +8,8 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
+        android:layout_height="50dp"
+
         android:background="@drawable/chat_friend_layout_style"
 
         >
@@ -39,7 +39,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+
         android:layout_gravity="left"
         android:orientation="horizontal"
         android:background="@drawable/chat_friend_layout_style"
@@ -65,66 +66,25 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="18"
-        android:weightSum="100"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/add_by_username_showuser"
         >
 
-        <LinearLayout
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="35"
-            >
+            android:layout_height="20dp"
+            android:text="user name"
+            android:textSize="12dp"
+            android:textColor="@color/text_grey"/>
 
-            <TextView
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
+            <ListView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="user name"
-                android:textSize="12dp"
-                android:textColor="@color/text_grey"/>
-
+                android:layout_height="wrap_content"
+                android:id="@+id/match_keyword_users_list"
+                ></ListView>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="65"
->
-
-            <ImageView
-                android:layout_marginLeft="5dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_snapchat_grey_30"/>
-            <TextView
-                android:layout_marginTop="13dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="default user name"
-                android:layout_marginLeft="20dp"
-                android:textSize="15dp"
-                android:textAlignment="center"
-                android:id="@+id/add_friends_showfriend_name"/>
-            <ImageView
-                android:layout_marginLeft="70dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_plus_purple_30"/>
-
-
-        </LinearLayout>
-
-
-
-
-
-    </LinearLayout>
-
-
-
 
 </LinearLayout>

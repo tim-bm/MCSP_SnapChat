@@ -161,6 +161,7 @@ public class ChatFragment extends Fragment {
                 new String[]{"name","info","img"},new int[]{R.id.chat_name,R.id.chat_info,R.id.chat_item_img});
 
         refreshListView.setAdapter(adapter);
+
     }
 
 
