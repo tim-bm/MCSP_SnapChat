@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100"
+>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"
+        android:background="@drawable/chat_friend_layout_style"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/addFriend_title"
+            android:text="Add a friend"
+            android:textSize="16dp"
+            android:layout_centerInParent="true"
+            />
+
+        <ImageButton
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="6dp"
+            android:layout_width="50px"
+            android:layout_height="50px"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_left_48"
+            android:background="@color/color_transparent"
+            android:id="@+id/add_friend_back"
+        />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="18"
+        android:weightSum="100"
+        android:orientation="vertical"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:id="@+id/add_by_username"
+            android:background="@drawable/chat_friend_layout_style"
+            >
+
+            <ImageView
+                android:layout_marginLeft="5dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_search_30"/>
+            <TextView
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="add by user name"
+                android:layout_marginLeft="20dp"
+                android:textSize="15dp"
+                android:textAlignment="center"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:background="@drawable/chat_friend_layout_style"
+            android:id="@+id/add_from_contact">
+
+            <ImageView
+                android:layout_marginLeft="5dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_contacts_30"/>
+            <TextView
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="add from contacts"
+                android:layout_marginLeft="20dp"
+                android:textSize="15dp"
+                android:textAlignment="center"/>
+
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

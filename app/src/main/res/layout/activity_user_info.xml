@@ -143,10 +143,6 @@
                 android:background="@color/color_transparent"/>
 
         </RelativeLayout>
-
-
-
-
     </LinearLayout>
 
 
