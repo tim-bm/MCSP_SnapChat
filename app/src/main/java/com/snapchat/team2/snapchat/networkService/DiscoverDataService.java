@@ -1,9 +1,8 @@
 package com.snapchat.team2.snapchat.networkService;
 
-import android.app.Activity;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -14,16 +13,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.DiscoverStoryListItem;
-import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
-import com.snapchat.team2.snapchat.ListAdapterDataModel.StoryDerpData;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customAdapter.DiscoverStoryDerpAdapter;
 import com.snapchat.team2.snapchat.customAdapter.LiveStoryDerpAdapter;
 import com.snapchat.team2.snapchat.customAdapter.SubStoryDerpAdapter;
-import com.snapchat.team2.snapchat.dataJsonModel.userModel;
+import com.snapchat.team2.snapchat.dbHelper.DBManager;
+import com.snapchat.team2.snapchat.dbService.UserDBService;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +32,7 @@ public class DiscoverDataService {
     private String requestURL = null;
 
     private RequestQueue requestQueue;
-    private int tech =2;
-    private int bussiness=2;
-    private int news=2;
+
 
 
     public DiscoverDataService(RequestQueue requestQueue){
@@ -46,9 +40,26 @@ public class DiscoverDataService {
     }
 
     //set the display view as parameters
-    public void getDiscover(final Fragment fragment, final String requestURL, final RecyclerView recyclerView ,final int flag){
+    public void getDiscover(final Fragment fragment, final String requestURL, final RecyclerView recyclerView ,final int flag, final String ip){
 
         String requestURL_base = fragment.getActivity().getResources().getString(R.string.serverAddress) + requestURL;
+
+        String user_id;
+        SharedPreferences shared = fragment.getActivity().getSharedPreferences("snapchat_user", fragment.getActivity().MODE_PRIVATE);
+        user_id=shared.getString("user_id", null);
+
+        UserDBService userDBService = new UserDBService(DBManager.getInstance(fragment.getActivity()));
+        String[] clicks = userDBService.getClicks(user_id);
+
+
+        final String news=clicks[0];
+        final String tech =clicks[1];
+        final String bussiness=clicks[2];
+
+        System.out.println("++++++++++++++++++++++++++++++++++");
+        System.out.println(clicks[0]);
+        System.out.println(clicks[1]);
+        System.out.println(clicks[2]);
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, requestURL_base,
@@ -62,17 +73,25 @@ public class DiscoverDataService {
                             String url =listData.get(0).getImage();
                             System.out.println("aaaaa: "+response);
 //                            Toast.makeText(fragment.getActivity().getApplication(),url,Toast.LENGTH_LONG).show();
-                            final SubStoryDerpAdapter adapter = new SubStoryDerpAdapter(listData,fragment.getActivity());
+                            final SubStoryDerpAdapter adapter = new SubStoryDerpAdapter(listData,fragment.getActivity(),ip);
 
                             adapter.setItemClickCallback((SubStoryDerpAdapter.ItemClickCallback) fragment);
                             recyclerView.setAdapter(adapter);
                         }else if(flag==2) {
                             List<DiscoverStoryListItem> listData = makeDiscoverAdapterModel(response);
 
-                            final LiveStoryDerpAdapter adapter = new LiveStoryDerpAdapter(listData,fragment.getActivity());
+                            final LiveStoryDerpAdapter adapter = new LiveStoryDerpAdapter(listData,fragment.getActivity(),ip);
 
                             adapter.setItemClickCallback((LiveStoryDerpAdapter.ItemClickCallback) fragment);
                             recyclerView.setAdapter(adapter);
+                        }else if(flag==3) {
+                            List<DiscoverStoryListItem> listData = makeDiscoverAdapterModel(response);
+
+                            final DiscoverStoryDerpAdapter adapter = new DiscoverStoryDerpAdapter(listData,fragment.getActivity(),ip);
+
+                            adapter.setItemClickCallback((DiscoverStoryDerpAdapter.ItemClickCallback) fragment);
+                            recyclerView.setAdapter(adapter);
+
                         }
 
 
@@ -87,9 +106,9 @@ public class DiscoverDataService {
             protected Map<String, String> getParams() {
                 // setting post
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("tech", tech+"");
-                params.put("news", news+"");
-                params.put("bussiness", bussiness+"");
+                params.put("tech", tech);
+                params.put("news", news);
+                params.put("bussiness", bussiness);
                 return params;
             }
         };
