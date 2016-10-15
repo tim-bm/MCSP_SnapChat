@@ -115,7 +115,6 @@ public class CreateNewChatActivity extends Activity {
                         p.postPhoto(CreateNewChatActivity.this,CreateNewChatActivity.this.getString(R.string.serverAddress)+"upload/photo",
                                 photo,filenameOnServer,sendId,receiverId,"1");
                     }
-
                     //reset
                     fromCamera=false;
 

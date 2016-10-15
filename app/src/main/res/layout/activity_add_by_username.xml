@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100"
+    >
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+
+        android:background="@drawable/chat_friend_layout_style"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/addFriend_title"
+            android:text="Add a friend"
+            android:textSize="16dp"
+            android:layout_centerInParent="true"
+            />
+
+        <ImageButton
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="6dp"
+            android:layout_width="50px"
+            android:layout_height="50px"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_left_48"
+            android:background="@color/color_transparent"
+
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+
+        android:layout_gravity="left"
+        android:orientation="horizontal"
+        android:background="@drawable/chat_friend_layout_style"
+        >
+        <ImageView
+            android:layout_width="45px"
+            android:layout_height="45px"
+            android:src="@drawable/ic_searching"
+            android:layout_marginLeft="10px"
+            android:layout_marginTop="10px"
+            android:layout_marginBottom="10px"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="search user name"
+            android:textColorHint="@color/color_chat_friends_searching_hint"
+            android:textSize="14dp"
+            android:background="@null"
+            android:id="@+id/add_by_user_search_friend"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/add_by_username_showuser"
+        >
+
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="user name"
+            android:textSize="12dp"
+            android:textColor="@color/text_grey"/>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/match_keyword_users_list"
+                ></ListView>
+        </LinearLayout>
+
+</LinearLayout>

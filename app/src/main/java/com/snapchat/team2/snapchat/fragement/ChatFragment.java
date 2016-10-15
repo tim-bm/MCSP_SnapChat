@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,10 +21,14 @@ import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.snapchat.team2.snapchat.CreateNewChatActivity;
+import com.snapchat.team2.snapchat.ListAdapterDataModel.ChatMessage;
 import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customView.RefreshListView;
+import com.snapchat.team2.snapchat.networkService.UserDataService;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -43,6 +49,7 @@ public class ChatFragment extends Fragment {
 
     private SearchView search_view;
     private ImageButton newChat;
+
 
 
     @Override
@@ -161,7 +168,9 @@ public class ChatFragment extends Fragment {
                 new String[]{"name","info","img"},new int[]{R.id.chat_name,R.id.chat_info,R.id.chat_item_img});
 
         refreshListView.setAdapter(adapter);
+
     }
+
 
 
 }

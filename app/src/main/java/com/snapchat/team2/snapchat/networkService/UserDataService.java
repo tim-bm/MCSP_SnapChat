@@ -22,6 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.snapchat.team2.snapchat.AddByUsernameActivity;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.ChatMessage;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
 import com.snapchat.team2.snapchat.R;
@@ -60,6 +61,35 @@ public class UserDataService {
         this.requestQueue = requestQueue;
         this.user_id = user_id;
         this.requestURL = requestURL_base + user_id;
+    }
+
+    public void getFriends(final Activity activity,final Message message){
+        this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
+        requestURL=requestURL_base+"user/friends/"+user_id;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, requestURL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Bundle b = new Bundle();
+                        b.putBoolean("network",true);
+                        b.putString("resultJson",response);
+                        message.setData(b);
+                        message.sendToTarget();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Bundle b = new Bundle();
+                b.putBoolean("network",false);
+                message.setData(b);
+                message.sendToTarget();
+
+            }
+        });
+        requestQueue.add(stringRequest);
+
+
     }
 
     //set the display view as parameters
@@ -129,7 +159,6 @@ public class UserDataService {
         requestQueue.add(stringRequest);
 
     }
-
     public void setReceiverName(Activity activity, final TextView v, String receiverId){
         this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
         requestURL=requestURL_base+"user/"+receiverId;
@@ -198,6 +227,85 @@ public class UserDataService {
         requestQueue.add(stringRequest);
     }
 
+
+    public void getSearchUser(Activity activity, String match ,final Message message){
+        System.out.println("调用");
+        this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
+        requestURL=requestURL_base+"searchUser/"+match;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, requestURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("响应"+requestURL);
+                System.out.println("搜获得到的用户是"+ response);
+                Bundle result = new Bundle();
+                result.putBoolean("network",true);
+                result.putString("resultJson",response);
+
+                message.setData(result);
+                System.out.println(result.toString());
+                message.sendToTarget();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("没有网络，搜索用户失败");
+                Bundle result = new Bundle();
+                result.putBoolean("network",false);
+                message.setData(result);
+                message.sendToTarget();
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
+
+    public void addFriend(final Activity activity, final String username){
+        this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
+        requestURL=requestURL_base+"user/addFriends";
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, requestURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Gson gson = new Gson();
+                Type stringStringMap = new TypeToken<Map<String, String>>(){}.getType();
+                Map<String,String> result_map = gson.fromJson(response, stringStringMap);
+                String status = result_map.get("status");
+                String info = result_map.get("info");
+
+                if(status.equals("-1")){
+                    Toast.makeText(activity.getApplication(), "Fail, user does not exists", Toast.LENGTH_LONG).show();
+                }
+                else if(status.equals("1")){
+                    Toast.makeText(activity.getApplication(), "Successful, "+username+" is your friend now ", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(activity.getApplication(), "Fail!", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activity,"Error, this user is aleady your friend,Net work error!", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                // setting post
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("id",user_id);
+                params.put("friendName",username);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+    public void addFriendbyPhone(String phone){
+
+    }
+
     public String getResult() {
         return result;
     }
@@ -232,15 +340,11 @@ public class UserDataService {
         return friends;
     }
 
-
-
     //from a list of db_model to adpater model
     private List<Friend> makeFriendsAdapterModel(List<User> friends_from_db){
         List<Friend> friends = new ArrayList<Friend>();
         Collections.sort(friends_from_db,new ComparatorUserFromDB());
-
         for(int i=0;i<friends_from_db.size();i++){
-
             if(i==0){
                 Friend friend = new Friend(Character.toString(friends_from_db.get(i).getName().charAt(0)),friends_from_db.get(i).getName(),1,friends_from_db.get(i).getUserId()+"");
                 friends.add(friend);
@@ -307,6 +411,10 @@ public class UserDataService {
             }
         });
         requestQueue.add(stringRequest);
+
+    }
+
+    private void getAllChatToUser(Activity activity ,final Message message){
 
     }
 
