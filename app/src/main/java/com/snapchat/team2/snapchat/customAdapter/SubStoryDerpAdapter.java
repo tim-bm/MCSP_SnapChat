@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.DiscoverStoryListItem;
 import com.snapchat.team2.snapchat.R;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 //import android.support.v7.app.AlertDialog;
@@ -27,13 +27,15 @@ import java.util.List;
 
 public class SubStoryDerpAdapter extends RecyclerView.Adapter<SubStoryDerpAdapter.DerpHolder>{
 
+    private final String ip;
     private List<DiscoverStoryListItem> listData;
     private LayoutInflater inflater;
     private ItemClickCallback itemClickCallback;
+    private DiscoverStoryListItem item;
 
 
     public interface ItemClickCallback {
-        void onItemClick(int p);
+        void onItemClick(List<DiscoverStoryListItem> arrayList,int position);
         void onItemLongClick(int p);
     }
 
@@ -41,24 +43,24 @@ public class SubStoryDerpAdapter extends RecyclerView.Adapter<SubStoryDerpAdapte
         this.itemClickCallback = itemClickCallback;
     }
 
-    public SubStoryDerpAdapter(List<DiscoverStoryListItem> listData, Context c){
+    public SubStoryDerpAdapter(List<DiscoverStoryListItem> listData, Context c, String ip){
         inflater = LayoutInflater.from(c);
         this.listData = listData;
+        this.ip = ip;
     }
 
     @Override
     public SubStoryDerpAdapter.DerpHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.stroy_list_item, parent, false);
+        View view = inflater.inflate(R.layout.story_list_item, parent, false);
         return new DerpHolder(view);
     }
 
     @Override
     public void onBindViewHolder(DerpHolder holder, int position) {
-        DiscoverStoryListItem item = listData.get(position);
+        item = listData.get(position);
         holder.text.setText(item.getTitle());
-        holder.title.setText(item.getText());
         String url = item.getImage();
-        url = url.replace("localhost","10.0.0.120");
+        url = url.replace("localhost",ip);
         new ImageLoadTask(url, holder.image ).execute();    }
 
     public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
@@ -106,14 +108,12 @@ public class SubStoryDerpAdapter extends RecyclerView.Adapter<SubStoryDerpAdapte
 
         ImageView image;
         TextView text;
-        TextView title;
         View container;
 
 
         public DerpHolder(View itemView) {
             super(itemView);
             image = (ImageView)itemView.findViewById(R.id.im_item_pic);
-            title = (TextView)itemView.findViewById(R.id.lbl_item_title);
             text = (TextView)itemView.findViewById(R.id.lbl_item_text);
             container = (View)itemView.findViewById(R.id.cont_item_root);;
             container.setOnClickListener(this);
@@ -123,7 +123,7 @@ public class SubStoryDerpAdapter extends RecyclerView.Adapter<SubStoryDerpAdapte
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.cont_item_root){
-                itemClickCallback.onItemClick(getAdapterPosition());
+                itemClickCallback.onItemClick( listData,getAdapterPosition());
             } else {
                 // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
             }

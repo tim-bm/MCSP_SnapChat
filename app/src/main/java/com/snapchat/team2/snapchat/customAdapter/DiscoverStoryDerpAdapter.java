@@ -18,6 +18,7 @@ import com.snapchat.team2.snapchat.R;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 //import android.support.v7.app.AlertDialog;
@@ -27,13 +28,17 @@ import java.util.List;
 
 public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStoryDerpAdapter.DerpHolder>{
 
+    private final String ip;
     private List<DiscoverStoryListItem> listData;
     private LayoutInflater inflater;
     private ItemClickCallback itemClickCallback;
+    private DiscoverStoryListItem item;
+    private String categoryId;
+
 
 
     public interface ItemClickCallback {
-        void onItemClick(int p);
+        void onItemClick(List<DiscoverStoryListItem> listData, int adapterPosition,String categoryId);
         void onItemLongClick(int p);
     }
 
@@ -41,23 +46,30 @@ public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStory
         this.itemClickCallback = itemClickCallback;
     }
 
-    public DiscoverStoryDerpAdapter(List<DiscoverStoryListItem> listData, Context c){
+    public DiscoverStoryDerpAdapter(List<DiscoverStoryListItem> listData, Context c, String ip){
         inflater = LayoutInflater.from(c);
         this.listData = listData;
+        this.ip = ip;
     }
 
     @Override
     public DiscoverStoryDerpAdapter.DerpHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.stroy_list_item, parent, false);
+        View view = inflater.inflate(R.layout.live_story_list_item, parent, false);
         return new DerpHolder(view);
     }
 
     @Override
     public void onBindViewHolder(DerpHolder holder, int position) {
-        DiscoverStoryListItem item = listData.get(position);
+        item = listData.get(position);
         holder.title.setText(item.getTitle());
         holder.subTitle.setText(item.getText());
-        new ImageLoadTask(item.getImage(), holder.image).execute();
+        categoryId = item.getCategoryId();
+        System.out.println("##############################");
+        System.out.println(categoryId);
+        System.out.println("##############################");
+        String url = item.getImage();
+        url = url.replace("localhost",ip);
+        new ImageLoadTask(url, holder.image).execute();
     }
 
     public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
@@ -112,20 +124,20 @@ public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStory
 
         public DerpHolder(View itemView) {
             super(itemView);
-            image = (ImageView)itemView.findViewById(R.id.im_item_pic);
+            image = (ImageView)itemView.findViewById(R.id.live_im_item_pic);
             // secondaryIcon = (ImageView)itemView.findViewById(R.id.im_item_icon_secondary);
             // secondaryIcon.setOnClickListener(this);
-            subTitle = (TextView)itemView.findViewById(R.id.lbl_item_title);
-            title = (TextView)itemView.findViewById(R.id.lbl_item_text);
-            container = (View)itemView.findViewById(R.id.cont_item_root);;
+            subTitle = (TextView)itemView.findViewById(R.id.live_lbl_item_title);
+            title = (TextView)itemView.findViewById(R.id.live_lbl_item_text);
+            container = (View)itemView.findViewById(R.id.live_cont_item_root);;
             container.setOnClickListener(this);
             container.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.cont_item_root){
-                itemClickCallback.onItemClick(getAdapterPosition());
+            if (v.getId() == R.id.live_cont_item_root){
+                itemClickCallback.onItemClick(listData,getAdapterPosition(),categoryId);
             } else {
                 // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
             }
@@ -134,7 +146,7 @@ public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStory
 
         @Override
         public boolean onLongClick(View v) {
-            if (v.getId() == R.id.cont_item_root){
+            if (v.getId() == R.id.live_cont_item_root){
                 itemClickCallback.onItemLongClick(getAdapterPosition());
             } else {
                 // itemClickCallback.onSecondaryIconClick(getAdapterPosition());

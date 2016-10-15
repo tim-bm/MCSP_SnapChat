@@ -23,16 +23,27 @@ public class DBOpenHelper extends SQLiteOpenHelper {
             "\"friendwith\" TEXT NOT NULL"+
             ");";
 
+    final String CREATE_TABLE_CLICKS="CREATE TABLE \"clicks\" (" +
+            "\"user_id\"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            "\"news_clicks\"  TEXT NOT NULL," +
+            "\"tech_clicks\"  TEXT NOT NULL, " +
+            "\"bussiness_clicks\" TEXT NOT NULL"+
+            ");";
 
     //initial data
     final String INSERT_USER_ADMIN1="INSERT INTO \"user\" VALUES (1, 'admin', 'admin@snapchat.com','123fdfd','2,3');";
     final String INSERT_USER_ADMIN2="INSERT INTO \"user\" VALUES (2, 'admin2', 'admin2@snapchat.com','123fdfd2','1');";
     final String INSERT_USER_ADMIN3="INSERT INTO \"user\" VALUES (3, 'admin3', 'admin3@snapchat.com','123fdfd3','1');";
 
+    final String INSERT_CLICKS_ADMIN1="INSERT INTO \"clicks\" VALUES (1, '2', '2','2');";
+    final String INSERT_CLICKS_ADMIN2="INSERT INTO \"clicks\" VALUES (2, '2', '2','2');";
+    final String INSERT_CLICKS_ADMIN3="INSERT INTO \"clicks\" VALUES (3, '2', '2','2');";
+
 
     private DBOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
 
 
     public static DBOpenHelper getInstance(Context context){
@@ -56,12 +67,16 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         //create table
 
         sqLiteDatabase.execSQL(CREATE_TABLE_USER);
+        sqLiteDatabase.execSQL(CREATE_TABLE_CLICKS);
 
 
         //insert data
         sqLiteDatabase.execSQL(INSERT_USER_ADMIN1);
         sqLiteDatabase.execSQL(INSERT_USER_ADMIN2);
         sqLiteDatabase.execSQL(INSERT_USER_ADMIN3);
+        sqLiteDatabase.execSQL(INSERT_CLICKS_ADMIN1);
+        sqLiteDatabase.execSQL(INSERT_CLICKS_ADMIN2);
+        sqLiteDatabase.execSQL(INSERT_CLICKS_ADMIN3);
     }
 
     @Override

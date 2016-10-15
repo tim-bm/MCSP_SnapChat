@@ -10,7 +10,7 @@ public class DiscoverStoryListItem {
 
     private String id;
     private String title;
-    private  String text;
+    private String text;
     private String image;
     private String categoryId;
 

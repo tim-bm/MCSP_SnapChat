@@ -23,6 +23,7 @@ public class DBManager {
     }
 
     public static synchronized  DBManager getInstance(Context context){
+
         if(instance==null){
             instance=new DBManager(context);
         }

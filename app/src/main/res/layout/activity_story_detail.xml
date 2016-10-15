@@ -15,21 +15,24 @@ tools:context="com.snapchat.team2.snapchat.fragement.StoryDetail">
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium" />
 
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lbl_quote_text"
+        android:id="@+id/lbl_quote_image" />
+
+
     <TextView
         android:id="@+id/lbl_quote_attribution"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lbl_quote_text"
         android:fontFamily="sans-serif-light"
-        android:textStyle="italic" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
+        android:textStyle="italic"
+        android:layout_below="@+id/lbl_quote_image"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

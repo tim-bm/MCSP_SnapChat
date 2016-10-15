@@ -1,5 +1,6 @@
 package com.snapchat.team2.snapchat.dbService;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class UserDBService {
 
     private DBManager dbManager;
+
 
     public UserDBService(DBManager dbManager) {
         this.dbManager = dbManager;
@@ -82,4 +84,70 @@ public class UserDBService {
         }
 
     }
+
+
+    public String[] getClicks(String id){
+        SQLiteDatabase database;
+        database=dbManager.openDB();
+        Cursor cursor= database.rawQuery("select * from clicks where user_id=?",new String[]{id});
+
+        if (cursor.getCount()<=0){
+            setClicks(id);
+        }
+
+        String[] result = {"","",""};
+        while (cursor.moveToNext()){
+            result[0] = cursor.getString(1);
+            result[1] = cursor.getString(2);
+            result[2] = cursor.getString(3);
+        }
+        dbManager.closeDB(database);
+
+        return result;
+    }
+
+    public void setClicks(String nclicks,String tclicks,String bclicks,String userid){
+        SQLiteDatabase database;
+        database=dbManager.openDB();
+
+
+        ContentValues values = new ContentValues();
+        System.out.println("In the set ");
+        System.out.println(nclicks);
+        System.out.println(tclicks);
+        System.out.println(bclicks);
+        values.put("news_clicks", nclicks);
+        values.put("tech_clicks", tclicks);
+        values.put("bussiness_clicks", bclicks);
+
+
+        int result = database.update("clicks", values,"user_id=?", new String[] { userid });
+
+        dbManager.closeDB(database);
+        System.out.println("+++++++++++++++++++++++"+result);
+
+
+    }
+
+    public void setClicks(String userid){
+        SQLiteDatabase database;
+        database=dbManager.openDB();
+
+
+        ContentValues values = new ContentValues();
+        System.out.println("In the set ");
+        values.put("user_id", userid);
+        values.put("news_clicks", "2");
+        values.put("tech_clicks", "2");
+        values.put("bussiness_clicks", "2");
+
+
+        long result = database.insert("clicks", null, values);
+
+        dbManager.closeDB(database);
+        System.out.println("+++++++++++++++++++++++"+result);
+
+
+    }
+
 }
