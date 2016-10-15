@@ -34,7 +34,6 @@ public class DiscoverDataService {
     private RequestQueue requestQueue;
 
 
-
     public DiscoverDataService(RequestQueue requestQueue){
         this.requestQueue=requestQueue;
     }
@@ -48,6 +47,8 @@ public class DiscoverDataService {
         SharedPreferences shared = fragment.getActivity().getSharedPreferences("snapchat_user", fragment.getActivity().MODE_PRIVATE);
         user_id=shared.getString("user_id", null);
 
+        System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+        System.out.println(user_id);
         UserDBService userDBService = new UserDBService(DBManager.getInstance(fragment.getActivity()));
         String[] clicks = userDBService.getClicks(user_id);
 
@@ -56,10 +57,14 @@ public class DiscoverDataService {
         final String tech =clicks[1];
         final String bussiness=clicks[2];
 
-        System.out.println("++++++++++++++++++++++++++++++++++");
-        System.out.println(clicks[0]);
-        System.out.println(clicks[1]);
-        System.out.println(clicks[2]);
+//        final String news="2";
+//        final String tech ="2";
+//        final String bussiness="2";
+
+        System.out.println("+++++++++++++++++000000000000+++++++++++++++++");
+//        System.out.println(clicks[0]);
+//        System.out.println(clicks[1]);
+//        System.out.println(clicks[2]);
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, requestURL_base,

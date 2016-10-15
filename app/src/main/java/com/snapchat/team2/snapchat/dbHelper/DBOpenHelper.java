@@ -35,9 +35,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     final String INSERT_USER_ADMIN2="INSERT INTO \"user\" VALUES (2, 'admin2', 'admin2@snapchat.com','123fdfd2','1');";
     final String INSERT_USER_ADMIN3="INSERT INTO \"user\" VALUES (3, 'admin3', 'admin3@snapchat.com','123fdfd3','1');";
 
-    final String INSERT_CLICKS_ADMIN1="INSERT INTO \"clicks\" VALUES (1, '3', '3','3');";
-    final String INSERT_CLICKS_ADMIN2="INSERT INTO \"clicks\" VALUES (2, '3', '3','3');";
-    final String INSERT_CLICKS_ADMIN3="INSERT INTO \"clicks\" VALUES (3, '3', '3','3');";
+    final String INSERT_CLICKS_ADMIN1="INSERT INTO \"clicks\" VALUES (1, '2', '2','2');";
+    final String INSERT_CLICKS_ADMIN2="INSERT INTO \"clicks\" VALUES (2, '2', '2','2');";
+    final String INSERT_CLICKS_ADMIN3="INSERT INTO \"clicks\" VALUES (3, '2', '2','2');";
 
 
     private DBOpenHelper(Context context) {
