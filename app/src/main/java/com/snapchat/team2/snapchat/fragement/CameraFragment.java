@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.DragEvent;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -27,12 +28,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.snapchat.team2.snapchat.CreateNewChatActivity;
 import com.snapchat.team2.snapchat.MainActivity;
+import com.snapchat.team2.snapchat.MemoryActivity;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.UserInfoActivity;
 import com.snapchat.team2.snapchat.customView.DrawFreehandView;
@@ -80,6 +83,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     ImageView userInfoBtn;
     ImageView sendPhotoBtn;
 
+    TextView timerbtn;
+
     CamerEditText addText;
     ImageView addEmotion;
 
@@ -88,6 +93,10 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
 
     //holding canmer and drawing view
     RelativeLayout holding;
+
+    //gesture detector to start memory activity
+    GestureDetector gestureDetector;
+
 
 
     @Override
@@ -110,6 +119,18 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         initializeButtons();
         //
 
+        gestureDetector= new GestureDetector(rootView.getContext(),new SwipeUpGesTureListener());
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+
+                return gestureDetector.onTouchEvent(motionEvent);
+            }
+        });
+
+
+        ;
         return rootView;
 
     }
@@ -258,6 +279,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
             }
         });
 
+        timerbtn=(TextView)rootView.findViewById(R.id.image_set_timer);
+
+
     }
 
     private void initialTakePhoto(){
@@ -296,6 +320,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                 //enable emotion button
                 addPicBtn.setVisibility(View.VISIBLE);
 
+                //enable set timer
+                timerbtn.setVisibility(View.VISIBLE);
                 //refresh the view(to force a view to draw)
                 surfaceView.invalidate();
 
@@ -341,6 +367,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         //clear emotion
         addEmotion.setImageResource(android.R.color.transparent);
 
+        //disable timer
+        timerbtn.setVisibility(View.INVISIBLE);
         //enable button
         flashBtn.setVisibility(View.VISIBLE);
         takePhoto.setVisibility(View.VISIBLE);
@@ -625,6 +653,8 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
         }
     }
 
+
+
     class EditDragListner implements View.OnDragListener{
 
        private RelativeLayout.LayoutParams paramsBlock;
@@ -675,6 +705,37 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
             }
 
             openCamera();
+        }
+    }
+
+    class SwipeUpGesTureListener extends GestureDetector.SimpleOnGestureListener{
+
+
+        @Override
+        public boolean onDown(MotionEvent evt){
+
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                               float velocityY) {
+            float sensitvity = 50;
+
+            if((e1.getY() - e2.getY()) > sensitvity){
+
+//                Toast.makeText(CameraFragment.this.getActivity().getApplicationContext(),"swipe up",Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(CameraFragment.this.getActivity(), MemoryActivity.class);
+                CameraFragment.this.getActivity().startActivity(intent);
+
+            }else if((e2.getY() - e1.getY()) > sensitvity){
+               //swipe down
+
+            }else{
+
+            }
+
+            return super.onFling(e1, e2, velocityX, velocityY);
         }
     }
 }
