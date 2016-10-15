@@ -302,8 +302,47 @@ public class UserDataService {
         };
         requestQueue.add(stringRequest);
     }
-    public void addFriendbyPhone(String phone){
+    public void addFriendbyPhone(final Activity activity,final String phone){
+        this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
+        requestURL=requestURL_base+"user/addFriendsByphone";
 
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, requestURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Gson gson = new Gson();
+                Type stringStringMap = new TypeToken<Map<String, String>>(){}.getType();
+                Map<String,String> result_map = gson.fromJson(response, stringStringMap);
+                String status = result_map.get("status");
+                String info = result_map.get("info");
+
+                if(status.equals("-1")){
+                    Toast.makeText(activity.getApplication(), "Fail, user does not exists", Toast.LENGTH_LONG).show();
+                }
+                else if(status.equals("1")){
+                    Toast.makeText(activity.getApplication(), "add friend successful", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(activity.getApplication(), "Fail!", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(activity,"Error,Net work error!", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                // setting post
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("id",user_id);
+                params.put("friendPhone",phone);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     public String getResult() {
@@ -414,7 +453,71 @@ public class UserDataService {
 
     }
 
-    private void getAllChatToUser(Activity activity ,final Message message){
+    public void getAllChatToUser(Activity activity ,final Message message){
+        this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
+        requestURL=requestURL_base+"chatToUser/"+user_id;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, requestURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //deal with data
+                System.out.println("返回的报文是: "+response);
+                if(response.startsWith("[")){
+                    Bundle b = new Bundle();
+                    b.putBoolean("network",true);
+                    b.putBoolean("new",true);
+                    b.putString("data",response);
+                    message.setData(b);
+                    message.sendToTarget();
+                    return;
+                }else if(response.startsWith("{")){
+                    /*List<GetChatResonseModel> results = new Gson().fromJson(response , new TypeToken<List<GetChatResonseModel>>() {
+                    }.getType());*/
+                    Bundle b = new Bundle();
+                    b.putBoolean("network",true);
+                    b.putBoolean("new",false);
+                    message.setData(b);
+                    message.sendToTarget();
+                    return;
+                }
+                else{
+                    System.out.println("错误");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Bundle b = new Bundle();
+                b.putBoolean("network",false);
+                message.setData(b);
+                message.sendToTarget();
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
+
+    public void getUserById(final Activity activity, final String id, final Message message){
+        this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
+        requestURL=requestURL_base+"user/"+id;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, requestURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("network",true);
+                bundle.putString("resultString",response);
+                message.setData(bundle);
+                message.sendToTarget();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("network",false);
+                message.setData(bundle);
+                message.sendToTarget();
+            }
+        });
+        requestQueue.add(stringRequest);
 
     }
 

@@ -2,6 +2,7 @@ package com.snapchat.team2.snapchat;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -13,12 +14,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.snapchat.team2.snapchat.networkService.UserDataService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AddUserFromContacts extends Activity {
+
 
     private static final String[] PHONES_PROJECTION = new String[] {
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
@@ -35,11 +41,16 @@ public class AddUserFromContacts extends Activity {
     private ListView constact_list;
     private ImageView back;
 
+    private String user_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user_from_contacts);
+        SharedPreferences shared = getSharedPreferences("snapchat_user", MODE_PRIVATE);
+        this.user_id=shared.getString("user_id", null);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,  WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         initViews();
         getPhoneContacts();
         addListeners();
@@ -88,7 +99,9 @@ public class AddUserFromContacts extends Activity {
     }
 
     private void addFriendByPhone(String phone){
-
+        RequestQueue rq = Volley.newRequestQueue(this);
+        UserDataService uds = new UserDataService(rq,user_id);
+        uds.addFriendbyPhone(this,phone);
     }
 
 }

@@ -1,12 +1,11 @@
 package com.snapchat.team2.snapchat;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
+
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -16,22 +15,14 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
-import com.snapchat.team2.snapchat.ListAdapterDataModel.ChatMessage;
 import com.snapchat.team2.snapchat.Tools.ActManager;
-import com.snapchat.team2.snapchat.dbHelper.DBManager;
-import com.snapchat.team2.snapchat.dbModel.User;
-import com.snapchat.team2.snapchat.dbService.UserDBService;
+
 import com.snapchat.team2.snapchat.fragement.CameraFragment;
 import com.snapchat.team2.snapchat.fragement.ChatFragment;
 import com.snapchat.team2.snapchat.fragement.DiscoverFragment;
 import com.snapchat.team2.snapchat.fragement.StroyFragment;
-import com.snapchat.team2.snapchat.networkService.MsgFromIndex;
-import com.snapchat.team2.snapchat.networkService.UserDataService;
+
 
 public class MainActivity extends FragmentActivity {
 
@@ -43,35 +34,6 @@ public class MainActivity extends FragmentActivity {
     private ImageView chatSwitch;
     private ImageView cameraSwitch;
     private ImageView storySwitch;
-
-    private boolean threadFlag;
-
-   /* private final Handler handler = new Handler(){
-        public void handleMessage(Message msg){
-            Bundle bundle=msg.getData();
-            if(bundle.getBoolean("network")){
-                if(bundle.getBoolean("new")){
-                    System.out.println("检测到新的聊天");
-                    String data_string = bundle.getString("data");
-
-                    for(ChatMessage c:convertoChatMessage(data_string)){
-                        adapter.addone(c);
-                    }
-                    adapter.notifyDataSetChanged();
-                    chatList.setSelection(chatList.getAdapter().getCount()-1);
-                }
-                else{
-                    System.out.println("网络连通，但没有新的聊天");
-                }
-            }
-            else{
-                System.out.println("网络未联通");
-            }
-        }
-
-    };*/
-
-
 
 
 
@@ -108,18 +70,9 @@ public class MainActivity extends FragmentActivity {
 
         //it prevents pushing up the view when invoking soft keyboard in camera fragment
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-
     }
 
-    protected void onStart(){
-        this.threadFlag = true;
-        startCheckNewChatThread();
-        super.onStart();
-    }
-    protected void onPause(){
-        this.threadFlag = false;
-        super.onPause();
-    }
+
 
     public ViewPager getMainPage() {
         return mainPage;
@@ -179,24 +132,7 @@ public class MainActivity extends FragmentActivity {
         storySwitch.setVisibility(View.VISIBLE);
     }
 
-    private void startCheckNewChatThread(){
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("开启线程");
-                while(threadFlag){
-                    try {
-                        requestNewChat();
-                        Thread.sleep(2000);
 
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        thread.start();
-    }
 
 
 
@@ -256,17 +192,10 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    private void requestNewChat(){
-        String me = user_id;
-        //String opponent_id = receiver_id;
-        RequestQueue rq = Volley.newRequestQueue(this);
-        UserDataService uds = new UserDataService(rq,user_id);
-        Message msg = new Message();
-        //msg.setTarget(handler);
 
-        //get chat info from all user
-        //uds.getAllChatToUser(this,msg);
-    }
+
+
+
 
 
 

@@ -33,7 +33,7 @@ public class ChatRoomActivity extends Activity {
     private String user_id;
     private ListView chatList;
     private ChatListAdapter adapter;
-    private List<ChatMessage> cms;
+    private List<ChatMessage> cms = new ArrayList<ChatMessage>();
     private UserDataService uds;
 
     private TextView showReceiver;
@@ -74,6 +74,7 @@ public class ChatRoomActivity extends Activity {
         //get the receivers information from the user id of the receriver
 
         receiver_id = getIntent().getStringExtra("receiver_id");
+        initData();
         SharedPreferences shared = getSharedPreferences("snapchat_user", MODE_PRIVATE);
         user_id=shared.getString("user_id", null);
         //uds = new UserDataService(user_id);
@@ -82,6 +83,7 @@ public class ChatRoomActivity extends Activity {
         //adapter = new ChatListAdapter(this,cms);
         System.out.println("receiver_id is"+receiver_id);
         initViews();
+
         updateChatList();
         addListeners();
 
@@ -116,8 +118,6 @@ public class ChatRoomActivity extends Activity {
     }
 
     private void updateChatList(){
-        cms =new ArrayList<ChatMessage>();
-
         adapter = new ChatListAdapter(this,cms);
         chatList.setAdapter(adapter);
     }
@@ -195,5 +195,18 @@ public class ChatRoomActivity extends Activity {
             chatMessages.add(new ChatMessage(chatModel.getContent(),2));
         }
         return chatMessages;
+    }
+
+    private void initData(){
+        Bundle bundle= getIntent().getBundleExtra("initialInfo");
+        if(bundle==null){
+            return;
+        }
+        String[] info = bundle.getStringArray("initialInfo");
+        for(String s:info){
+            ChatMessage c =new ChatMessage(s,2);
+            cms.add(c);
+        }
+
     }
 }

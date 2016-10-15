@@ -80,15 +80,12 @@ public class CreateNewChatActivity extends Activity {
                     Friend f = (Friend) listView.getItemAtPosition(position);
                     String user_id = f.getUser_id();
 
-
                     //to send activity
                     Intent intent = new Intent(CreateNewChatActivity.this,ChatRoomActivity.class);
                     intent.putExtra("receiver_id",user_id);
                     startActivity(intent);
                 }else{
                     //send the photo to a friend
-
-
                     Friend f = (Friend) listView.getItemAtPosition(position);
                     String receiverId = f.getUser_id();
 
