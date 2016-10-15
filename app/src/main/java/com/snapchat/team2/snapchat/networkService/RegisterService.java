@@ -74,7 +74,8 @@ public class RegisterService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //read from database
-                Toast.makeText(activity.getApplication(),"Fail to connect to the server",Toast.LENGTH_LONG).show();
+
+                Toast.makeText(activity.getApplication(),"Register fail, existed email or username or network error!"+error.toString(),Toast.LENGTH_LONG).show();
                 button.setText("Sign up");
                 button.setTextColor(ContextCompat.getColor(activity, R.color.white));
             }

@@ -19,6 +19,8 @@ public class UserInfoActivity extends Activity {
     private SharedPreferences sharedPreferences = null;
     private View add_freind = null;
 
+    private View myFriends = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +28,14 @@ public class UserInfoActivity extends Activity {
         setContentView(R.layout.activity_user_info);
         sharedPreferences = getApplicationContext().getSharedPreferences("snapchat_user", MODE_PRIVATE);
         ActManager.getAppManager().addActivity(this);
-
-
         initViews();
         addListeners();
     }
     private void initViews(){
         sign_out = (ImageButton)findViewById(R.id.sign_out);
         add_freind =(View)findViewById(R.id.add_friends);
+        myFriends = (View)findViewById(R.id.my_friends);
+
     }
     private void addListeners(){
         sign_out.setOnClickListener(new View.OnClickListener() {
@@ -49,12 +51,18 @@ public class UserInfoActivity extends Activity {
                 startActivity(new Intent(UserInfoActivity.this,AddFriendActivity.class));
             }
         });
+
+        myFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UserInfoActivity.this,CreateNewChatActivity.class));
+            }
+        });
     }
 
     private void showSimpleDialog(View view) {
         builder=new AlertDialog.Builder(this);
         builder.setMessage("Sign out for sure?");
-
         builder.setPositiveButton("Sign out", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

@@ -288,7 +288,7 @@ public class UserDataService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activity,"Net work error!", Toast.LENGTH_LONG).show();
+                Toast.makeText(activity,"Error, this user is aleady your friend,Net work error!", Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -301,10 +301,8 @@ public class UserDataService {
             }
         };
         requestQueue.add(stringRequest);
-
-
-
-
+    }
+    public void addFriendbyPhone(String phone){
 
     }
 
@@ -342,15 +340,11 @@ public class UserDataService {
         return friends;
     }
 
-
-
     //from a list of db_model to adpater model
     private List<Friend> makeFriendsAdapterModel(List<User> friends_from_db){
         List<Friend> friends = new ArrayList<Friend>();
         Collections.sort(friends_from_db,new ComparatorUserFromDB());
-
         for(int i=0;i<friends_from_db.size();i++){
-
             if(i==0){
                 Friend friend = new Friend(Character.toString(friends_from_db.get(i).getName().charAt(0)),friends_from_db.get(i).getName(),1,friends_from_db.get(i).getUserId()+"");
                 friends.add(friend);
@@ -417,6 +411,10 @@ public class UserDataService {
             }
         });
         requestQueue.add(stringRequest);
+
+    }
+
+    private void getAllChatToUser(Activity activity ,final Message message){
 
     }
 

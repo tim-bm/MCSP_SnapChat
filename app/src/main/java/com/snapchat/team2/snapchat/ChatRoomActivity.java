@@ -66,8 +66,6 @@ public class ChatRoomActivity extends Activity {
 
     };
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,10 +148,6 @@ public class ChatRoomActivity extends Activity {
         UserDataService uds = new UserDataService(rq,user_id);
         Message msg = new Message();
         msg.setTarget(handler);
-        //Bundle b = new Bundle();
-        //b.putString("xuzhe","hahahah");
-        //msg.setData(b);
-        //msg.sendToTarget();
         uds.getChatToUser(this,msg,opponent_id);
     }
 

@@ -11,6 +11,11 @@
         android:layout_height="50dp"
         android:background="@drawable/chat_friend_layout_style"
         >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_left_48"
+            android:id="@+id/add_user_from_contacts_back"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,12 +33,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/add_by_username_showuser"
         >
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/match_keyword_users_list"
+            android:id="@+id/contact_list"
             ></ListView>
     </LinearLayout>
 
