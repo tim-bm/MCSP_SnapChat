@@ -51,6 +51,9 @@
         <activity android:name=".RegisterActivity2"
             android:screenOrientation="portrait" ></activity>
         <activity android:name=".fragement.StoryDetail" />
+        <activity android:name=".MemoryActivity"
+            android:theme="@style/Widget.AppCompat.Light.ActionBar"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
