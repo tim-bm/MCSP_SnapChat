@@ -91,7 +91,7 @@ public class UserDBService {
         database=dbManager.openDB();
         Cursor cursor= database.rawQuery("select * from clicks where user_id=?",new String[]{id});
 
-        if ( cursor.moveToFirst() ){
+        if (!(cursor.moveToFirst())){
             setClicks(id);
         }
 
