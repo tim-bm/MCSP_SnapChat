@@ -1,3 +1,4 @@
+/*
 package com.snapchat.team2.snapchat.customAdapter;
 
 import android.content.Context;
@@ -5,19 +6,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.snapchat.team2.snapchat.ListAdapterDataModel.ChatMessage;
+import com.snapchat.team2.snapchat.ListAdapterDataModel.MessageNotifcation;
 import com.snapchat.team2.snapchat.R;
 
 import java.util.List;
 
+*/
 /**
  * Created by xu on 2016/10/15.
- */
-public class MessageListAdapter {
+ *//*
 
-    /*private List<ChatMessage> ls;
+public class MessageListAdapter extends BaseAdapter{
+
+    private List<MessageNotifcation> ls;
     private LayoutInflater inflater;
     // 1 means send 2 means accept
     private final int ITEM_TYPE_1=1;
@@ -47,14 +52,14 @@ public class MessageListAdapter {
         return ls.get(position).getItemType();
     }
 
-    public ChatListAdapter(Context context, List<ChatMessage> list){
+    public MessageListAdapter(Context context, List<MessageNotifcation> list){
         this.ls = list;
         this.inflater = LayoutInflater.from(context);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-        ChatMessage item = ls.get(position);
+        MessageNotifcation item = ls.get(position);
         int type = getItemViewType(position);
 
         ViewHolder1 holder1 = null;
@@ -134,7 +139,8 @@ public class MessageListAdapter {
         public void setMessage2(String text) {
             this.message2 .setText(text);
         }
-    };*/
+    };
 
 
 }
+*/

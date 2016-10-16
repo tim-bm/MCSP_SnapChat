@@ -148,6 +148,7 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
                 break;
 
         }
+        super.onTouchEvent(event);
 
         return true;
     }
