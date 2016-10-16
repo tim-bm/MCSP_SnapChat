@@ -14,7 +14,7 @@
         <Button
             android:layout_width="70dp"
             android:layout_height="match_parent"
-            android:text="@string/chat"
+            android:text="Chat Notification"
             android:textColor="@color/colorChatTitleText"
             android:background="@color/colorChatTitle"
             android:alpha="1"
