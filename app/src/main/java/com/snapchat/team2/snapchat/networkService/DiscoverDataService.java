@@ -60,7 +60,7 @@ public class DiscoverDataService {
 //        final String bussiness="2";
 
 
-        System.out.println();
+        System.out.println("HereHereHereHereHereHereHereHere");
         System.out.println(clicks[0]);
         System.out.println(clicks[1]);
         System.out.println(clicks[2]);
