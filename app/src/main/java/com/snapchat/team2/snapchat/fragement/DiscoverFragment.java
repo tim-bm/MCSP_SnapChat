@@ -1,12 +1,9 @@
 package com.snapchat.team2.snapchat.fragement;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-//import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -24,6 +21,8 @@ import com.snapchat.team2.snapchat.networkService.DiscoverDataService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+//import android.support.v7.app.AlertDialog;
 
 /**
  * Created by bm on 2/09/2016.
@@ -69,7 +68,7 @@ public class DiscoverFragment extends Fragment implements DiscoverStoryDerpAdapt
     }
 
     @Override
-    public void onItemClick(List<DiscoverStoryListItem> listData, int adapterPosition, String categoryId) {
+    public void onItemClick(List<DiscoverStoryListItem> listData, int adapterPosition) {
 
         String user_id;
         SharedPreferences shared = this.getActivity().getSharedPreferences("snapchat_user", this.getActivity().MODE_PRIVATE);
@@ -82,12 +81,15 @@ public class DiscoverFragment extends Fragment implements DiscoverStoryDerpAdapt
         String tclicks = String.valueOf((Integer.parseInt(clicks[1])));
         String bclicks = String.valueOf((Integer.parseInt(clicks[2])));
 
+        DiscoverStoryListItem item = listData.get(adapterPosition);
+
         System.out.println("++++++++++++++++++++++++++++++++++/////////////////////////");
         System.out.println(clicks[0]);
         System.out.println(clicks[1]);
         System.out.println(clicks[2]);
         System.out.println("categoryId-categoryId");
-        System.out.println(categoryId);
+        System.out.println(item.getCategoryId());
+        String categoryId = item.getCategoryId();
         System.out.println("categoryId-categoryId");
 
         //1 tech 2 news 3 buss
@@ -102,7 +104,6 @@ public class DiscoverFragment extends Fragment implements DiscoverStoryDerpAdapt
         userDBService.setClicks(nclicks,tclicks,bclicks,user_id);
 
         Intent i = new Intent(rootView.getContext(), StoryDetail.class);
-        DiscoverStoryListItem item = listData.get(adapterPosition);
         Bundle extras = new Bundle();
         extras.putString(EXTRA_AUTHOR, item.getTitle());
         extras.putString(EXTRA_IMAGE,item.getImage());

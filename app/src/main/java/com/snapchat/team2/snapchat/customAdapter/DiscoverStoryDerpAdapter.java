@@ -11,14 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.DiscoverStoryListItem;
 import com.snapchat.team2.snapchat.R;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 //import android.support.v7.app.AlertDialog;
@@ -38,7 +36,7 @@ public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStory
 
 
     public interface ItemClickCallback {
-        void onItemClick(List<DiscoverStoryListItem> listData, int adapterPosition,String categoryId);
+        void onItemClick(List<DiscoverStoryListItem> listData, int adapterPosition);
         void onItemLongClick(int p);
     }
 
@@ -137,7 +135,7 @@ public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStory
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.live_cont_item_root){
-                itemClickCallback.onItemClick(listData,getAdapterPosition(),categoryId);
+                itemClickCallback.onItemClick(listData,getAdapterPosition());
             } else {
                 // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
             }
