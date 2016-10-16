@@ -29,6 +29,7 @@ import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customAdapter.ChatFriendListAdapter;
 import com.snapchat.team2.snapchat.customAdapter.ChatListAdapter;
 import com.snapchat.team2.snapchat.dataJsonModel.GetChatResonseModel;
+import com.snapchat.team2.snapchat.dataJsonModel.ImageDataModel;
 import com.snapchat.team2.snapchat.dataJsonModel.userModel;
 import com.snapchat.team2.snapchat.dbHelper.DBManager;
 import com.snapchat.team2.snapchat.dbModel.User;
@@ -486,6 +487,7 @@ public class UserDataService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 Bundle b = new Bundle();
                 b.putBoolean("network",false);
                 message.setData(b);
@@ -495,10 +497,53 @@ public class UserDataService {
         requestQueue.add(stringRequest);
     }
 
+
+    public void getAllImageToUser(Activity activity, final Message message){
+        this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
+        requestURL=requestURL_base+"photo/";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, requestURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("network",true);
+                System.out.println("返回的报文是: "+response);
+                if(response.startsWith("{")){
+                    bundle.putBoolean("new",false);
+                }
+                else {
+                    bundle.putBoolean("new",true);
+                    bundle.putString("data",response);
+                }
+                message.setData(bundle);
+                message.sendToTarget();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("network",false);
+                message.setData(bundle);
+                message.sendToTarget();
+
+
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                // setting post
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("id",user_id);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
     public void getUserById(final Activity activity, final String id, final Message message){
         this.requestURL_base = activity.getResources().getString(R.string.serverAddress);
         requestURL=requestURL_base+"user/"+id;
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, requestURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -518,9 +563,7 @@ public class UserDataService {
             }
         });
         requestQueue.add(stringRequest);
-
     }
-
     private class ComparatorUserFromJson implements Comparator {
         public int compare(Object arg0, Object arg1) {
             userModel user0 = (userModel) arg0;

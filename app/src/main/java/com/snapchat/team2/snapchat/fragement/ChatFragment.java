@@ -37,8 +37,10 @@ import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customView.RefreshListView;
 import com.snapchat.team2.snapchat.dataJsonModel.GetChatResonseModel;
 import com.snapchat.team2.snapchat.dataJsonModel.GetChatResponseModelWithName;
+import com.snapchat.team2.snapchat.dataJsonModel.ImageDataModel;
 import com.snapchat.team2.snapchat.dataJsonModel.userModel;
 import com.snapchat.team2.snapchat.networkService.UserDataService;
+import com.snapchat.team2.snapchat.showPhotoActivity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -68,6 +70,7 @@ public class ChatFragment extends Fragment {
     private boolean getUserLock = true;
 
     private Intent intent = null;
+    private Intent intent2 = null;
     //private SimpleAdapter adapter = null;
 
 
@@ -80,7 +83,7 @@ public class ChatFragment extends Fragment {
                     String data_string = bundle.getString("data");
                     messageDataSource.addAll(converttoMessageNotification(data_string));
                     SimpleAdapter sm = new SimpleAdapter(getActivity(),messageDataSource,R.layout.message_notification_list_item,
-                            new String[]{"name","notification"},new int[]{R.id.message_from,R.id.notification});
+                            new String[]{"note","notification"},new int[]{R.id.message_from,R.id.notification});
                     refreshListView.setAdapter(sm);
                 }
                 else{
@@ -95,10 +98,37 @@ public class ChatFragment extends Fragment {
 
 
 
+    private final Handler imageHandler = new Handler(){
+        public void handleMessage(Message message){
+            Bundle bundle=message.getData();
+            if(bundle.getBoolean("network")){
+                if(bundle.getBoolean("new")){
+                    System.out.println("检测到新的照片");
+                    String data_string = bundle.getString("data");
+                    messageDataSource.addAll(converttoNotificationImage(data_string));
+                    SimpleAdapter sm = new SimpleAdapter(getActivity(),messageDataSource,R.layout.message_notification_list_item,
+                            new String[]{"note","notification"},new int[]{R.id.message_from,R.id.notification});
+                    refreshListView.setAdapter(sm);
+                }
+                else{
+                    System.out.println("网络连通，但没有新的图片");
+                }
+            }
+            else{
+                System.out.println("网络未联通");
+            }
+
+        }
+
+    };
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         user_id = getActivity().getSharedPreferences("snapchat_user",getActivity().MODE_PRIVATE).getString("user_id",null);
         intent = new Intent(this.getActivity(), ChatRoomActivity.class);
+        intent2 = new Intent(this.getActivity(),showPhotoActivity.class);
         initialView(inflater,container,savedInstanceState);
         initialSetAdapter();
         initialSetListeners();
@@ -141,6 +171,14 @@ public class ChatFragment extends Fragment {
         newChat=(ImageButton) rootView.findViewById(R.id.newChat);
     }
 
+    private void initThread(){
+        SimpleAdapter sm = new SimpleAdapter(getActivity(),messageDataSource,R.layout.message_notification_list_item,
+                new String[]{"note","notification"},new int[]{R.id.message_from,R.id.notification});
+        refreshListView.setAdapter(sm);
+        messageFlag = true;
+        startCheckNewChatThread();
+    }
+
     public void onStart(){
         super.onStart();
     }
@@ -149,15 +187,16 @@ public class ChatFragment extends Fragment {
         System.out.println("调用onresume");
         messageDataSource.clear();
         SimpleAdapter sm = new SimpleAdapter(getActivity(),messageDataSource,R.layout.message_notification_list_item,
-                new String[]{"name","notification"},new int[]{R.id.message_from,R.id.notification});
+                new String[]{"note","notification"},new int[]{R.id.message_from,R.id.notification});
         refreshListView.setAdapter(sm);
-
         messageFlag = true;
         startCheckNewChatThread();
+
         super.onResume();
     }
     public void onPause(){
         messageFlag = false;
+
         super.onPause();
     }
 
@@ -237,34 +276,97 @@ public class ChatFragment extends Fragment {
                 }
                 System.out.println("messageDataSource的长度 "+messageDataSource.size());
                 System.out.println("位置"+position);
+                String kind = (String)(messageDataSource.get(position-1).get("kind"));
 
-                intent.putExtra("receiver_id",(String)(messageDataSource.get(position-1).get("oppoentId")));
-                List<ChatMessage> sendMessages = new ArrayList<ChatMessage>();
-                Bundle bundle =new Bundle();
+                if(kind.equals("image")){
+                    String oppoentId = (String)(messageDataSource.get(position-1).get("oppoentId"));
+                    System.out.println("传入到里面的 id是 "+oppoentId);
+                    intent2.putExtra("receiver_id",oppoentId);
+                    intent2.putExtra("imageId",(String)(messageDataSource.get(position-1).get("imageId")));
+                    intent2.putExtra("url",(String)(messageDataSource.get(position-1).get("content")));
+                    System.out.println("request code是 1");
+                    //startActivityForResult(intent2,1);
+                    startActivity(intent2);
+                }
+                else{
+                    String oppoentId = (String)(messageDataSource.get(position-1).get("oppoentId"));
+                    System.out.println("传入到里面的 id是 "+oppoentId);
+                    intent.putExtra("receiver_id",oppoentId);
+                    List<ChatMessage> sendMessages = new ArrayList<ChatMessage>();
+                    Bundle bundle =new Bundle();
 
-                ArrayList<String> results = new ArrayList<String>();
-                //int i= 0;
-                for(Map<String,Object> map:messageDataSource){
-                    if(((String)(map.get("name"))).equals((String)(messageDataSource.get(position-1).get("name")))){
-                        results.add((String)(map.get("content")));
-                        //i++;
+                    ArrayList<String> results = new ArrayList<String>();
+                    //int i= 0;
+                    for(Map<String,Object> map:messageDataSource){
+                        if(((String)(map.get("name"))).equals((String)(messageDataSource.get(position-1).get("name")))){
+                            results.add((String)(map.get("content")));
+                        }
                     }
+                    Bundle b = new Bundle();
+                    String[] final_results = new String[results.size()];
+                    for(int i=0;i<results.size();i++){
+                        final_results[i] = results.get(i);
+                    }
+                    b.putStringArray("initialInfo",final_results);
+                    intent.putExtra("initialInfo",b);
+                    //startActivityForResult(intent,0);
+                    startActivity(intent);
                 }
-                Bundle b = new Bundle();
-
-                String[] final_results = new String[results.size()];
-                for(int i=0;i<results.size();i++){
-                    final_results[i] = results.get(i);
-                }
-                b.putStringArray("initialInfo",final_results);
-                intent.putExtra("initialInfo",b);
-                startActivity(intent);
-
-
             }
         });
     }
 
+
+    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("调用onActResult");
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode != getActivity().RESULT_CANCELED){
+            System.out.println("添加");
+            if(data==null){
+                System.out.println("空");
+            }
+            if (data != null) {
+                //String name = data.getStringExtra("name");
+                if (requestCode == 0) {
+                    System.out.println("是0");
+                    //get user id
+                    String id = data.getStringExtra("opId");
+                    System.out.println("返回的id是 "+id);
+
+                    for(Map<String,Object> map:messageDataSource){
+                        if((((String)(map.get("oppoentId"))).equals(id))&&(((String)(map.get("kind"))).equals("text"))){
+                            messageDataSource.remove(map);
+                        }
+                    }
+                    SimpleAdapter sm = new SimpleAdapter(getActivity(),messageDataSource,R.layout.message_notification_list_item,
+                            new String[]{"note","notification"},new int[]{R.id.message_from,R.id.notification});
+                    refreshListView.setAdapter(sm);
+                    messageFlag = true;
+                    startCheckNewChatThread();
+
+                } else if (requestCode == 1) {
+                    System.out.println("是1");
+                    //get photo id
+                    String id = data.getStringExtra("imageId");
+                    for(Map<String,Object> map:messageDataSource){
+                        if((((String)(map.get("imageId"))).equals(id))&&(((String)(map.get("kind"))).equals("image"))){
+                            messageDataSource.remove(map);
+                        }
+                    }
+                    SimpleAdapter sm = new SimpleAdapter(getActivity(),messageDataSource,R.layout.message_notification_list_item,
+                            new String[]{"note","notification"},new int[]{R.id.message_from,R.id.notification});
+                    refreshListView.setAdapter(sm);
+                    messageFlag = true;
+                    startCheckNewChatThread();
+                }
+            }
+
+        }
+
+
+    }
+*/
 
     public  void startCheckNewChatThread(){
         Thread thread = new Thread(new Runnable() {
@@ -274,6 +376,7 @@ public class ChatFragment extends Fragment {
                 while(messageFlag){
                     try {
                         requestNewChat();
+                        requestNewImage();
                         Thread.sleep(2000);
 
                     } catch (InterruptedException e) {
@@ -285,6 +388,7 @@ public class ChatFragment extends Fragment {
         thread.start();
     }
 
+
     private void initialSetAdapter(){
         SimpleAdapter adapter = new SimpleAdapter(getActivity(),getData(),R.layout.chat_list_item,
                 new String[]{"name","info","img"},new int[]{R.id.chat_name,R.id.chat_info,R.id.chat_item_img});
@@ -295,7 +399,7 @@ public class ChatFragment extends Fragment {
         System.out.println("data string is: "+ data_string);
         List<GetChatResponseModelWithName> newchats = new Gson().fromJson(data_string , new TypeToken<List<GetChatResponseModelWithName>>(){}.getType());
         if(newchats == null){
-            System.out.println("new caht is sempty");
+            System.out.println("new chat is sempty");
         }
         //List<MessageNotifcation> chatMessages = new ArrayList<MessageNotifcation>();
         List<Map<String,Object>> data = new ArrayList<>();
@@ -303,9 +407,34 @@ public class ChatFragment extends Fragment {
             //chatMessages.add(new MessageNotifcation(chatModel.getFrom(),chatModel.getContent(),1));
             Map<String,Object> map= new HashMap<String,Object>();
             map.put("oppoentId",chatModel.getFrom());
+            map.put("note",chatModel.getName()+ " has sent a text message to you.");
             map.put("name",chatModel.getName());
             map.put("content",chatModel.getContent());
             map.put("notification","click to chat");
+            map.put("kind","text");
+            data.add(map);
+        }
+        return data;
+    }
+
+
+    private List<Map<String,Object>> converttoNotificationImage(String data_string){
+        System.out.println("data string is: "+ data_string);
+        List<ImageDataModel> newImage = new Gson().fromJson(data_string , new TypeToken<List<ImageDataModel>>(){}.getType());
+        if(newImage==null){
+            System.out.println("new image is sempty");
+        }
+        List<Map<String,Object>> data = new ArrayList<>();
+        for(ImageDataModel chatModel:newImage){
+            Map<String,Object> map= new HashMap<String,Object>();
+            System.out.println("获得的user id 是 "+chatModel.getUserId());
+            map.put("oppoentId",chatModel.getUserId());
+            map.put("name",chatModel.getName());
+            map.put("note",chatModel.getName()+" has sent a photo to you.");
+            map.put("content",chatModel.getPhotoContent());
+            map.put("notification","click to show the photo");
+            map.put("imageId",chatModel.getId());
+            map.put("kind","image");
             data.add(map);
         }
         return data;
@@ -328,14 +457,21 @@ public class ChatFragment extends Fragment {
     }
 
     private void requestNewChat(){
-        String me = user_id;
+
         //String opponent_id = receiver_id;
         RequestQueue rq = Volley.newRequestQueue(this.getActivity());
         UserDataService uds = new UserDataService(rq,user_id);
         Message msg = new Message();
         msg.setTarget(handler);
         uds.getAllChatToUser(this.getActivity(),msg);
+    }
 
+    private void requestNewImage(){
+        RequestQueue rq = Volley.newRequestQueue(this.getActivity());
+        UserDataService uds = new UserDataService(rq,user_id);
+        Message msg = new Message();
+        msg.setTarget(imageHandler);
+        uds.getAllImageToUser(this.getActivity(),msg);
     }
 
 
