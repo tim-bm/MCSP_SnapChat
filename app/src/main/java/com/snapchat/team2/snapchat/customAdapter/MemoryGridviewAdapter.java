@@ -1,9 +1,13 @@
 package com.snapchat.team2.snapchat.customAdapter;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,6 +19,7 @@ import com.snapchat.team2.snapchat.Tools.AsyncImageLoaderFromFile;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
 
 /**
  * Created by bm on 15/10/2016.
@@ -26,6 +31,8 @@ public class MemoryGridviewAdapter extends BaseAdapter {
     private String[] memoryImages;
     private File memoryImageDir=new File(Environment.getExternalStoragePublicDirectory
             (Environment.DIRECTORY_PICTURES),"SnapChat222");
+
+
 
     public MemoryGridviewAdapter(Context context){
         mContext=context;
@@ -49,6 +56,7 @@ public class MemoryGridviewAdapter extends BaseAdapter {
         });
 
     }
+
 
     @Override
     public int getCount() {
@@ -82,11 +90,11 @@ public class MemoryGridviewAdapter extends BaseAdapter {
 
 
         if(memoryImageDir.length()!=0){
+            //load image asynchronisedly
         AsyncImageLoaderFromFile loader=new AsyncImageLoaderFromFile(imageView,
                 memoryImageDir.getAbsolutePath()+"/"+memoryImages[position]);
             loader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,memoryImageDir.getAbsolutePath()+"/"+memoryImages[position]);
 //        loader.execute(memoryImageDir.getAbsolutePath()+"/"+memoryImages[position]);
-
 
         }
 //            imageView.setImageBitmap(BitmapFactory.decodeFile(memoryImageDir.getAbsolutePath()+"/"+memoryImages[position]));
@@ -96,7 +104,9 @@ public class MemoryGridviewAdapter extends BaseAdapter {
         return imageView;
     }
 
-
+    public String[] getMemoryImages() {
+        return memoryImages;
+    }
 
 //    private Integer[] mThumbIds={
 //            R.drawable.ic_circled_timer,R.drawable.ic_action_discover,

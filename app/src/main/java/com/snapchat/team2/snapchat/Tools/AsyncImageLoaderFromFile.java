@@ -22,7 +22,6 @@ public class AsyncImageLoaderFromFile extends AsyncTask<String,Void,Bitmap> {
 
     @Override
     protected Bitmap doInBackground(String... strings) {
-
         //image path
         String path=strings[0];
         //resize the orginal to 1/4 to display in the grid

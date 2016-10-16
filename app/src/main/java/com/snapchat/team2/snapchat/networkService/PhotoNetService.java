@@ -99,4 +99,48 @@ public class PhotoNetService {
                     }
                 });
     }
+
+    //post meomry
+//    public void postMemory(final Activity activity, String UploadURL, final Bitmap photo, final String filename,
+//                           final String senderId, final String receiverId, final String catergory){
+//
+//
+//        final ProgressDialog loading = ProgressDialog.show(activity,"Uploading...","Please wait...",false,false);
+//        StringRequest stringRequest=new StringRequest(Request.Method.POST, UploadURL, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                loading.dismiss();
+//                Toast.makeText(activity.getApplication(),"upload successfully",Toast.LENGTH_LONG).show();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                //error response
+//                loading.dismiss();
+//                Toast.makeText(activity.getApplication(),"upload error ",Toast.LENGTH_LONG).show();
+//            }
+//        }){
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                //convert photo to string
+//                String image=PhotoNetService.getStringImage(photo);
+//
+//                Map<String,String> params = new Hashtable<String, String>();
+//
+//                params.put("photo",image);
+//                params.put("name",filename);
+//                params.put("from",senderId);
+//                params.put("to",receiverId);
+//                params.put("category",catergory);
+//
+//                return params;
+//
+//            }
+//
+//        };
+//
+//        requestQueue.add(stringRequest);
+//
+//
+//    }
 }

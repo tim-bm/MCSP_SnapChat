@@ -445,11 +445,14 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
     }
 
     private void releaseCamera(){
-        parameters = camera.getParameters();
-        camera.setParameters(parameters);
-        camera.stopPreview();
-        camera.release();
-        camera = null;
+        if(camera!=null){
+            parameters = camera.getParameters();
+            camera.setParameters(parameters);
+            camera.stopPreview();
+            camera.release();
+            camera = null;
+        }
+
     }
 
     public void saveImage(){
