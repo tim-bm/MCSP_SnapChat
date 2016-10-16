@@ -17,7 +17,6 @@ import com.snapchat.team2.snapchat.R;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 //import android.support.v7.app.AlertDialog;
@@ -36,7 +35,7 @@ public class SubStoryDerpAdapter extends RecyclerView.Adapter<SubStoryDerpAdapte
 
     public interface ItemClickCallback {
         void onItemClick(List<DiscoverStoryListItem> arrayList,int position);
-        void onItemLongClick(int p);
+        void onItemLongClick(int p,List<DiscoverStoryListItem> arrayList);
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback) {
@@ -60,6 +59,7 @@ public class SubStoryDerpAdapter extends RecyclerView.Adapter<SubStoryDerpAdapte
         item = listData.get(position);
         holder.text.setText(item.getTitle());
         String url = item.getImage();
+
         url = url.replace("localhost",ip);
         new ImageLoadTask(url, holder.image ).execute();    }
 
@@ -133,7 +133,8 @@ public class SubStoryDerpAdapter extends RecyclerView.Adapter<SubStoryDerpAdapte
         @Override
         public boolean onLongClick(View v) {
             if (v.getId() == R.id.cont_item_root){
-                itemClickCallback.onItemLongClick(getAdapterPosition());
+                itemClickCallback.onItemLongClick(getAdapterPosition(),listData);
+
             } else {
                 // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
             }

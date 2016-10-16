@@ -13,9 +13,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.DiscoverStoryListItem;
+import com.snapchat.team2.snapchat.ListAdapterDataModel.MemoryStoryListItem;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customAdapter.DiscoverStoryDerpAdapter;
-import com.snapchat.team2.snapchat.customAdapter.LiveStoryDerpAdapter;
 import com.snapchat.team2.snapchat.customAdapter.SubStoryDerpAdapter;
 import com.snapchat.team2.snapchat.dbHelper.DBManager;
 import com.snapchat.team2.snapchat.dbService.UserDBService;
@@ -47,8 +47,6 @@ public class DiscoverDataService {
         SharedPreferences shared = fragment.getActivity().getSharedPreferences("snapchat_user", fragment.getActivity().MODE_PRIVATE);
         user_id=shared.getString("user_id", null);
 
-        System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
-        System.out.println(user_id);
         UserDBService userDBService = new UserDBService(DBManager.getInstance(fragment.getActivity()));
         String[] clicks = userDBService.getClicks(user_id);
 
@@ -61,10 +59,11 @@ public class DiscoverDataService {
 //        final String tech ="2";
 //        final String bussiness="2";
 
-        System.out.println("+++++++++++++++++000000000000+++++++++++++++++");
-//        System.out.println(clicks[0]);
-//        System.out.println(clicks[1]);
-//        System.out.println(clicks[2]);
+
+        System.out.println();
+        System.out.println(clicks[0]);
+        System.out.println(clicks[1]);
+        System.out.println(clicks[2]);
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, requestURL_base,
@@ -82,13 +81,13 @@ public class DiscoverDataService {
 
                             adapter.setItemClickCallback((SubStoryDerpAdapter.ItemClickCallback) fragment);
                             recyclerView.setAdapter(adapter);
-                        }else if(flag==2) {
-                            List<DiscoverStoryListItem> listData = makeDiscoverAdapterModel(response);
-
-                            final LiveStoryDerpAdapter adapter = new LiveStoryDerpAdapter(listData,fragment.getActivity(),ip);
-
-                            adapter.setItemClickCallback((LiveStoryDerpAdapter.ItemClickCallback) fragment);
-                            recyclerView.setAdapter(adapter);
+//                        }else if(flag==2) {
+//                            List<DiscoverStoryListItem> listData = makeDiscoverAdapterModel(response);
+//
+//                            final LiveStoryDerpAdapter adapter = new LiveStoryDerpAdapter(listData,fragment.getActivity(),ip);
+//
+//                            adapter.setItemClickCallback((LiveStoryDerpAdapter.ItemClickCallback) fragment);
+//                            recyclerView.setAdapter(adapter);
                         }else if(flag==3) {
                             List<DiscoverStoryListItem> listData = makeDiscoverAdapterModel(response);
 
@@ -98,7 +97,6 @@ public class DiscoverDataService {
                             recyclerView.setAdapter(adapter);
 
                         }
-
 
                     }
                 }, new Response.ErrorListener() {
@@ -126,6 +124,14 @@ public class DiscoverDataService {
     private List<DiscoverStoryListItem> makeDiscoverAdapterModel(String jsonString) {
         Gson gson = new Gson();
         List<DiscoverStoryListItem> StoryListItems = gson.fromJson(jsonString, new TypeToken<List<DiscoverStoryListItem>>() {
+        }.getType());
+
+        return StoryListItems;
+    }
+
+    private List<MemoryStoryListItem> makeMemoryAdapterModel(String jsonString) {
+        Gson gson = new Gson();
+        List<MemoryStoryListItem> StoryListItems = gson.fromJson(jsonString, new TypeToken<List<MemoryStoryListItem>>() {
         }.getType());
 
         return StoryListItems;

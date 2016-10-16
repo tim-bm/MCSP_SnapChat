@@ -11,15 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.DiscoverStoryListItem;
+import com.snapchat.team2.snapchat.ListAdapterDataModel.MemoryStoryListItem;
 import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customAdapter.LiveStoryDerpAdapter;
+import com.snapchat.team2.snapchat.customAdapter.MemoryStoryDerpAdapter;
 import com.snapchat.team2.snapchat.customAdapter.SubStoryDerpAdapter;
 import com.snapchat.team2.snapchat.networkService.DiscoverDataService;
+import com.snapchat.team2.snapchat.networkService.MemoryStoryService;
+import com.snapchat.team2.snapchat.networkService.SubStoryService;
+import com.snapchat.team2.snapchat.networkService.SubUpdateDataService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +36,7 @@ import java.util.List;
 
 
 
-public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemClickCallback, LiveStoryDerpAdapter.ItemClickCallback {
+public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemClickCallback, LiveStoryDerpAdapter.ItemClickCallback, MemoryStoryDerpAdapter.ItemClickCallback {
 
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final String EXTRA_STORY = "EXTRA_STORY";
@@ -39,6 +45,8 @@ public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemC
 
     private RecyclerView recyclerView1;
     private RecyclerView recyclerView2;
+    private RecyclerView recyclerView3;
+
     private SubStoryDerpAdapter adapter1;
     private LiveStoryDerpAdapter adapter2;
     private ArrayList listData1;
@@ -61,14 +69,17 @@ public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemC
             public void onClick(View arg0) {
                 MainActivity parent=(MainActivity) StroyFragment.this.getActivity();
                 parent.getMainPage().setCurrentItem(3);
+
             }
         });
 
         //listData1 = (ArrayList) StoryDerpData.getListData();
         recyclerView1 = (RecyclerView) rootView.findViewById(R.id.rec_list1);
         recyclerView2 = (RecyclerView) rootView.findViewById(R.id.rec_list2);
+        recyclerView3 = (RecyclerView) rootView.findViewById(R.id.rec_list3);
         recyclerView1.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.HORIZONTAL));
         recyclerView2.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
+        recyclerView3.setLayoutManager(new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL));
 
         String ip = (String) this.getActivity().getResources().getString(R.string.ip);
 
@@ -77,17 +88,20 @@ public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemC
 
         RequestQueue mqueue = Volley.newRequestQueue(this.getActivity());
         DiscoverDataService mservice = new DiscoverDataService(mqueue);
+        SubStoryService mservice1 = new SubStoryService(mqueue);
+        MemoryStoryService mservice2 = new MemoryStoryService(mqueue);
 
 
         String requestURL1 = "discovery/recommend";
         mservice.getDiscover(this,requestURL1,recyclerView1,1,ip);
-        String requestURL2 = "discovery/recommend";
-        mservice.getDiscover(this,requestURL2,recyclerView2,2,ip);
+        String requestURL2 = "story/subscribeList/";
+        mservice1.getDiscover(this,requestURL2,recyclerView2,ip);
+        String requestURL3 = "memory/";
+        mservice2.getDiscover(this,requestURL3,recyclerView3,ip);
 
         return rootView;
 
     }
-
 
 
     @Override
@@ -105,8 +119,25 @@ public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemC
         startActivity(i);
     }
 
+
+
     @Override
-    public void onItemLongClick(int p) {
+    public void onItemClick1(List<MemoryStoryListItem> listData, int position) {
+
+        Toast.makeText(this.getActivity().getApplication(),"Click  Response!!!!!!",Toast.LENGTH_LONG).show();
+        Intent i = new Intent(rootView.getContext(), MemoryStoryDetail.class);
+        MemoryStoryListItem item = listData.get(position);
+        Bundle extras = new Bundle();
+        extras.putString(EXTRA_IMAGE,item.getPhotoContent());
+        i.putExtra(BUNDLE_EXTRAS, extras);
+
+        startActivity(i);
+
+    }
+
+
+    @Override
+    public void onItemLongClick(final int p, final List<DiscoverStoryListItem> listData) {
 
         new AlertDialog.Builder(rootView.getContext())
                 .setTitle("Subscribe")
@@ -114,6 +145,14 @@ public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemC
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with subscribe
+
+                        RequestQueue subqueue = Volley.newRequestQueue(StroyFragment.this.getActivity());
+                        SubUpdateDataService mservice = new SubUpdateDataService(subqueue);
+                        String requestURL = "story/subscribe/";
+
+                        DiscoverStoryListItem item = listData.get(p);
+                        String storyId = item.getId();
+                        mservice.getDiscover(StroyFragment.this,requestURL,recyclerView3,storyId);
 
                     }
                 })

@@ -107,7 +107,32 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true">
 
+
             </android.support.v7.widget.RecyclerView>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="#cfcece"
+                android:gravity="center"
+                android:text="--------------------------------------Memory stories--------------------------------------"
+                android:id="@+id/textView2"
+                android:layout_below="@+id/rec_list2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rec_list3"
+                android:layout_below="@+id/textView2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+            </android.support.v7.widget.RecyclerView>
+
 
 
         </RelativeLayout>

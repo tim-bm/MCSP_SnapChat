@@ -11,14 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.DiscoverStoryListItem;
 import com.snapchat.team2.snapchat.R;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 //import android.support.v7.app.AlertDialog;
@@ -37,7 +35,7 @@ public class LiveStoryDerpAdapter extends RecyclerView.Adapter<LiveStoryDerpAdap
 
     public interface ItemClickCallback {
         void onItemClick(List<DiscoverStoryListItem> arrayList, int position);
-        void onItemLongClick(int p);
+       // void onItemLongClick(int p);
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback) {
@@ -107,7 +105,7 @@ public class LiveStoryDerpAdapter extends RecyclerView.Adapter<LiveStoryDerpAdap
         return listData.size();
     }
 
-    class DerpHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    class DerpHolder extends RecyclerView.ViewHolder implements View.OnClickListener{//, View.OnLongClickListener {
 
         ImageView image;
         //ImageView secondaryIcon;
@@ -125,7 +123,7 @@ public class LiveStoryDerpAdapter extends RecyclerView.Adapter<LiveStoryDerpAdap
             title = (TextView)itemView.findViewById(R.id.live_lbl_item_text);
             container = (View)itemView.findViewById(R.id.live_cont_item_root);;
             container.setOnClickListener(this);
-            container.setOnLongClickListener(this);
+            //container.setOnLongClickListener(this);
         }
 
         @Override
@@ -138,14 +136,14 @@ public class LiveStoryDerpAdapter extends RecyclerView.Adapter<LiveStoryDerpAdap
         }
 
 
-        @Override
-        public boolean onLongClick(View v) {
-            if (v.getId() == R.id.live_cont_item_root){
-                itemClickCallback.onItemLongClick(getAdapterPosition());
-            } else {
-                // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
-            }
-            return true;
-        }
+//        @Override
+//        public boolean onLongClick(View v) {
+//            if (v.getId() == R.id.live_cont_item_root){
+//                itemClickCallback.onItemLongClick(getAdapterPosition());
+//            } else {
+//                // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
+//            }
+//            return true;
+//        }
     }
 }
