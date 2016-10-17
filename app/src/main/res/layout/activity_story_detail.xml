@@ -12,7 +12,9 @@ tools:context="com.snapchat.team2.snapchat.fragement.StoryDetail">
     <TextView
         android:id="@+id/lbl_quote_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textColor="#2675cf"/>
 
 
 
@@ -32,6 +34,6 @@ tools:context="com.snapchat.team2.snapchat.fragement.StoryDetail">
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textSize="10sp"/>
+        android:textSize="20sp"/>
 
 </RelativeLayout>
