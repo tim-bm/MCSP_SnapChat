@@ -16,10 +16,13 @@
             android:layout_height="match_parent"
             android:text="Chat Notification"
             android:textColor="@color/colorChatTitleText"
+
             android:background="@color/colorChatTitle"
             android:alpha="1"
             android:id="@+id/button_chat"
-            />
+            android:layout_toLeftOf="@+id/search_button"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <ImageButton
             android:layout_width="70dp"

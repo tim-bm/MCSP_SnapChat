@@ -69,6 +69,10 @@
             android:name=".AddByUsernameActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".fragement.MemoryStoryDetail"></activity>
+        <activity
+            android:name=".showPhotoActivity"
+            android:screenOrientation="portrait" />
+
 
     </application>
 
