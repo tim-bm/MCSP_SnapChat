@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import com.snapchat.team2.snapchat.Tools.AsyncImageLoaderFromFile;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 /**

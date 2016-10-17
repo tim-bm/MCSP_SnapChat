@@ -25,8 +25,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     final String CREATE_TABLE_CLICKS="CREATE TABLE \"clicks\" (" +
             "\"user_id\"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            "\"news_clicks\"  TEXT NOT NULL," +
-            "\"tech_clicks\"  TEXT NOT NULL, " +
+            "\"tech_clicks\"  TEXT NOT NULL," +
+            "\"news_clicks\"  TEXT NOT NULL, " +
             "\"bussiness_clicks\" TEXT NOT NULL"+
             ");";
 

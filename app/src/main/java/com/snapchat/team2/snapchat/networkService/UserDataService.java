@@ -2,8 +2,6 @@ package com.snapchat.team2.snapchat.networkService;
 
 
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.Editable;
@@ -18,18 +16,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.snapchat.team2.snapchat.AddByUsernameActivity;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.ChatMessage;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customAdapter.ChatFriendListAdapter;
 import com.snapchat.team2.snapchat.customAdapter.ChatListAdapter;
-import com.snapchat.team2.snapchat.dataJsonModel.GetChatResonseModel;
-import com.snapchat.team2.snapchat.dataJsonModel.ImageDataModel;
 import com.snapchat.team2.snapchat.dataJsonModel.userModel;
 import com.snapchat.team2.snapchat.dbHelper.DBManager;
 import com.snapchat.team2.snapchat.dbModel.User;

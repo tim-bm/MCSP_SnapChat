@@ -91,8 +91,9 @@ public class UserDBService {
         database=dbManager.openDB();
         Cursor cursor= database.rawQuery("select * from clicks where user_id=?",new String[]{id});
 
-        if (cursor.getCount()<=0){
+        if (cursor.getCount()<=0||cursor==null){
             setClicks(id);
+
         }
 
         String[] result = {"","",""};
@@ -106,25 +107,20 @@ public class UserDBService {
         return result;
     }
 
-    public void setClicks(String nclicks,String tclicks,String bclicks,String userid){
+    public void setClicks(String tclicks,String nclicks,String bclicks,String userid){
         SQLiteDatabase database;
         database=dbManager.openDB();
 
 
         ContentValues values = new ContentValues();
-        System.out.println("In the set ");
-        System.out.println(nclicks);
-        System.out.println(tclicks);
-        System.out.println(bclicks);
-        values.put("news_clicks", nclicks);
         values.put("tech_clicks", tclicks);
+        values.put("news_clicks", nclicks);
         values.put("bussiness_clicks", bclicks);
 
 
-        int result = database.update("clicks", values,"user_id=?", new String[] { userid });
+        database.update("clicks", values,"user_id=?", new String[] { userid });
 
         dbManager.closeDB(database);
-        System.out.println("+++++++++++++++++++++++"+result);
 
 
     }
@@ -137,15 +133,13 @@ public class UserDBService {
         ContentValues values = new ContentValues();
         System.out.println("In the set ");
         values.put("user_id", userid);
-        values.put("news_clicks", "2");
         values.put("tech_clicks", "2");
+        values.put("news_clicks", "2");
         values.put("bussiness_clicks", "2");
 
 
-        long result = database.insert("clicks", null, values);
-
+        database.insert("clicks", null, values);
         dbManager.closeDB(database);
-        System.out.println("+++++++++++++++++++++++"+result);
 
 
     }

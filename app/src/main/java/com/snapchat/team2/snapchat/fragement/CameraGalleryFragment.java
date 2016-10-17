@@ -1,15 +1,8 @@
 package com.snapchat.team2.snapchat.fragement;
 
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,22 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.snapchat.team2.snapchat.CreateNewChatActivity;
-import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.Tools.MemoryUploader;
 import com.snapchat.team2.snapchat.customAdapter.CameraGalleryGridAdapter;
-import com.snapchat.team2.snapchat.networkService.PhotoNetService;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by bm on 14/10/2016.

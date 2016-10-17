@@ -31,7 +31,6 @@ public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStory
     private LayoutInflater inflater;
     private ItemClickCallback itemClickCallback;
     private DiscoverStoryListItem item;
-    private String categoryId;
 
 
 
@@ -61,10 +60,8 @@ public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStory
         item = listData.get(position);
         holder.title.setText(item.getTitle());
         holder.subTitle.setText(item.getText());
-        categoryId = item.getCategoryId();
-        System.out.println("##############################");
-        System.out.println(categoryId);
-        System.out.println("##############################");
+
+
         String url = item.getImage();
         url = url.replace("localhost",ip);
         new ImageLoadTask(url, holder.image).execute();
@@ -114,7 +111,6 @@ public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStory
     class DerpHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         ImageView image;
-        //ImageView secondaryIcon;
         TextView title;
         TextView subTitle;
         View container;
@@ -123,8 +119,6 @@ public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStory
         public DerpHolder(View itemView) {
             super(itemView);
             image = (ImageView)itemView.findViewById(R.id.live_im_item_pic);
-            // secondaryIcon = (ImageView)itemView.findViewById(R.id.im_item_icon_secondary);
-            // secondaryIcon.setOnClickListener(this);
             subTitle = (TextView)itemView.findViewById(R.id.live_lbl_item_title);
             title = (TextView)itemView.findViewById(R.id.live_lbl_item_text);
             container = (View)itemView.findViewById(R.id.live_cont_item_root);;
@@ -137,7 +131,6 @@ public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStory
             if (v.getId() == R.id.live_cont_item_root){
                 itemClickCallback.onItemClick(listData,getAdapterPosition());
             } else {
-                // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
             }
         }
 
@@ -147,7 +140,6 @@ public class DiscoverStoryDerpAdapter extends RecyclerView.Adapter<DiscoverStory
             if (v.getId() == R.id.live_cont_item_root){
                 itemClickCallback.onItemLongClick(getAdapterPosition());
             } else {
-                // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
             }
             return true;
         }

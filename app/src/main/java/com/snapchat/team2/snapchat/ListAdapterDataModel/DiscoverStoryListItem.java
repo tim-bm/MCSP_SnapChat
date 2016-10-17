@@ -1,7 +1,5 @@
 package com.snapchat.team2.snapchat.ListAdapterDataModel;
 
-import android.widget.ImageView;
-
 /**
  * Created by Kun on 10/3/2016.
  */

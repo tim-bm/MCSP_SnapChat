@@ -125,7 +125,6 @@ public class SubStoryDerpAdapter extends RecyclerView.Adapter<SubStoryDerpAdapte
             if (v.getId() == R.id.cont_item_root){
                 itemClickCallback.onItemClick( listData,getAdapterPosition());
             } else {
-                // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
             }
         }
 
@@ -136,7 +135,6 @@ public class SubStoryDerpAdapter extends RecyclerView.Adapter<SubStoryDerpAdapte
                 itemClickCallback.onItemLongClick(getAdapterPosition(),listData);
 
             } else {
-                // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
             }
             return true;
         }

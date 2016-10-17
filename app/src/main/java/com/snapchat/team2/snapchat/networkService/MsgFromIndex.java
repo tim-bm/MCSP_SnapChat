@@ -2,8 +2,6 @@ package com.snapchat.team2.snapchat.networkService;
 
 
 import android.app.Activity;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -11,7 +9,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 /**
  * Created by bm on 1/10/2016.

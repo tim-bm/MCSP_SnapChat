@@ -13,7 +13,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.DiscoverStoryListItem;
-import com.snapchat.team2.snapchat.ListAdapterDataModel.MemoryStoryListItem;
 import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.customAdapter.DiscoverStoryDerpAdapter;
 import com.snapchat.team2.snapchat.customAdapter.SubStoryDerpAdapter;
@@ -47,8 +46,9 @@ public class DiscoverDataService {
 
         String requestURL_base = fragment.getActivity().getResources().getString(R.string.serverAddress) + requestURL;
 
-        String news=null;
+
         String tech=null;
+        String news=null;
         String bussiness=null;
 
         String user_id;
@@ -58,23 +58,16 @@ public class DiscoverDataService {
         UserDBService userDBService = new UserDBService(DBManager.getInstance(fragment.getActivity()));
         String[] clicks = userDBService.getClicks(user_id);
 
-        int newsDig = (Integer.parseInt(clicks[0]));
-        int techDig =(Integer.parseInt(clicks[1]));
+        int techDig = (Integer.parseInt(clicks[0]));
+        int newsDig =(Integer.parseInt(clicks[1]));
         int bussinessDig = (Integer.parseInt(clicks[2]));
 
 
-        System.out.println("HereHereHereHereHereHereHereHere---Before");
-        System.out.println(clicks[0]);
-        System.out.println(clicks[1]);
-        System.out.println(clicks[2]);
-
-
-        //sort
-
+        //sorting
         Map<String, Integer> unsortMap = new HashMap<String, Integer>();
 
-        unsortMap.put("news", newsDig);
         unsortMap.put("tech", techDig);
+        unsortMap.put("news", newsDig);
         unsortMap.put("bussiness", bussinessDig);
 
         Map<String, Integer> sortedMap = sortByValue(unsortMap);
@@ -83,9 +76,6 @@ public class DiscoverDataService {
         String med = (String) sortedMap.keySet().toArray()[1];
         String max = (String) sortedMap.keySet().toArray()[2];//max
 
-        System.out.println(min);
-        System.out.println(med);
-        System.out.println(max);
 
 
         if(min.equals("news")){
@@ -113,52 +103,6 @@ public class DiscoverDataService {
         }
 
 
-//
-//
-//
-//        int numb[] = {newsDig,techDig,bussinessDig};
-//
-//        Arrays.sort(numb);
-//
-//        if(newsDig==numb[0]){
-//            news = "1";
-//        }else if(techDig==numb[0]){
-//            tech = "1";
-//        }else{
-//            bussiness = "1";
-//        }
-//
-//
-//        if(newsDig==numb[1]){
-//            news = "2";
-//        }else if(techDig==numb[1]){
-//            tech = "2";
-//        }else{
-//            bussiness = "2";
-//        }
-//
-//        if(newsDig==numb[2]){
-//            news = "3";
-//        }else if(techDig==numb[2]){
-//            tech = "3";
-//        }else{
-//            bussiness = "3";
-//        }
-
-        System.out.println("HereHereHereHereHereHereHereHere---After");
-        System.out.println(news);
-        System.out.println(tech);
-        System.out.println(bussiness);
-
-
-//        final String news=clicks[0];
-//        final String tech =clicks[1];
-//        final String bussiness=clicks[2];
-
-//        final String news="2";
-//        final String tech ="2";
-//        final String bussiness="2";
-
         final String tech_value = tech;
         final String news_value = news;
         final String bussiness_value = bussiness;
@@ -170,24 +114,15 @@ public class DiscoverDataService {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                        Toast.makeText(fragment.getActivity().getApplication(),"Response!!!!!!",Toast.LENGTH_LONG).show();
-                        if (flag==1){
 
+                        if (flag==1){
                             List<DiscoverStoryListItem> listData = makeDiscoverAdapterModel(response);
-                            String url =listData.get(0).getImage();
-                            System.out.println("aaaaa: "+response);
-//                            Toast.makeText(fragment.getActivity().getApplication(),url,Toast.LENGTH_LONG).show();
+
                             final SubStoryDerpAdapter adapter = new SubStoryDerpAdapter(listData,fragment.getActivity(),ip);
 
                             adapter.setItemClickCallback((SubStoryDerpAdapter.ItemClickCallback) fragment);
                             recyclerView.setAdapter(adapter);
-//                        }else if(flag==2) {
-//                            List<DiscoverStoryListItem> listData = makeDiscoverAdapterModel(response);
-//
-//                            final LiveStoryDerpAdapter adapter = new LiveStoryDerpAdapter(listData,fragment.getActivity(),ip);
-//
-//                            adapter.setItemClickCallback((LiveStoryDerpAdapter.ItemClickCallback) fragment);
-//                            recyclerView.setAdapter(adapter);
+
                         }else if(flag==3) {
                             List<DiscoverStoryListItem> listData = makeDiscoverAdapterModel(response);
 
@@ -229,14 +164,6 @@ public class DiscoverDataService {
         return StoryListItems;
     }
 
-    private List<MemoryStoryListItem> makeMemoryAdapterModel(String jsonString) {
-        Gson gson = new Gson();
-        List<MemoryStoryListItem> StoryListItems = gson.fromJson(jsonString, new TypeToken<List<MemoryStoryListItem>>() {
-        }.getType());
-
-        return StoryListItems;
-    }
-
 
 
     private static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) {
@@ -259,14 +186,6 @@ public class DiscoverDataService {
         for (Map.Entry<String, Integer> entry : list) {
             sortedMap.put(entry.getKey(), entry.getValue());
         }
-
-        /*
-        //classic iterator example
-        for (Iterator<Map.Entry<String, Integer>> it = list.iterator(); it.hasNext(); ) {
-            Map.Entry<String, Integer> entry = it.next();
-            sortedMap.put(entry.getKey(), entry.getValue());
-        }*/
-
 
         return sortedMap;
     }

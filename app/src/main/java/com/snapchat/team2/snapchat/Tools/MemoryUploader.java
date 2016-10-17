@@ -1,7 +1,6 @@
 package com.snapchat.team2.snapchat.Tools;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +8,6 @@ import android.graphics.BitmapFactory;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.snapchat.team2.snapchat.R;
-import com.snapchat.team2.snapchat.fragement.CameraGalleryFragment;
 import com.snapchat.team2.snapchat.networkService.PhotoNetService;
 
 import java.io.File;

@@ -15,8 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.R;
-import com.snapchat.team2.snapchat.dbHelper.DBManager;
-import com.snapchat.team2.snapchat.dbService.UserDBService;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;

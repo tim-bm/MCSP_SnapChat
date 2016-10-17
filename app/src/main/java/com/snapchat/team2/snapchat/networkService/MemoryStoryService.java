@@ -50,8 +50,6 @@ public class MemoryStoryService {
                     @Override
                     public void onResponse(String response) {
 
-//                      Toast.makeText(fragment.getActivity().getApplication(),"Response!!!!!!",Toast.LENGTH_LONG).show();
-
                         List<MemoryStoryListItem> listData = makeMemoryAdapterModel(response);
 
                         final MemoryStoryDerpAdapter adapter = new MemoryStoryDerpAdapter(listData,fragment.getActivity(),ip);

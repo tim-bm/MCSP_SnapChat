@@ -1,8 +1,6 @@
 package com.snapchat.team2.snapchat;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -22,10 +19,8 @@ import com.google.gson.reflect.TypeToken;
 import com.snapchat.team2.snapchat.ListAdapterDataModel.ChatMessage;
 import com.snapchat.team2.snapchat.customAdapter.ChatListAdapter;
 import com.snapchat.team2.snapchat.dataJsonModel.GetChatResonseModel;
-import com.snapchat.team2.snapchat.networkService.ChatService;
 import com.snapchat.team2.snapchat.networkService.UserDataService;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 

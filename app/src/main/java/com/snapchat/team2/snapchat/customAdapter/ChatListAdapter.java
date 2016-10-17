@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.snapchat.team2.snapchat.ListAdapterDataModel.ChatMessage;
-import com.snapchat.team2.snapchat.ListAdapterDataModel.Friend;
 import com.snapchat.team2.snapchat.R;
 
 import java.util.List;

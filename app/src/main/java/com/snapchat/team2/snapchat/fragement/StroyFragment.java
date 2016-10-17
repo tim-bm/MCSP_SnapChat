@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -27,7 +26,6 @@ import com.snapchat.team2.snapchat.networkService.MemoryStoryService;
 import com.snapchat.team2.snapchat.networkService.SubStoryService;
 import com.snapchat.team2.snapchat.networkService.SubUpdateDataService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,13 +45,9 @@ public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemC
     private RecyclerView recyclerView2;
     private RecyclerView recyclerView3;
 
-    private SubStoryDerpAdapter adapter1;
-    private LiveStoryDerpAdapter adapter2;
-    private ArrayList listData1;
-    private ArrayList listData2;
 
     private ViewGroup rootView;
-    private ImageButton button_search;
+
     private ImageButton button_disc;
 
     @Override
@@ -73,7 +67,6 @@ public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemC
             }
         });
 
-        //listData1 = (ArrayList) StoryDerpData.getListData();
         recyclerView1 = (RecyclerView) rootView.findViewById(R.id.rec_list1);
         recyclerView2 = (RecyclerView) rootView.findViewById(R.id.rec_list2);
         recyclerView3 = (RecyclerView) rootView.findViewById(R.id.rec_list3);
@@ -83,8 +76,6 @@ public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemC
 
         String ip = (String) this.getActivity().getResources().getString(R.string.ip);
 
-        //adapter1 = new SubStoryDerpAdapter(StoryDerpData.getListData(),this.getActivity(),ip);
-        //adapter2 = new LiveStoryDerpAdapter(StoryDerpData.getListData(),this.getActivity(),ip);
 
         RequestQueue mqueue = Volley.newRequestQueue(this.getActivity());
         DiscoverDataService mservice = new DiscoverDataService(mqueue);
@@ -124,7 +115,6 @@ public class StroyFragment extends Fragment implements SubStoryDerpAdapter.ItemC
     @Override
     public void onItemClick1(List<MemoryStoryListItem> listData, int position) {
 
-        Toast.makeText(this.getActivity().getApplication(),"Click  Response!!!!!!",Toast.LENGTH_LONG).show();
         Intent i = new Intent(rootView.getContext(), MemoryStoryDetail.class);
         MemoryStoryListItem item = listData.get(position);
         Bundle extras = new Bundle();

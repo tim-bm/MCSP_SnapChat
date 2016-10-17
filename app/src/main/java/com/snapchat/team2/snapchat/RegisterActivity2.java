@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.snapchat.team2.snapchat.Tools.ActManager;
-import com.snapchat.team2.snapchat.networkService.LoginService;
 import com.snapchat.team2.snapchat.networkService.RegisterService;
 
 import java.text.ParseException;

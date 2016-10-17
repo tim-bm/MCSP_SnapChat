@@ -20,7 +20,6 @@ import java.util.Map;
  */
 public class SubUpdateDataService {
 
-    private String requestURL = null;
 
     private RequestQueue requestQueue;
 

@@ -3,9 +3,7 @@ package com.snapchat.team2.snapchat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.os.Bundle;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -17,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.snapchat.team2.snapchat.Tools.ActManager;
-
 import com.snapchat.team2.snapchat.fragement.CameraFragment;
 import com.snapchat.team2.snapchat.fragement.ChatFragment;
 import com.snapchat.team2.snapchat.fragement.DiscoverFragment;

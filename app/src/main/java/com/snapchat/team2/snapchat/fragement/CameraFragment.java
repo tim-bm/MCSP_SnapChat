@@ -1,19 +1,16 @@
 package com.snapchat.team2.snapchat.fragement;
 
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
 import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -22,17 +19,12 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.snapchat.team2.snapchat.CreateNewChatActivity;
 import com.snapchat.team2.snapchat.MainActivity;
 import com.snapchat.team2.snapchat.MemoryActivity;
@@ -40,7 +32,6 @@ import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.UserInfoActivity;
 import com.snapchat.team2.snapchat.customView.DrawFreehandView;
 import com.snapchat.team2.snapchat.customWidget.CamerEditText;
-import com.snapchat.team2.snapchat.networkService.PhotoNetService;
 
 import java.io.File;
 import java.io.FileNotFoundException;

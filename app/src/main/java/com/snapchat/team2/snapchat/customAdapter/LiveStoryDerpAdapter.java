@@ -35,7 +35,6 @@ public class LiveStoryDerpAdapter extends RecyclerView.Adapter<LiveStoryDerpAdap
 
     public interface ItemClickCallback {
         void onItemClick(List<DiscoverStoryListItem> arrayList, int position);
-       // void onItemLongClick(int p);
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback) {
@@ -108,7 +107,6 @@ public class LiveStoryDerpAdapter extends RecyclerView.Adapter<LiveStoryDerpAdap
     class DerpHolder extends RecyclerView.ViewHolder implements View.OnClickListener{//, View.OnLongClickListener {
 
         ImageView image;
-        //ImageView secondaryIcon;
         TextView title;
         TextView subTitle;
         View container;
@@ -117,13 +115,10 @@ public class LiveStoryDerpAdapter extends RecyclerView.Adapter<LiveStoryDerpAdap
         public DerpHolder(View itemView) {
             super(itemView);
             image = (ImageView)itemView.findViewById(R.id.live_im_item_pic);
-            // secondaryIcon = (ImageView)itemView.findViewById(R.id.im_item_icon_secondary);
-            // secondaryIcon.setOnClickListener(this);
             subTitle = (TextView)itemView.findViewById(R.id.live_lbl_item_title);
             title = (TextView)itemView.findViewById(R.id.live_lbl_item_text);
             container = (View)itemView.findViewById(R.id.live_cont_item_root);;
             container.setOnClickListener(this);
-            //container.setOnLongClickListener(this);
         }
 
         @Override
@@ -131,19 +126,7 @@ public class LiveStoryDerpAdapter extends RecyclerView.Adapter<LiveStoryDerpAdap
             if (v.getId() == R.id.live_cont_item_root){
                 itemClickCallback.onItemClick( listData,getAdapterPosition());
             } else {
-                // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
             }
         }
-
-
-//        @Override
-//        public boolean onLongClick(View v) {
-//            if (v.getId() == R.id.live_cont_item_root){
-//                itemClickCallback.onItemLongClick(getAdapterPosition());
-//            } else {
-//                // itemClickCallback.onSecondaryIconClick(getAdapterPosition());
-//            }
-//            return true;
-//        }
     }
 }

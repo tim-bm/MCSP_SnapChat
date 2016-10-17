@@ -1,25 +1,18 @@
 package com.snapchat.team2.snapchat.customAdapter;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.snapchat.team2.snapchat.R;
 import com.snapchat.team2.snapchat.Tools.AsyncImageLoaderFromFile;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
 
 /**
  * Created by bm on 15/10/2016.

@@ -48,8 +48,6 @@ public class SubStoryService {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-//                      Toast.makeText(fragment.getActivity().getApplication(),"Response!!!!!!",Toast.LENGTH_LONG).show();
-
 
                         List<DiscoverStoryListItem> listData = makeDiscoverAdapterModel(response);
                         final LiveStoryDerpAdapter adapter = new LiveStoryDerpAdapter(listData,fragment.getActivity(),ip);

@@ -38,7 +38,6 @@ public class MemoryStoryDerpAdapter extends RecyclerView.Adapter<MemoryStoryDerp
 
         void onItemClick1(List<MemoryStoryListItem> listData,int position);
 
-        //void onItemLongClick(int p);
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback) {
@@ -120,7 +119,6 @@ public class MemoryStoryDerpAdapter extends RecyclerView.Adapter<MemoryStoryDerp
             title = (TextView)itemView.findViewById(R.id.memory_lbl_item_title);
             container = (View)itemView.findViewById(R.id.memory_cont_item_root);;
             container.setOnClickListener(this);
-            //container.setOnLongClickListener(this);
         }
 
         @Override
@@ -132,13 +130,5 @@ public class MemoryStoryDerpAdapter extends RecyclerView.Adapter<MemoryStoryDerp
         }
 
 
-//        @Override
-//        public boolean onLongClick(View v) {
-//            if (v.getId() == R.id.memory_cont_item_root){
-//                itemClickCallback.onItemLongClick(getAdapterPosition());
-//            } else {
-//            }
-//            return true;
-//        }
     }
 }
