@@ -39,7 +39,7 @@ public class AddByUsernameActivity extends Activity {
             Bundle bundle=msg.getData();
             if(bundle.getBoolean("network")){
                 String resultJson = bundle.getString("resultJson");
-                Toast.makeText(AddByUsernameActivity.this,resultJson,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AddByUsernameActivity.this,resultJson,Toast.LENGTH_SHORT).show();
                 allfriends = new Gson().fromJson( resultJson, new TypeToken<List<userModel>>() {}.getType());
                 setAdapter();
             }
@@ -53,7 +53,7 @@ public class AddByUsernameActivity extends Activity {
             Bundle bundle=msg.getData();
             if(bundle.getBoolean("network")){
                 String resultJson = bundle.getString("resultJson");
-                Toast.makeText(AddByUsernameActivity.this,resultJson,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AddByUsernameActivity.this,resultJson,Toast.LENGTH_SHORT).show();
                 user_friends = new Gson().fromJson( resultJson, new TypeToken<List<userModel>>() {}.getType());
             }
             else{

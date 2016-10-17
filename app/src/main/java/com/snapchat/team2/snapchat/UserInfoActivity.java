@@ -16,6 +16,7 @@ public class UserInfoActivity extends Activity {
     private ImageButton sign_out=null;
     private SharedPreferences sharedPreferences = null;
     private View add_freind = null;
+    private View addedMe = null;
 
     private View myFriends = null;
 
@@ -33,6 +34,7 @@ public class UserInfoActivity extends Activity {
         sign_out = (ImageButton)findViewById(R.id.sign_out);
         add_freind =(View)findViewById(R.id.add_friends);
         myFriends = (View)findViewById(R.id.my_friends);
+        addedMe = (View)findViewById(R.id.added_me);
 
     }
     private void addListeners(){
@@ -51,6 +53,12 @@ public class UserInfoActivity extends Activity {
         });
 
         myFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UserInfoActivity.this,CreateNewChatActivity.class));
+            }
+        });
+        addedMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(UserInfoActivity.this,CreateNewChatActivity.class));
