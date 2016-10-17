@@ -58,10 +58,20 @@ public class DiscoverDataService {
         UserDBService userDBService = new UserDBService(DBManager.getInstance(fragment.getActivity()));
         String[] clicks = userDBService.getClicks(user_id);
 
-        int techDig = (Integer.parseInt(clicks[0]));
-        int newsDig =(Integer.parseInt(clicks[1]));
-        int bussinessDig = (Integer.parseInt(clicks[2]));
+        int techDig ;
+        int newsDig ;
+        int bussinessDig ;
 
+        if(clicks[0].equals("")){
+            techDig = 2;
+            newsDig = 2;
+            bussinessDig = 2;
+        }else {
+
+            techDig = (Integer.parseInt(clicks[0]));
+            newsDig = (Integer.parseInt(clicks[1]));
+            bussinessDig = (Integer.parseInt(clicks[2]));
+        }
 
         //sorting
         Map<String, Integer> unsortMap = new HashMap<String, Integer>();

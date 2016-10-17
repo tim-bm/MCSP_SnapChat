@@ -93,10 +93,12 @@ public class UserDBService {
 
         if (cursor.getCount()<=0||cursor==null){
             setClicks(id);
+            System.out.println("I am here!!!!!!!!!!");
 
         }
 
         String[] result = {"","",""};
+
         while (cursor.moveToNext()){
             result[0] = cursor.getString(1);
             result[1] = cursor.getString(2);

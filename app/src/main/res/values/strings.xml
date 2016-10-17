@@ -1,6 +1,6 @@
 <resources>
-    <string name="serverAddress">http://10.0.0.116:8001/snapchat_server/public/</string>
-    <string name="ip">10.0.0.116</string>
+    <string name="serverAddress">http://10.0.0.120:8001/snapchat_server/public/</string>
+    <string name="ip">10.0.0.120</string>
     <string name="email_regex_string">^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$</string>
     <string name="app_name">SnapChat</string>
     <string name="test">test</string>
