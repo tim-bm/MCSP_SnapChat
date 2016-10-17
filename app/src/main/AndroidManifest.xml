@@ -13,6 +13,7 @@
 
     <!-- permission of internet -->
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
@@ -36,12 +37,10 @@
             android:name=".CreateNewChatActivity"
             android:label="@string/title_activity_create_new_chat"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ChatRoomActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".UserInfoActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".ChatRoomActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UserInfoActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
@@ -52,17 +51,17 @@
         <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".RegisterActivity2"
-            android:screenOrientation="portrait" />
+        <activity android:name=".RegisterActivity2"
+            android:screenOrientation="portrait" ></activity>
         <activity android:name=".fragement.StoryDetail" />
-        <activity
-            android:name=".MemoryActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Widget.AppCompat.Light.ActionBar" />
+        <activity android:name=".MemoryActivity"
+            android:theme="@style/Widget.AppCompat.Light.ActionBar"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".AddFriendActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".AddUserFromContacts"
             android:screenOrientation="portrait" />
@@ -70,6 +69,7 @@
             android:name=".AddByUsernameActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".fragement.MemoryStoryDetail"></activity>
+
     </application>
 
 </manifest>

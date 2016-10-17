@@ -2,6 +2,7 @@ package com.snapchat.team2.snapchat;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -179,6 +180,7 @@ public class ChatRoomActivity extends Activity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                threadFlag = false;
                 finish();
             }
         });
@@ -209,4 +211,5 @@ public class ChatRoomActivity extends Activity {
         }
 
     }
+
 }

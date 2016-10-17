@@ -37,20 +37,17 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
 
     public RefreshListView(Context context) {
         super(context);
-
         initView(context);
     }
 
     public RefreshListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         initView(context);
 
     }
 
     public RefreshListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         initView(context);
     }
     /**
@@ -62,8 +59,6 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
         header=inflater.inflate(R.layout.header_layout,null);
         headerTip = (TextView) header.findViewById(R.id.tip);
         s_icon=(ImageView)header.findViewById(R.id.header_icon);
-
-
 
         measureView(header);
         headerHeight = header.getMeasuredHeight();
@@ -138,6 +133,8 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
                     System.out.println("the status is "+ state+ "while move out !");
                     setTopPadding(-headerHeight);
                     state = NORMAL;
+
+                    //refresh the list
                 }
                 else if(state==RELEASE){
                     System.out.println("the status is "+ state+ "while move out !");
@@ -149,7 +146,6 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
 
         }
         super.onTouchEvent(event);
-
         return true;
     }
 
