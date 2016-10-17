@@ -250,6 +250,9 @@ public class CameraFragment extends Fragment implements SurfaceHolder.Callback{
                     addEmotion.setImageResource(R.drawable.ic_lol_emotion);
                     addEmotion.setTag(1);
                 }else{
+                    if (addEmotion.getTag()==null){
+                        addEmotion.setTag(1);
+                    }
                     switch ((int)addEmotion.getTag()){
                         case 1:
                             addEmotion.setImageResource(R.drawable.ic_cool_emotion);
