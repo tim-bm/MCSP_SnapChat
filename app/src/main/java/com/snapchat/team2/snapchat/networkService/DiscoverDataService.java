@@ -20,8 +20,11 @@ import com.snapchat.team2.snapchat.customAdapter.SubStoryDerpAdapter;
 import com.snapchat.team2.snapchat.dbHelper.DBManager;
 import com.snapchat.team2.snapchat.dbService.UserDBService;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,34 +68,82 @@ public class DiscoverDataService {
         System.out.println(clicks[1]);
         System.out.println(clicks[2]);
 
-        int numb[] = {newsDig,techDig,bussinessDig};
 
-        Arrays.sort(numb);
+        //sort
 
-        if(newsDig==numb[0]){
+        Map<String, Integer> unsortMap = new HashMap<String, Integer>();
+
+        unsortMap.put("news", newsDig);
+        unsortMap.put("tech", techDig);
+        unsortMap.put("bussiness", bussinessDig);
+
+        Map<String, Integer> sortedMap = sortByValue(unsortMap);
+
+        String min = (String) sortedMap.keySet().toArray()[0];//min
+        String med = (String) sortedMap.keySet().toArray()[1];
+        String max = (String) sortedMap.keySet().toArray()[2];//max
+
+        System.out.println(min);
+        System.out.println(med);
+        System.out.println(max);
+
+
+        if(min.equals("news")){
             news = "1";
-        }else if(techDig==numb[0]){
-            tech = "1";
-        }else{
-            bussiness = "1";
-        }
-
-
-        if(newsDig==numb[1]){
+        }else if(med.equals("news")){
             news = "2";
-        }else if(techDig==numb[1]){
-            tech = "2";
-        }else{
-            bussiness = "2";
+        }else if(max.equals("news")){
+            news = "3";
         }
 
-        if(newsDig==numb[2]){
-            news = "3";
-        }else if(techDig==numb[2]){
+        if(min.equals("tech")){
+            tech = "1";
+        }else if(med.equals("tech")){
+            tech = "2";
+        }else if(max.equals("tech")){
             tech = "3";
-        }else{
+        }
+
+        if(min.equals("bussiness")){
+            bussiness = "1";
+        }else if(med.equals("bussiness")){
+            bussiness = "2";
+        }else if(max.equals("bussiness")){
             bussiness = "3";
         }
+
+
+//
+//
+//
+//        int numb[] = {newsDig,techDig,bussinessDig};
+//
+//        Arrays.sort(numb);
+//
+//        if(newsDig==numb[0]){
+//            news = "1";
+//        }else if(techDig==numb[0]){
+//            tech = "1";
+//        }else{
+//            bussiness = "1";
+//        }
+//
+//
+//        if(newsDig==numb[1]){
+//            news = "2";
+//        }else if(techDig==numb[1]){
+//            tech = "2";
+//        }else{
+//            bussiness = "2";
+//        }
+//
+//        if(newsDig==numb[2]){
+//            news = "3";
+//        }else if(techDig==numb[2]){
+//            tech = "3";
+//        }else{
+//            bussiness = "3";
+//        }
 
         System.out.println("HereHereHereHereHereHereHereHere---After");
         System.out.println(news);
@@ -185,4 +236,39 @@ public class DiscoverDataService {
 
         return StoryListItems;
     }
+
+
+
+    private static Map<String, Integer> sortByValue(Map<String, Integer> unsortMap) {
+
+        // 1. Convert Map to List of Map
+        List<Map.Entry<String, Integer>> list =
+                new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
+
+        // 2. Sort list with Collections.sort(), provide a custom Comparator
+        //    Try switch the o1 o2 position for a different order
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> o1,
+                               Map.Entry<String, Integer> o2) {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        // 3. Loop the sorted list and put it into a new insertion order Map LinkedHashMap
+        Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        /*
+        //classic iterator example
+        for (Iterator<Map.Entry<String, Integer>> it = list.iterator(); it.hasNext(); ) {
+            Map.Entry<String, Integer> entry = it.next();
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }*/
+
+
+        return sortedMap;
+    }
+
 }
